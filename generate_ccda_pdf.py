@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Generate a Medication Dispense Summary CCD-A:
 
@@ -7,11 +6,6 @@ Generate a Medication Dispense Summary CCD-A:
 3. Render a human readable PDF similar to the reference layout.
 4. Embed the XML file as an attachment inside the PDF.
 
-Required:
-    pip3 install reportlab pypdf
-
-Run:
-    python3 generate_ccda_pdf.py
 """
 
 from datetime import datetime, timezone

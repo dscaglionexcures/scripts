@@ -1,4 +1,5 @@
-#!/usr/bin/env python3
+# Use this script to gather a list of all subjects in a project and display how many documents each subject has
+# as well as the Clinical Concepts Status for each subject
 """
 fetch_subjects_and_statuses.py
 
@@ -33,8 +34,8 @@ from tqdm import tqdm
 BASE_URL = "https://partner.xcures.com"
 
 PROJECT_ID = "f5dcc615-89f1-4e0e-b886-78a105f94f86"
-CLIENT_ID = "59adc695-5070-4144-a547-b07c3b9d8d4d"
-CLIENT_SECRET = "eaef494901c3ba86de370ee31621c3af3676d8594404dcd31c064dfc9a4791c0"
+CLIENT_ID = "REDACTED"
+CLIENT_SECRET = "REDACTED"
 
 SUBJECTS_CSV_PATH = "/Users/dScaglione/downloads/all_subject_ids.csv"
 RESULTS_CSV_PATH = "/Users/dScaglione/downloads/subject_clinical_concepts_and_doc_counts.csv"
@@ -47,7 +48,6 @@ SUBJECT_PAGE_SIZE = 200
 DOCUMENT_PAGE_NUMBER = 1
 DOCUMENT_PAGE_SIZE = 1
 
-# [Unverified] Adjust if your API uses a different filter key for documents
 DOCUMENT_SUBJECT_FILTER_PARAM = "subjectId"
 
 # ============================================================
