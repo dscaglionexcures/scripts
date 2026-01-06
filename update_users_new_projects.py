@@ -1,3 +1,5 @@
+# Use this script to update all users in a tenant when new projects are created
+# First use case is MedSync as they have a large number of projects that grows weekly
 import requests, pandas as pd, json
 import datetime, pytz
 from pandas import json_normalize
