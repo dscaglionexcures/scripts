@@ -1,0 +1,3884 @@
+{
+  "generatedAtUtc": "20260109T220916Z",
+  "baseUrl": "https://partner.xcures.com",
+  "projectIdHeaderUsed": null,
+  "count": 139,
+  "rows": [
+    {
+      "id": "7f81816e-3403-4c21-8da3-8d16218dcfa7",
+      "email": "zkaufman+phm@xcures.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "ApiClient_Read",
+        "ChecklistItemDefinition_Manage",
+        "ChecklistsManage",
+        "Dashboard_Read",
+        "Dashboard_Update",
+        "DemographicQuery_Create",
+        "Document_Create",
+        "Document_Delete",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Create",
+        "Project_Read",
+        "Project_Update",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Delete",
+        "Subject_Import",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read",
+        "Upload_Cda",
+        "User_Create",
+        "User_Delete",
+        "User_Permission_Manage",
+        "User_Read",
+        "User_Update"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd",
+        "1837e49e-d8db-46ba-8c19-1e344456b3f4",
+        "2b19a0af-f5ac-474a-8bf2-b47c7a6deb7d",
+        "bbb31cd9-2935-4af1-94af-a701628fdb40"
+      ]
+    },
+    {
+      "id": "be2663a8-1763-4247-8c30-7a842072210e",
+      "email": "hhayes+phm@xcures.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Application_Read",
+        "ChecklistsManage",
+        "Cohort_Subject_Assign",
+        "Cohort_Subject_Read",
+        "Cohort_User_Assign",
+        "Cohort_User_Read",
+        "Consent_Read",
+        "Dashboard_Read",
+        "Dashboard_Update",
+        "DemographicQuery_Create",
+        "Document_Create",
+        "Document_Delete",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Create",
+        "Project_Read",
+        "Project_Update",
+        "Query_Create",
+        "Query_Create_Bulk",
+        "Query_Read",
+        "Request_Center",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read",
+        "User_Create",
+        "User_Delete",
+        "User_Permission_Manage",
+        "User_Read",
+        "User_Update"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd",
+        "1837e49e-d8db-46ba-8c19-1e344456b3f4"
+      ]
+    },
+    {
+      "id": "36f4ff8f-9791-458e-9714-cf1bd92c4ffa",
+      "email": "asabates+phm@xcures.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Application_Read",
+        "ChecklistItemDefinition_Manage",
+        "ChecklistsManage",
+        "Consent_Read",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Create",
+        "Document_Delete",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Program_Read",
+        "Program_Write",
+        "Project_Create",
+        "Project_Read",
+        "Project_Update",
+        "Query_Create",
+        "Query_Read",
+        "RegistrationProgram_Read",
+        "RegistrationProgram_Write",
+        "Request_Center",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Delete",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Summary_Checklist",
+        "Template_Read",
+        "Template_Write",
+        "Term_Read",
+        "User_Create",
+        "User_Delete",
+        "User_Permission_Manage",
+        "User_Read",
+        "User_Update"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd",
+        "1837e49e-d8db-46ba-8c19-1e344456b3f4",
+        "2b19a0af-f5ac-474a-8bf2-b47c7a6deb7d",
+        "bbb31cd9-2935-4af1-94af-a701628fdb40"
+      ]
+    },
+    {
+      "id": "2987f769-07fb-4f2b-82a2-867f9b77e9f3",
+      "email": "zkaufman@xcures.com",
+      "name": null,
+      "permissions": [],
+      "projectIds": []
+    },
+    {
+      "id": "7eb90960-3e42-4c8c-b685-51afddb246e0",
+      "email": "awinzeler@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Create",
+        "Document_Delete",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "48d72670-a7e1-43d2-8cee-9b1dd97a5a71",
+      "email": "elee@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Delete",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Summary_Checklist",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd",
+        "2b19a0af-f5ac-474a-8bf2-b47c7a6deb7d"
+      ]
+    },
+    {
+      "id": "47e87415-e5df-4ff0-a164-634b7cdfa1ea",
+      "email": "dparker@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "c56ed682-607c-40b9-94f6-44e9d0970d64",
+      "email": "adean@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Summary_Checklist",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "0b1daa5f-6a1d-435a-8de1-0e2b68e333da",
+      "email": "esharpe@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "ebd3df67-a748-4d2e-89ae-1456d2e0e73a",
+      "email": "lgalbraith@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "96cc5235-7403-4fd6-ab7c-ea7ec34c39bb",
+      "email": "tdonn@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "4cace78f-3a4a-4bd9-a812-624fa942d2ba",
+      "email": "amcdonald@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "682696ac-5df5-4377-982f-96c190aca411",
+      "email": "jsasser@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "a6a8fdd6-f3f3-4d74-bbd5-7a9c92abb8da",
+      "email": "achapman@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "354b37fa-7301-4982-a168-6212d18e4ac0",
+      "email": "strujillo@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Summary_Checklist",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd",
+        "2b19a0af-f5ac-474a-8bf2-b47c7a6deb7d"
+      ]
+    },
+    {
+      "id": "085a220c-a756-4e9a-b5d8-badefc80fdab",
+      "email": "lholton@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Summary_Checklist",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd",
+        "2b19a0af-f5ac-474a-8bf2-b47c7a6deb7d"
+      ]
+    },
+    {
+      "id": "0781a706-1435-4050-8cbd-d4908f1e48bc",
+      "email": "ksmith@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd",
+        "2b19a0af-f5ac-474a-8bf2-b47c7a6deb7d"
+      ]
+    },
+    {
+      "id": "c8b51702-07fe-4ef7-a1a8-1070ecfd52b1",
+      "email": "adaniels@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Create",
+        "Document_Delete",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd",
+        "2b19a0af-f5ac-474a-8bf2-b47c7a6deb7d",
+        "bbb31cd9-2935-4af1-94af-a701628fdb40"
+      ]
+    },
+    {
+      "id": "6e14409f-193e-4a9f-84ed-2a77f260563f",
+      "email": "ahudson@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Create",
+        "Document_Delete",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "934fa80b-69c9-4883-ae2e-c9ea1be3c5e7",
+      "email": "aiyengar@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Create",
+        "Document_Delete",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "666fbe92-01de-4de7-8cb2-eae9f34bb876",
+      "email": "jpena@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "c61a1de4-6278-4a54-bbe6-f53344320789",
+      "email": "agraham@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd",
+        "2b19a0af-f5ac-474a-8bf2-b47c7a6deb7d"
+      ]
+    },
+    {
+      "id": "dd6d7e64-1785-427f-9104-7237310ae2a7",
+      "email": "egrevengoed@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Cohort_Read",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Create",
+        "Document_Delete",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd",
+        "2b19a0af-f5ac-474a-8bf2-b47c7a6deb7d"
+      ]
+    },
+    {
+      "id": "945e9f8e-b57d-4a79-bd29-dda8094bfb7a",
+      "email": "tarsenault@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "2eca3f56-7a58-42fb-994d-e9f6233472c2",
+      "email": "egordon@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "1b3109ea-5fc4-4ae5-b128-5e109f818230",
+      "email": "mgraham@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "009680e2-4afe-4d91-b744-7a41f4d368f7",
+      "email": "adoberstein@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd",
+        "2b19a0af-f5ac-474a-8bf2-b47c7a6deb7d"
+      ]
+    },
+    {
+      "id": "ce29330b-c891-4793-bb66-9fb7b78ec5ac",
+      "email": "horeilly@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "275ad468-e07c-405a-8e36-c7a47bb4597d",
+      "email": "sguldin@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "2daba73e-521c-4ce0-a27a-f96824cf3eb9",
+      "email": "blento@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "aa6334a6-615c-4d6e-9ffe-f90ec59f394e",
+      "email": "dpatel@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "8b7a5e2d-f696-478f-9be6-1f366772eecb",
+      "email": "mcoffin@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "147a81e8-b460-414c-b681-a293f4fa995f",
+      "email": "holeary@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "21405534-4eb9-4aad-b3bd-75097002ffdd",
+      "email": "kcameron@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "3af17a85-d680-406d-8060-d6c2f18f5df5",
+      "email": "kwalling@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "525c0dba-2403-41e2-8cbe-079260ea7b5f",
+      "email": "Jou@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "9bbd2e79-d7a5-47e9-9aca-e98661b40e8f",
+      "email": "Lgibbs@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "2a368a66-ae18-435d-9489-4e514f01d6fa",
+      "email": "bmahoney+phm@xcures.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Create",
+        "Document_Delete",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "9a5708e9-b72e-4eb9-b3fc-c713f76afcfa",
+      "email": "aparks@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "56688048-7f8d-4bf3-b763-9826c728d053",
+      "email": "sabt@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "52a7c19a-67cc-4cf3-851a-2f6dd6d94571",
+      "email": "sbaylon@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "8863a974-203d-4774-acf7-e7750cc3959f",
+      "email": "agallagher@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Delete",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "a5076d63-d57b-496d-b9ec-18e3b4ccc61c",
+      "email": "ahaughton@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "90cd2150-942d-4bfd-bf49-a77a17ddd4a1",
+      "email": "bcuffy@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "0180703f-63ad-4b9e-8390-9c0ea5654b70",
+      "email": "sjones@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "ab1a3545-0354-4cc4-92fc-a112187fa6eb",
+      "email": "jfiehler@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "3f4e26a4-ae1a-419a-9609-ce09cf6e8db7",
+      "email": "mnikolakopoulou@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "2fa879c7-b5ab-4d07-b9cc-5773d48e3c3a",
+      "email": "scaiazza@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "5381595c-d110-4e19-b44d-7173fefedcc7",
+      "email": "bking@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Create",
+        "Document_Delete",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Summary_Checklist",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd",
+        "2b19a0af-f5ac-474a-8bf2-b47c7a6deb7d"
+      ]
+    },
+    {
+      "id": "dea6f8fa-b66b-4a86-b911-58fd7270025b",
+      "email": "bcicconi@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Cohort_Read",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Create",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Summary_Checklist",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd",
+        "2b19a0af-f5ac-474a-8bf2-b47c7a6deb7d"
+      ]
+    },
+    {
+      "id": "7e58e5f9-8fc9-439f-995e-cda8aa8c9877",
+      "email": "ffarquharson@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Cohort_Read",
+        "Dashboard_Read",
+        "Document_Create",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read",
+        "Upload_Cda"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "88322d21-d58a-4315-8bcb-8fa17861f946",
+      "email": "lsotome@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Cohort_Read",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Create",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read",
+        "Upload_Cda"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "9232b9db-4677-45b6-baaa-36a5e99c43e2",
+      "email": "dchuyka+phm@xcures.com",
+      "name": null,
+      "permissions": [
+        "Dashboard_Read",
+        "Dashboard_Update",
+        "Document_Read",
+        "Fhir_Read",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "1837e49e-d8db-46ba-8c19-1e344456b3f4",
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd",
+        "2b19a0af-f5ac-474a-8bf2-b47c7a6deb7d"
+      ]
+    },
+    {
+      "id": "c5fab0ef-d063-457c-884b-a5b6b16f1fcb",
+      "email": "jsherer@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Create",
+        "Document_Delete",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "c02a1440-f91a-4006-b2ce-f058ed90a420",
+      "email": "jdavis@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd",
+        "2b19a0af-f5ac-474a-8bf2-b47c7a6deb7d",
+        "bbb31cd9-2935-4af1-94af-a701628fdb40"
+      ]
+    },
+    {
+      "id": "735414f3-9cb7-459d-8d49-79ac774ab0e6",
+      "email": "mrussell@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "3123a8b8-4f5d-4083-af80-e037c0f540ef",
+      "email": "sbuckhoy@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Application_Read",
+        "Cohort_Read",
+        "Cohort_Subject_Read",
+        "Cohort_User_Read",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Program_Read",
+        "Project_Read",
+        "Project_Update",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read",
+        "User_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "f97e551c-df38-4627-9d2b-ed31df047b45",
+      "email": "dhernandez@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Cohort_Subject_Read",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Create",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Program_Read",
+        "Project_Read",
+        "Project_Update",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd",
+        "2b19a0af-f5ac-474a-8bf2-b47c7a6deb7d",
+        "bbb31cd9-2935-4af1-94af-a701628fdb40"
+      ]
+    },
+    {
+      "id": "53cccbb7-ebe7-48e5-b28e-fd0e71cc3561",
+      "email": "MWest@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Application_Read",
+        "Cohort_Read",
+        "Cohort_Subject_Assign",
+        "Cohort_Subject_Read",
+        "Cohort_Update",
+        "Cohort_User_Assign",
+        "Cohort_User_Read",
+        "Dashboard_Read",
+        "Document_Create",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Program_Read",
+        "Project_Create",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "936bb40c-ccd6-4eff-9893-1db30e6fc3ed",
+      "email": "ichavez@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Application_Read",
+        "Cohort_Read",
+        "Cohort_Update",
+        "Dashboard_Read",
+        "Document_Create",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Program_Read",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "87233443-070f-423c-a121-72565dca35a3",
+      "email": "lwilliams@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Application_Read",
+        "Cohort_Read",
+        "Cohort_Subject_Read",
+        "Dashboard_Read",
+        "Document_Create",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Program_Read",
+        "Project_Read",
+        "Project_Update",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "a23d5cae-92cb-4013-82e0-5127c054dd86",
+      "email": "cbarnett@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Create",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Request_Center",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "8449a000-ac9e-4b82-ab94-e0e84ea93d3c",
+      "email": "mitalia@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Create",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "5129962a-e615-4bce-9cff-1bb27277980c",
+      "email": "hhayes@xcures.com",
+      "name": null,
+      "permissions": [],
+      "projectIds": []
+    },
+    {
+      "id": "5f457bc2-a02d-4777-bda6-faf72a54aa19",
+      "email": "bvazquez@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Create",
+        "Document_Delete",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read",
+        "Upload_Cda"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "8040cc3c-a37a-4e8d-9e60-4550704bdee8",
+      "email": "tdistelrath@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Create",
+        "Document_Delete",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "bd162c90-8a4c-44c8-be1a-edb0aa960825",
+      "email": "alee@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Cohort_Read",
+        "Dashboard_Read",
+        "Document_Delete",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "36eac2e0-457b-43df-a141-cd74780578d7",
+      "email": "kbinder@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "2bd3a3e3-7d5b-4767-926e-39251a8ee5fd",
+      "email": "sburgett@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "30db2d25-8101-470d-8b0e-27e3e9a6a098",
+      "email": "ccelestino@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "e46f2603-4514-4983-9bee-282321c991d2",
+      "email": "schen@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "f74750bf-df98-4939-94cc-6cf715a04111",
+      "email": "rchojnowski@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "21ee2894-9683-4bc4-9aa7-dfcb98c57d91",
+      "email": "rchow@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "b24cc232-3261-46f8-a42b-e76e567c6a1d",
+      "email": "jconove@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "fbb469c1-4654-4278-ad38-731e16dae9b2",
+      "email": "lcook@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "4abed1bb-acfb-4df8-8033-7416b075a524",
+      "email": "scupara@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "f4d42f6f-0509-4605-afd9-61115ed06745",
+      "email": "cdavis@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "57bdecb2-f2fc-444a-aa1f-e03dff18091a",
+      "email": "ldeckers@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "63cd29cb-afec-44e3-912f-4b9636e9e12b",
+      "email": "ldelbene@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "cbf5b725-6d62-4b28-961d-c63524ba4ef8",
+      "email": "agarske@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "1e7fe813-1abd-4540-bdef-eca230c061e2",
+      "email": "sgrandy@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "ea51d5a4-0ccd-438d-8475-774f2c74fdbb",
+      "email": "thendricks@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "4ba62780-63ec-491e-a3d1-94b8d2feaf19",
+      "email": "shernandez@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "5fc9a598-1a4a-43f1-b2f1-5ab50574242a",
+      "email": "chollinger@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "ede47350-aad2-41e0-a712-248d5e24bdf1",
+      "email": "mhyde@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "a400a962-5f57-4ba9-99d7-753d87ad0916",
+      "email": "vkinney@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "0a15f21a-5111-4c38-b142-d9c2316367c5",
+      "email": "ekomatsu@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "5f646cee-ff5b-4de0-9f8b-dd947d6e109d",
+      "email": "jkydd@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "ceaa2739-163f-4bfc-9e3f-fa7c82244272",
+      "email": "llarrota@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "2fcf1d92-b132-47a3-8a88-fa8f0196e12f",
+      "email": "sleard@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "1425a2a8-9547-42e2-b215-3a560c93bdc7",
+      "email": "alima-orellana@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "1f3ec4d2-2b2c-4d4e-a08e-128a95b59b01",
+      "email": "hmartin@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "27221c6f-f553-4f10-b19a-5c784e44a6ef",
+      "email": "cmcnulty@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "5657376b-2914-4082-a3e4-3327ecf11754",
+      "email": "cmichaels@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd",
+        "2b19a0af-f5ac-474a-8bf2-b47c7a6deb7d"
+      ]
+    },
+    {
+      "id": "c37ddb1e-278c-4af5-b181-f12e9873dd86",
+      "email": "hmoore@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "582d4a68-9f97-4cae-b069-cfc5396a9cd8",
+      "email": "nmulligan@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "26b12b10-0ef4-4eda-9b25-0c9581c6aac8",
+      "email": "kneeman-brown@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "a414e5be-a0c4-46ca-9b94-12e4c240947e",
+      "email": "aoosterlinck@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "f056bc58-6107-4f5f-9fb3-255ed0cb5dc6",
+      "email": "tperdue@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "81b2f54b-b4f0-4e00-91e8-27a10a044a08",
+      "email": "jsarmiento@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "1c0d6f78-6e0d-4b36-964c-63c087a9b55d",
+      "email": "mscott@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "0b57cd89-f9b6-4452-a489-12a18ecf9909",
+      "email": "sstanley@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "80514e85-480f-4ab3-a8a9-177f79ba56af",
+      "email": "lstulting@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "0dd1eabb-beef-4a27-b8d6-a24ac4825e46",
+      "email": "award@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "37704f45-148b-4cc0-86f1-4f5d6a2c64ae",
+      "email": "cwynn@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "a40b728b-3637-4680-b5e6-217771d29e92",
+      "email": "rdevaux@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "462f3c8d-b7be-4e08-9602-d1adb4f6308b",
+      "email": "mheard@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "728b3752-cb3c-40c8-8b92-f109eed52d0f",
+      "email": "rkeller@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "8df2b361-f550-4b80-b02e-f8e487f69fc0",
+      "email": "pknox@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "98ac0ff7-9856-4f40-b3ce-f493d40b82bf",
+      "email": "gmorrison@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "e574e167-4b10-44f8-b7f7-9c05154e72d8",
+      "email": "lmuhaj@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "1b1a46d1-0fe9-421b-aa2b-cb048f2cad95",
+      "email": "jnowicki@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "2964cbb3-62e9-40ee-9f43-36e1dacf6517",
+      "email": "cparesi@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "8a58eae5-0169-4ce4-aa01-68db6a31ee42",
+      "email": "cralph-nearman@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "952fa3de-188f-4fe7-9eac-8eb9b35b9ec7",
+      "email": "ghutchins@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Create",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "43f42e2b-5ff5-4f98-8fe8-bb574f0fb2ca",
+      "email": "kjuarez@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "b23a5f27-c4fd-4d2f-ba85-c1ff232be690",
+      "email": "ekolisch@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "65c33feb-4581-4204-a01b-fa82a144547f",
+      "email": "amccoy@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Create",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Summary_Checklist",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd",
+        "2b19a0af-f5ac-474a-8bf2-b47c7a6deb7d"
+      ]
+    },
+    {
+      "id": "2bc6ab5c-4f27-43e2-888b-e4942f32b97a",
+      "email": "jdoppalapudi@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Create",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "970cfe1a-3a6a-481d-9c90-99af8f6d59ae",
+      "email": "lcolombo@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "956ca6c6-7489-4209-b57f-d1f5de85e70d",
+      "email": "mwilliams@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "e50f29f0-50d5-4408-a3f3-2d7f20929d16",
+      "email": "kpeters@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "a29c2833-a436-4700-91aa-cd25a6d536b4",
+      "email": "kcamp@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Term_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "381a1ed3-113d-4514-b6a8-bb6b625e1478",
+      "email": "rkarst@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "d37a166f-72dc-4c1e-be67-e4ab32f96235",
+      "email": "asabates@xcures.com",
+      "name": null,
+      "permissions": [],
+      "projectIds": []
+    },
+    {
+      "id": "f9e3bd69-bcb3-48e0-a9a4-7401f7e2f9fa",
+      "email": "dscaglione@xcures.com",
+      "name": null,
+      "permissions": [],
+      "projectIds": []
+    },
+    {
+      "id": "649d77cf-9fc8-4a9a-baca-77525d4e331f",
+      "email": "jvelotta@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "e7ee6388-0e9d-4b5c-9585-35bcea3825ad",
+      "email": "sblair@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "8d8cb142-eda1-4ae0-b53f-f6c83db5d7ea",
+      "email": "hmarkman@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "acf690f4-2914-443a-b228-857e34e15c4e",
+      "email": "aropri@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "2e954a54-e408-4448-84d8-cbe7f468b4f0",
+      "email": "mtempleton@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "211ce3be-2534-4baf-9a71-aa64587d6216",
+      "email": "CDeFrancisci@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Summary_Checklist"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd",
+        "2b19a0af-f5ac-474a-8bf2-b47c7a6deb7d"
+      ]
+    },
+    {
+      "id": "e84038f2-bc14-4bfc-912a-21fdd8de30f7",
+      "email": "sbacchus-grant@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "06e01696-ddd7-457b-a39b-7be07d5d8cc0",
+      "email": "tstuhlmiller+phm@xcures.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "ChecklistItemDefinition_Manage",
+        "ChecklistsManage",
+        "Cohort_User_Read",
+        "Consent_Read",
+        "Dashboard_Read",
+        "Dashboard_Update",
+        "DemographicQuery_Create",
+        "Document_Create",
+        "Document_Delete",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Create",
+        "Project_Read",
+        "Project_Update",
+        "Query_Create",
+        "Query_Create_Bulk",
+        "Query_Read",
+        "Request_Center",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Summary_Delete",
+        "Subject_Update",
+        "Summary_Checklist",
+        "Template_Read",
+        "Template_Write",
+        "User_Create",
+        "User_Delete",
+        "User_Permission_Manage",
+        "User_Read",
+        "User_Update"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd",
+        "2b19a0af-f5ac-474a-8bf2-b47c7a6deb7d",
+        "bbb31cd9-2935-4af1-94af-a701628fdb40"
+      ]
+    },
+    {
+      "id": "65b2e251-920a-4a29-aa66-2ad74672cc6a",
+      "email": "mayers+phm@xcures.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "ApiKey_Manage",
+        "ChecklistItemDefinition_Manage",
+        "ChecklistsManage",
+        "Cohort_User_Assign",
+        "Cohort_User_Read",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Create",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Create",
+        "Project_Read",
+        "Project_Update",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Update",
+        "Template_Read",
+        "Template_Write",
+        "User_Create",
+        "User_Permission_Manage",
+        "User_Read",
+        "User_Update"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd",
+        "2b19a0af-f5ac-474a-8bf2-b47c7a6deb7d",
+        "bbb31cd9-2935-4af1-94af-a701628fdb40"
+      ]
+    },
+    {
+      "id": "b2a4e134-bb3a-4db8-8f7e-47660abcb3b7",
+      "email": "klui+phm@xcures.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "ApiKey_Manage",
+        "Application_Read",
+        "ChecklistItemDefinition_Manage",
+        "ChecklistsManage",
+        "Cohort_Create",
+        "Cohort_Delete",
+        "Cohort_Read",
+        "Cohort_Subject_Assign",
+        "Cohort_Subject_Read",
+        "Cohort_Update",
+        "Cohort_User_Assign",
+        "Cohort_User_Read",
+        "Consent_Read",
+        "Dashboard_Read",
+        "Dashboard_Update",
+        "DemographicQuery_Create",
+        "Document_Create",
+        "Document_Delete",
+        "Document_Read",
+        "Document_Update",
+        "Fax_Request_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Program_Read",
+        "Program_Write",
+        "Project_Create",
+        "Project_Read",
+        "Project_Update",
+        "Query_Create",
+        "Query_Create_Bulk",
+        "Query_Read",
+        "RegistrationProgram_Read",
+        "RegistrationProgram_Write",
+        "Request_Center",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Delete",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Summary_Delete",
+        "Subject_Update",
+        "Summary_Checklist",
+        "Template_Read",
+        "Template_Write",
+        "User_Create",
+        "User_Delete",
+        "User_Permission_Manage",
+        "User_Read",
+        "User_Umbrella",
+        "User_Update"
+      ],
+      "projectIds": [
+        "bbb31cd9-2935-4af1-94af-a701628fdb40",
+        "1837e49e-d8db-46ba-8c19-1e344456b3f4",
+        "2b19a0af-f5ac-474a-8bf2-b47c7a6deb7d",
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "a5e73012-1b6c-405f-ba5b-14f209615d01",
+      "email": "slewis+phm@xcures.com",
+      "name": null,
+      "permissions": [
+        "ApiKey_Manage",
+        "ChecklistItemDefinition_Manage",
+        "ChecklistsManage",
+        "Cohort_User_Assign",
+        "Cohort_User_Read",
+        "DemographicQuery_Create",
+        "Document_Create",
+        "Document_Delete",
+        "Document_Read",
+        "Document_Update",
+        "Fax_Request_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Query_Create",
+        "Query_Create_Bulk",
+        "Query_Read",
+        "Request_Center",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Delete",
+        "Subject_Import",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Summary_Delete",
+        "Subject_Update",
+        "Summary_Checklist",
+        "User_Create",
+        "User_Delete",
+        "User_Permission_Manage",
+        "User_Read",
+        "User_Update"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd",
+        "2b19a0af-f5ac-474a-8bf2-b47c7a6deb7d",
+        "bbb31cd9-2935-4af1-94af-a701628fdb40"
+      ]
+    },
+    {
+      "id": "1453e040-2817-4e85-93ea-7e365ddd2c5b",
+      "email": "amurphy@privatehealth.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "Dashboard_Read",
+        "DemographicQuery_Create",
+        "Document_Read",
+        "Document_Update",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Project_Read",
+        "Query_Create",
+        "Query_Read",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Update",
+        "Summary_Checklist"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd"
+      ]
+    },
+    {
+      "id": "b8dd76c6-95cb-4fe4-b989-aff9aec22c84",
+      "email": "dscaglione+phm@xcures.com",
+      "name": null,
+      "permissions": [
+        "Annotation_Read",
+        "Annotation_Write",
+        "ApiKey_Manage",
+        "Application_Read",
+        "ChecklistItemDefinition_Manage",
+        "ChecklistsManage",
+        "Cohort_Create",
+        "Cohort_Delete",
+        "Cohort_Read",
+        "Cohort_Subject_Assign",
+        "Cohort_Subject_Read",
+        "Cohort_Update",
+        "Cohort_User_Assign",
+        "Cohort_User_Read",
+        "Consent_Read",
+        "Dashboard_Read",
+        "Dashboard_Update",
+        "DemographicQuery_Create",
+        "Document_Create",
+        "Document_Delete",
+        "Document_Read",
+        "Document_Update",
+        "Fax_Request_Read",
+        "Fhir_Read",
+        "Fhir_Write",
+        "Program_Read",
+        "Program_Write",
+        "Project_Create",
+        "Project_Read",
+        "Project_Update",
+        "Query_Create",
+        "Query_Create_Bulk",
+        "Query_Read",
+        "RegistrationProgram_Read",
+        "RegistrationProgram_Write",
+        "Request_Center",
+        "Subject_Cohort_Access_All",
+        "Subject_Cohort_Access_Unassigned",
+        "Subject_Create",
+        "Subject_Delete",
+        "Subject_Import",
+        "Subject_Notes",
+        "Subject_Overview",
+        "Subject_Read",
+        "Subject_Summary_Delete",
+        "Subject_Update",
+        "Summary_Checklist",
+        "Template_Read",
+        "Template_Write",
+        "User_Create",
+        "User_Delete",
+        "User_Permission_Manage",
+        "User_Read",
+        "User_Update"
+      ],
+      "projectIds": [
+        "9d1f1542-3390-4e37-8ec2-a24ac8c1d8fd",
+        "2b19a0af-f5ac-474a-8bf2-b47c7a6deb7d",
+        "1837e49e-d8db-46ba-8c19-1e344456b3f4",
+        "bbb31cd9-2935-4af1-94af-a701628fdb40"
+      ]
+    }
+  ]
+}

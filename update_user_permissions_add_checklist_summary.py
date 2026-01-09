@@ -36,7 +36,7 @@ except Exception:
 
 DEFAULT_BASE_URL = "https://partner.xcures.com"
 DEFAULT_TIMEOUT_SECONDS = 60
-PERMISSION_TO_ADD = "Checklist_Summary"
+PERMISSION_TO_ADD = "Summary_Checklist"
 
 
 def build_headers(bearer_token: str, project_id: Optional[str] = None) -> Dict[str, str]:
@@ -297,6 +297,12 @@ def main() -> int:
         help="Page size for user list pagination (default: 50)",
     )
     parser.add_argument(
+        "--limit",
+        type=int,
+        default=None,
+        help="Process only the first N users (useful for testing).",
+    )
+    parser.add_argument(
         "--timeout",
         type=int,
         default=DEFAULT_TIMEOUT_SECONDS,
@@ -336,6 +342,11 @@ def main() -> int:
             page_size=args.page_size,
             timeout=args.timeout,
         )
+
+        if args.limit is not None:
+            if args.limit < 0:
+                raise ValueError("--limit must be >= 0")
+            users = users[: args.limit]
 
         total = len(users)
         if total == 0:
