@@ -1,4 +1,5 @@
-#!/usr/bin/env python3
+# Export XCURES_BEARER_TOKEN="PASTE_TOKEN_HERE" to set the bearer token from your CLI so you don't accidentally add a token to the script
+
 """
 Bulk Update xCures Patient Registry user permissions.
 
