@@ -1,6 +1,6 @@
 # Use this script to update all users in a tenant when new projects are created
 # First use case is MedSync as they have a large number of projects that grows weekly
-# Export XCURES_BEARER_TOKEN="PASTE_TOKEN_HERE" to set the bearer token from your CLI so you don't accidentally add a token to the script
+# Export XCURES_BEARER_TOKEN="PASTE_TOKEN_HERE" to set the bearer token from your CLI so you don't add a token to the script and it accidentally gets saved to the repo
 
 import requests, pandas as pd, json
 import datetime, pytz
