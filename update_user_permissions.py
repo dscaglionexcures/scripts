@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-Update xCures Patient Registry users to include the "Checklist_Summary" permission.
+Bulk Update xCures Patient Registry user permissions.
 
 Flow:
 1) GET  /api/patient-registry/user               -> list users (paginated)
 2) GET  /api/patient-registry/user/{id}          -> fetch full user record
 3) PUT  /api/patient-registry/user/{id}          -> update user using UpdateUserDto
-   - permissions are copied from the GET {id} response, with "Checklist_Summary" added if missing
+   - permissions are copied from the GET {id} response, with "Summary_Checklist" added if missing
 
 Auth:
 - Bearer token via --bearer or env var XCURES_BEARER_TOKEN
@@ -63,8 +63,6 @@ def request_with_retry(
 ) -> requests.Response:
     """
     Basic retry for transient errors (429/5xx/timeouts).
-
-    Improvements vs. the original:
     - Keeps the last HTTP response (status + body snippet) so failures are actionable.
     - Includes the last exception message when the failure is network-level.
     """
@@ -273,7 +271,7 @@ def simple_progress(iterable, total: int, desc: str):
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description='Add "Checklist_Summary" permission to all users in a tenant.'
+        description='Add "Summary_Checklist" permission to all users in a tenant.'
     )
     parser.add_argument(
         "--base-url",
@@ -317,7 +315,7 @@ def main() -> int:
         "--only-missing",
         action="store_true",
         default=True,
-        help='Only update users missing "Checklist_Summary" (default: enabled).',
+        help='Only update users missing "Summary_Checklist" (default: enabled).',
     )
 
     args = parser.parse_args()
