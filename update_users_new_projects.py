@@ -8,23 +8,29 @@ from pandas import json_normalize
 from datetime import date, timedelta, datetime
 import os, glob, pandas as pd, numpy as np, requests, json, pygsheets, tempfile
 
-bearer = 'REDACTED'
-projectId = '25a70947-a567-468c-b056-a0dc000721de'
+# Bearer token handling (expects token exported to environment)
+def get_bearer_token() -> str:
+    token = os.environ.get("XCURES_BEARER_TOKEN")
+    if not token:
+        raise RuntimeError(
+            "XCURES_BEARER_TOKEN is not set. "
+            "Run: export XCURES_BEARER_TOKEN='your_token_here'"
+        )
+    return token
+
 
 headers = {
     'accept': 'application/json',
-    'ProjectId': projectId,
-    'Authorization': 'Bearer ' + bearer,
+    'Authorization': 'Bearer ' + get_bearer_token(),
     'Content-Type': 'application/json'
 }
 
 # get existing user permissions
-def get_user_permissions(user_id, bearer, projectId):
+def get_user_permissions(user_id):
     url = 'https://partner.xcures.com/api/patient-registry/user/' + user_id + '?userId=' + user_id
     headers = {
         'accept': 'application/json',
-        'ProjectId': projectId,
-        'Authorization': 'Bearer ' + bearer,
+        'Authorization': 'Bearer ' + get_bearer_token(),
         'Content-Type': 'application/json'
     }
     response = requests.get(url, headers=headers)
@@ -34,7 +40,7 @@ def get_user_permissions(user_id, bearer, projectId):
         return f"{response.status_code}: {response.text}"
     
 # update user permissions  
-def update_user_permissions(user_id, user, coming, going, bearer, projectId):
+def update_user_permissions(user_id, user, coming, going):
     for i in coming:
         if i not in user['permissions']: user['permissions'].append(i)
     for j in going:
@@ -42,8 +48,7 @@ def update_user_permissions(user_id, user, coming, going, bearer, projectId):
     url = 'https://partner.xcures.com/api/patient-registry/user/' + user_id
     headers = {
         'accept': 'application/json',
-        'ProjectId': projectId,
-        'Authorization': 'Bearer ' + bearer,
+        'Authorization': 'Bearer ' + get_bearer_token(),
         'Content-Type': 'application/json'
     }
     payload = user
@@ -123,7 +128,17 @@ projects = [
 'f6f7a0ac-6c68-40ec-89cb-b46862916d4c',
 '976e15e0-5772-49e4-b047-f2305cc69f9a',
 '7891f88d-9c5b-4306-a574-a4ebeb41d3e6',
-'c038f864-ee31-4206-959f-5bcf0cf16d63']
+'c038f864-ee31-4206-959f-5bcf0cf16d63',
+'6aa0e547-f065-416a-a777-b1616fc87f48',
+'715dd62d-99ba-42f4-8eee-83596e10c867',
+'d33bd469-ae16-4080-a60d-619a4855b54a',
+'b8b7d34f-4c00-4318-af57-0ad2d6249cea',
+'09c39a0d-59cb-4ab0-93e4-4b73f825f0f1',
+'2e3eb018-1949-48ba-bb21-879e95dd93a5',
+'a86a83a5-399e-4c80-9d91-e565fc010a7b',
+'30426858-c6a3-4adb-8127-9418502528b1',
+'9f89a8ae-694f-4b96-a16a-de7f975b3ec2'
+]
 
 
 # Progress bar setup
@@ -139,10 +154,10 @@ for idx in range(total_users):
     print(f"\rProgress: |{bar}| {percent:6.2f}% ({idx + 1}/{total_users})", end="", flush=True)
 
     sId = df['id'][idx]
-    user = get_user_permissions(sId, bearer, projectId)
+    user = get_user_permissions(sId)
     for j in projects:
         if j not in user['projectIds']:
             user['projectIds'].append(j)
-    update_user_permissions(sId, user, [], [], bearer, projectId)
+    update_user_permissions(sId, user, [], [])
 
 print()  # newline after progress bar
