@@ -63,13 +63,22 @@ DEFAULT_TIMEOUT_SECONDS = 60
 # Permissions assigned to every created user (array of strings)
 DEFAULT_PERMISSIONS: List[str] = [
     # Replace with your standard set
-    "User_Read",
-    "User_Create",
+    "Annotation_Read",
+    "Dashboard_Read",
+    "Document_Read",
+    "Fhir_Read",
+    "Project_Read",
+    "Query_Read",
+    "Subject_Cohort_Access_All",
+    "Subject_Cohort_Access_Unassigned",
+    "Subject_Overview",
+    "Subject_Read",
+    "Term_Read"
 ]
 
 # Projects assigned to every created user (array of project UUID strings)
 DEFAULT_PROJECT_IDS: List[str] = [
-     "b114ceeb-2adf-4c80-aae2-b6ccae3eac7b",
+     "de2e5623-9b21-4391-bdfb-5bc2fac5473d",
 ]
 
 # Organization membership object copied onto every created user.
