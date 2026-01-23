@@ -1,4 +1,5 @@
-# export XCURES_BEARER_TOKEN="PASTE_TOKEN_HERE" to set the bearer token from your CLI so you don't add a token to the script and it accidentally gets saved to the repo
+# export XCURES_BEARER_TOKEN="PASTE_TOKEN_HERE" to set the bearer token from your 
+# CLI so you don't add a token to the script and it accidentally gets saved to the repo
 """
 Bulk create Patient Registry users from a CSV file (xCures).
 
@@ -43,7 +44,7 @@ import sys
 import time
 import uuid
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 import requests
@@ -62,23 +63,26 @@ DEFAULT_TIMEOUT_SECONDS = 60
 
 # Permissions assigned to every created user (array of strings)
 DEFAULT_PERMISSIONS: List[str] = [
-    # Replace with your standard set
+    # These are View Only/Basic User Roles:
     "Annotation_Read",
+    "Annotation_Write",
+    "Cohort_Read",
     "Dashboard_Read",
     "Document_Read",
     "Fhir_Read",
+    "Fhir_Write",
     "Project_Read",
     "Query_Read",
     "Subject_Cohort_Access_All",
     "Subject_Cohort_Access_Unassigned",
     "Subject_Overview",
     "Subject_Read",
-    "Term_Read"
+    "Summary_Checklist"
 ]
 
 # Projects assigned to every created user (array of project UUID strings)
 DEFAULT_PROJECT_IDS: List[str] = [
-     "de2e5623-9b21-4391-bdfb-5bc2fac5473d",
+     "85fe4ba6-184c-4a61-aff3-ed8c51135170",
 ]
 
 # Organization membership object copied onto every created user.
@@ -157,7 +161,7 @@ LOG_FILE_PATH: Optional[str] = None
 
 
 def _log(msg: str) -> None:
-    ts = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+    ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     line = f"[{ts}] {msg}"
     print(line, file=sys.stderr)
     if LOG_FILE_PATH:
@@ -356,7 +360,7 @@ class CreateResult:
 
 def write_results_csv(results: Sequence[CreateResult], out_dir: str) -> str:
     os.makedirs(out_dir, exist_ok=True)
-    ts = datetime.utcnow().strftime("%Y%m%dT%H%M%SZ")
+    ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     out_path = os.path.join(out_dir, f"bulk_create_users_results_{ts}.csv")
     with open(out_path, "w", encoding="utf-8", newline="") as f:
         w = csv.writer(f)
