@@ -59,30 +59,26 @@ except Exception:
 # ----------------------------
 
 DEFAULT_BASE_URL = "https://partner.xcures.com"
-DEFAULT_TIMEOUT_SECONDS = 60
+DEFAULT_TIMEOUT_SECONDS = 20
 
 # Permissions assigned to every created user (array of strings)
 DEFAULT_PERMISSIONS: List[str] = [
-    # These are View Only/Basic User Roles:
     "Annotation_Read",
-    "Annotation_Write",
-    "Cohort_Read",
     "Dashboard_Read",
     "Document_Read",
     "Fhir_Read",
-    "Fhir_Write",
     "Project_Read",
     "Query_Read",
     "Subject_Cohort_Access_All",
     "Subject_Cohort_Access_Unassigned",
     "Subject_Overview",
     "Subject_Read",
-    "Summary_Checklist"
+    "Term_Read"
 ]
 
 # Projects assigned to every created user (array of project UUID strings)
 DEFAULT_PROJECT_IDS: List[str] = [
-     "85fe4ba6-184c-4a61-aff3-ed8c51135170",
+     "de2e5623-9b21-4391-bdfb-5bc2fac5473d",
 ]
 
 # Organization membership object copied onto every created user.
