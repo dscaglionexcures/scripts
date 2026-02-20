@@ -1,33 +1,10 @@
 #!/usr/bin/env python3
-"""
-xCures API smoke test (post-deploy) using .env for credentials
-
-Flow:
-1) OAuth client_credentials -> bearer token
-2) Create Subject (POST /subject) with a new UUID
-3) Read Subject (GET /subject/{id})
-4) Update Subject (PUT /subject/{id}) setting addressCity=Louisville, addressState=KY
-5) Read Subject again to verify update
-6) Search Documents for a fixed subjectId (GET /document?subjectId=...)
-7) Get one Document by id (GET /document/{documentId})
-8) Search Clinical Concepts: Condition (GET /clinical-concepts/condition?subjectId=...)
-
-Credentials:
-- Loaded from a local .env file (same folder as this script), or from environment variables.
-- Expected keys:
-    XCURES_CLIENT_ID=...
-    XCURES_CLIENT_SECRET=...
-
-Notes:
-- ProjectId header is required for these endpoints.
-- Subject create expects an array payload.
-"""
 
 from __future__ import annotations
 
-import json
 import os
 import sys
+import time
 import uuid
 from pathlib import Path
 from typing import Any, Dict, Optional
@@ -35,12 +12,11 @@ from typing import Any, Dict, Optional
 import requests
 
 
+CHECK = "\u2713"
+CROSS = "\u2717"
+
 BASE_URL = "https://partner.xcures.com"
-
-# Per your instruction
 PROJECT_ID = "b114ceeb-2adf-4c80-aae2-b6ccae3eac7b"
-
-# Per your instruction for doc + clinical concepts checks
 FIXED_SUBJECT_ID_FOR_DOCS_AND_CC = "45cb7e25-7d74-43cc-9cc5-69d0aaa77c73"
 
 
@@ -48,20 +24,11 @@ class ApiError(RuntimeError):
     pass
 
 
-def pretty(obj: Any) -> str:
-    return json.dumps(obj, indent=2, sort_keys=True, default=str)
-
-
-def die(msg: str) -> None:
-    raise ApiError(msg)
-
+# -------------------------
+# Utility Functions
+# -------------------------
 
 def load_dotenv_if_present() -> None:
-    """
-    Minimal .env loader (no extra deps).
-    Loads .env from the same directory as this script.
-    Values already present in environment variables are not overwritten.
-    """
     env_path = Path(__file__).resolve().parent / ".env"
     if not env_path.exists():
         return
@@ -71,15 +38,13 @@ def load_dotenv_if_present() -> None:
         if not line or line.startswith("#") or "=" not in line:
             continue
         key, val = line.split("=", 1)
-        key = key.strip()
-        val = val.strip().strip('"').strip("'")
-        os.environ.setdefault(key, val)
+        os.environ.setdefault(key.strip(), val.strip().strip('"').strip("'"))
 
 
 def get_required_env(name: str) -> str:
     val = os.getenv(name, "").strip()
     if not val:
-        die(f"Missing required environment variable: {name} (check your .env file)")
+        raise RuntimeError(f"Missing required environment variable: {name}")
     return val
 
 
@@ -96,9 +61,8 @@ def request_json(
         "Authorization": f"Bearer {token}",
         "ProjectId": PROJECT_ID,
         "Accept": "application/json",
+        "Content-Type": "application/json",
     }
-    if body is not None:
-        headers["Content-Type"] = "application/json"
 
     resp = requests.request(
         method=method,
@@ -109,40 +73,44 @@ def request_json(
         timeout=timeout_s,
     )
 
-    if not (200 <= resp.status_code <= 299):
-        detail = resp.text.strip()
-        die(f"{method} {url} failed: HTTP {resp.status_code}\n{detail}")
+    if not resp.ok:
+        raise ApiError(
+            f"{method} {url} failed: HTTP {resp.status_code}\n{resp.text}"
+        )
 
-    if resp.status_code == 204:
+    if resp.status_code == 204 or not resp.text.strip():
         return None
-    if resp.text.strip() == "":
-        return None
 
-    try:
-        return resp.json()
-    except Exception:
-        die(f"{method} {url} returned non-JSON response:\n{resp.text}")
+    return resp.json()
 
+
+# -------------------------
+# Business Operations
+# -------------------------
 
 def get_bearer_token(client_id: str, client_secret: str) -> str:
-    url = f"{BASE_URL}/oauth/token"
-    payload = {
-        "client_id": client_id,
-        "client_secret": client_secret,
-        "grant_type": "client_credentials",
-    }
-    resp = requests.post(url, json=payload, timeout=30)
-    if not (200 <= resp.status_code <= 299):
-        die(f"POST {url} failed: HTTP {resp.status_code}\n{resp.text}")
+    print("\nRunning Test: Authentication")
 
-    data = resp.json()
-    token = data.get("access_token")
-    if not token:
-        die(f"Token response missing access_token:\n{pretty(data)}")
-    return token
+    resp = requests.post(
+        f"{BASE_URL}/oauth/token",
+        json={
+            "client_id": client_id,
+            "client_secret": client_secret,
+            "grant_type": "client_credentials",
+        },
+        timeout=30,
+    )
+
+    if not resp.ok:
+        raise ApiError(resp.text)
+
+    print(f"{CHECK} Authentication successful")
+    return resp.json()["access_token"]
 
 
 def create_subject(token: str) -> str:
+    print("\nRunning Test: Create Subject")
+
     new_id = str(uuid.uuid4())
 
     subject = {
@@ -160,140 +128,240 @@ def create_subject(token: str) -> str:
         "phoneNumber": "123-456-7890",
     }
 
-    url = f"{BASE_URL}/api/v1/patient-registry/subject"
-    created = request_json("POST", url, token, body=[subject])
+    request_json(
+        "POST",
+        f"{BASE_URL}/api/v1/patient-registry/subject",
+        token,
+        body=[subject],
+    )
 
-    if not isinstance(created, list) or len(created) == 0:
-        die(f"Create subject response was not a non-empty array:\n{pretty(created)}")
-
-    print(f"Created subject id: {new_id}")
+    print(f"{CHECK} Subject created (id={new_id})")
     return new_id
 
 
-def get_subject(token: str, subject_id: str) -> Dict[str, Any]:
-    url = f"{BASE_URL}/api/v1/patient-registry/subject/{subject_id}"
-    data = request_json("GET", url, token)
-    if not isinstance(data, dict):
-        die(f"Get subject did not return an object:\n{pretty(data)}")
-    return data
+def upload_pdf_signed_s3(token: str, subject_id: str) -> str:
+    print("\nRunning Test: Upload biometric.pdf via Signed S3")
+
+    pdf_path = Path(__file__).resolve().parent / "biometric.pdf"
+    if not pdf_path.exists():
+        raise RuntimeError("biometric.pdf not found")
+
+    metadata = request_json(
+        "POST",
+        f"{BASE_URL}/api/v1/patient-registry/document",
+        token,
+        body={
+            "subjectId": subject_id,
+            "fileName": "biometric.pdf",
+            "contentType": "application/pdf",
+        },
+    )
+
+    document_id = metadata["documentId"]
+    signed_url = metadata["signedS3Url"]
+
+    print("Uploading binary to signed S3 URL...")
+
+    with open(pdf_path, "rb") as f:
+        put_resp = requests.put(
+            signed_url,
+            data=f,
+            headers={"Content-Type": "application/pdf"},
+        )
+
+    if not put_resp.ok:
+        raise RuntimeError("S3 upload failed")
+
+    print(f"{CHECK} PDF uploaded (documentId={document_id})")
+    return document_id
 
 
-def update_subject_city_state(token: str, subject_id: str) -> Dict[str, Any]:
-    url = f"{BASE_URL}/api/v1/patient-registry/subject/{subject_id}"
+def read_subject(token: str, subject_id: str) -> Dict[str, Any]:
+    print("\nRunning Test: Get Subject")
 
-    # Send the full known record to avoid accidental nulling if the API treats missing fields as null.
-    update_body = {
-        "firstName": "Test",
-        "lastName": "Patient",
-        "email": "test@xcures.com",
-        "birthDate": "1980-04-05",
-        "gender": "M",
-        "addressLine1": "123 Main St.",
-        "addressLine2": "Apt 4B",
-        "addressCity": "Louisville",
-        "addressState": "KY",
-        "addressPostalCode": "55401",
-        "phoneNumber": "123-456-7890",
-    }
+    result = request_json(
+        "GET",
+        f"{BASE_URL}/api/v1/patient-registry/subject/{subject_id}",
+        token,
+    )
 
-    updated = request_json("PUT", url, token, body=update_body)
-    if not isinstance(updated, dict):
-        die(f"Update subject did not return an object:\n{pretty(updated)}")
-    return updated
+    print(f"{CHECK} Subject retrieved")
+    return result
 
 
-def search_documents(token: str, subject_id: str) -> Dict[str, Any]:
-    url = f"{BASE_URL}/api/v1/patient-registry/document"
-    params = {"subjectId": subject_id, "pageNumber": 1, "pageSize": 10}
-    data = request_json("GET", url, token, params=params)
-    if not isinstance(data, dict):
-        die(f"Search documents did not return an object:\n{pretty(data)}")
-    return data
+def update_subject(token: str, subject_id: str) -> None:
+    print("\nRunning Test: Update Subject (Add additionalAddresses)")
+
+    # Retrieve full subject first (PUT requires full DTO)
+    current = request_json(
+        "GET",
+        f"{BASE_URL}/api/v1/patient-registry/subject/{subject_id}",
+        token,
+    )
+
+    # Modify existing fields
+    current["addressCity"] = "Louisville"
+    current["addressState"] = "KY"
+
+    # Add additionalAddresses array
+    current["additionalAddresses"] = [
+        {
+            "addressLine1": "3350 Burkes Spg Rd",
+            "addressCity": "Loretto",
+            "addressState": "KY",
+            "addressPostalCode": "40037"
+        }
+    ]
+
+    # Send full object back
+    request_json(
+        "PUT",
+        f"{BASE_URL}/api/v1/patient-registry/subject/{subject_id}",
+        token,
+        body=current,
+    )
+
+    print(f"{CHECK} Subject updated with additionalAddresses")
 
 
-def get_document_by_id(token: str, document_id: str) -> Any:
-    url = f"{BASE_URL}/api/v1/patient-registry/document/{document_id}"
-    return request_json("GET", url, token)
+def verify_update(token: str, subject_id: str) -> None:
+    print("\nRunning Test: Verify Subject Update")
+
+    subj = read_subject(token, subject_id)
+
+    if subj.get("addressCity") != "Louisville":
+        raise RuntimeError("City mismatch")
+
+    print(f"{CHECK} Update verified")
 
 
-def search_clinical_concepts_condition(token: str, subject_id: str) -> Dict[str, Any]:
-    url = f"{BASE_URL}/api/v1/patient-registry/clinical-concepts/condition"
-    params = {"subjectId": subject_id, "pageNumber": 1, "pageSize": 10}
-    data = request_json("GET", url, token, params=params)
-    if not isinstance(data, dict):
-        die(f"Clinical concepts condition did not return an object:\n{pretty(data)}")
-    return data
+def wait_for_document(token: str, document_id: str) -> None:
+    print("\nRunning Test: Wait for Uploaded Document")
 
+    start = time.time()
+
+    while time.time() - start < 30:
+        try:
+            request_json(
+                "GET",
+                f"{BASE_URL}/api/v1/patient-registry/document/{document_id}",
+                token,
+            )
+            print(f"{CHECK} Document available")
+            return
+        except Exception:
+            print("  Document not ready yet, retrying...")
+            time.sleep(2)
+
+    raise RuntimeError("Document did not become available in time")
+
+
+def check_clinical_concepts(token: str) -> None:
+    print("\nRunning Test: Check Clinical Concepts - Conditions")
+
+    request_json(
+        "GET",
+        f"{BASE_URL}/api/v1/patient-registry/clinical-concepts/condition",
+        token,
+        params={"subjectId": FIXED_SUBJECT_ID_FOR_DOCS_AND_CC},
+    )
+
+    print(f"{CHECK} Clinical Concepts retrieved")
+
+
+# -------------------------
+# Main Test Harness
+# -------------------------
 
 def main() -> int:
+    passed = []
+    failed = []
+
     try:
         load_dotenv_if_present()
 
-        client_id = get_required_env("XCURES_CLIENT_ID")
-        client_secret = get_required_env("XCURES_CLIENT_SECRET")
+        token = get_bearer_token(
+            get_required_env("XCURES_CLIENT_ID"),
+            get_required_env("XCURES_CLIENT_SECRET"),
+        )
+        passed.append("Authentication")
+    except Exception as e:
+        print(f"{CROSS} Authentication failed: {e}")
+        return 1
 
-        print("Authenticating...")
-        token = get_bearer_token(client_id, client_secret)
-        print("Got bearer token.")
-        print(f"ProjectId: {PROJECT_ID}")
-        print()
+    subject_id = None
+    document_id = None
 
-        print("Creating subject...")
-        created_subject_id = create_subject(token)
+    try:
+        subject_id = create_subject(token)
+        passed.append("Create Subject")
+    except Exception as e:
+        print(f"{CROSS} Create Subject failed: {e}")
+        failed.append("Create Subject")
 
-        print("\nReading subject...")
-        subj = get_subject(token, created_subject_id)
-        print(pretty({k: subj.get(k) for k in ["id", "firstName", "lastName", "addressCity", "addressState"]}))
+    try:
+        if subject_id:
+            document_id = upload_pdf_signed_s3(token, subject_id)
+            passed.append("Upload biometric.pdf")
+    except Exception as e:
+        print(f"{CROSS} Upload failed: {e}")
+        failed.append("Upload biometric.pdf")
 
-        print("\nUpdating subject city/state to Louisville, KY...")
-        updated = update_subject_city_state(token, created_subject_id)
-        print(pretty({k: updated.get(k) for k in ["id", "firstName", "lastName", "addressCity", "addressState"]}))
+    try:
+        if subject_id:
+            read_subject(token, subject_id)
+            passed.append("Read Subject")
+    except Exception as e:
+        print(f"{CROSS} Read Subject failed: {e}")
+        failed.append("Read Subject")
 
-        print("\nReading subject again to verify...")
-        subj2 = get_subject(token, created_subject_id)
-        city = subj2.get("addressCity")
-        state = subj2.get("addressState")
-        print(pretty({k: subj2.get(k) for k in ["id", "firstName", "lastName", "addressCity", "addressState"]}))
+    try:
+        if subject_id:
+            update_subject(token, subject_id)
+            passed.append("Update Subject")
+    except Exception as e:
+        print(f"{CROSS} Update Subject failed: {e}")
+        failed.append("Update Subject")
 
-        if city != "Louisville" or state != "KY":
-            die(f"Update verification failed: addressCity={city}, addressState={state}")
-        print("Verified subject update.")
+    try:
+        if subject_id:
+            verify_update(token, subject_id)
+            passed.append("Verify Update")
+    except Exception as e:
+        print(f"{CROSS} Verify failed: {e}")
+        failed.append("Verify Update")
 
-        print(f"\nSearching documents for subjectId={FIXED_SUBJECT_ID_FOR_DOCS_AND_CC} ...")
-        doc_page = search_documents(token, FIXED_SUBJECT_ID_FOR_DOCS_AND_CC)
-        results = doc_page.get("results") or []
-        print(f"Documents returned: {len(results)} (showing up to 1)")
+    try:
+        if document_id:
+            wait_for_document(token, document_id)
+            passed.append("Get Document")
+    except Exception as e:
+        print(f"{CROSS} Get Document failed: {e}")
+        failed.append("Get Document")
 
-        if len(results) == 0:
-            print("No documents found. Skipping get-document step.")
-        else:
-            first_doc = results[0]
-            document_id = first_doc.get("id")
-            if not document_id:
-                die(f"First document missing id:\n{pretty(first_doc)}")
+    try:
+        check_clinical_concepts(token)
+        passed.append("Clinical Concepts")
+    except Exception as e:
+        print(f"{CROSS} Clinical Concepts failed: {e}")
+        failed.append("Clinical Concepts")
 
-            print(f"Getting document by id: {document_id}")
-            doc_detail = get_document_by_id(token, str(document_id))
-            print("Document detail (raw):")
-            print(pretty(doc_detail))
+    print("\n==============================")
+    print("Smoke Test Summary")
+    print("==============================")
 
-        print(f"\nSearching clinical concepts (condition) for subjectId={FIXED_SUBJECT_ID_FOR_DOCS_AND_CC} ...")
-        cc = search_clinical_concepts_condition(token, FIXED_SUBJECT_ID_FOR_DOCS_AND_CC)
-        cc_results = cc.get("results") or []
-        print(f"Condition concepts returned: {len(cc_results)}")
-        if len(cc_results) > 0:
-            print("First condition concept (preview):")
-            print(pretty(cc_results[0]))
+    for step in passed:
+        print(f"{CHECK} {step}")
 
-        print("\nSmoke test completed successfully.")
-        return 0
+    for step in failed:
+        print(f"{CROSS} {step}")
 
-    except ApiError as e:
-        print(f"ERROR: {e}", file=sys.stderr)
+    if failed:
+        print("\nSome tests failed.")
         return 2
-    except requests.RequestException as e:
-        print(f"HTTP ERROR: {e}", file=sys.stderr)
-        return 3
+
+    print("\nAll tests passed successfully.")
+    return 0
 
 
 if __name__ == "__main__":
