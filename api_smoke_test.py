@@ -1,4 +1,13 @@
 #!/usr/bin/env python3
+"""
+Smoke Tests:
+Test 1: Create Subject
+Test 2: Create Document
+Test 3: Get Subject
+Test 4: Update Subject (additionalAddresses)
+Test 5: Verify Subject Update
+Test 6: Get Subject (Marissa Jones)
+"""
 
 from __future__ import annotations
 
@@ -17,8 +26,7 @@ CROSS = "\u2717"
 
 BASE_URL = "https://partner.xcures.com"
 PROJECT_ID = "b114ceeb-2adf-4c80-aae2-b6ccae3eac7b"
-FIXED_SUBJECT_ID_FOR_DOCS_AND_CC = "45cb7e25-7d74-43cc-9cc5-69d0aaa77c73"
-
+FIXED_SUBJECT_ID_FOR_DOCS_AND_CC = "45cb7e25-7d74-43cc-9cc5-69d0aaa77c73" # Marissa Jones
 
 class ApiError(RuntimeError):
     pass
