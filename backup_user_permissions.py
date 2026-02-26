@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# export XCURES_BEARER_TOKEN="PASTE_TOKEN_HERE"
-
 """
 Backup xCures Patient Registry user permissions (and projects) for all users in a tenant.
 
@@ -15,7 +13,6 @@ Includes:
 
 import csv
 import json
-import os
 import sys
 import time
 from datetime import datetime, timezone
@@ -23,11 +20,14 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 import requests
+from auth_common import build_json_headers, get_xcures_bearer_token, load_env_file
 
 BASE_URL = "https://partner.xcures.com"
 TIMEOUT = 60
 MAX_RETRIES = 5
 BACKOFF = 1.0
+
+load_env_file(Path(__file__).resolve().parent / ".env")
 
 
 # ------------------------------------------------
@@ -66,11 +66,7 @@ def progress_bar(current: int, total: int) -> None:
 
 
 def headers(bearer: str) -> Dict[str, str]:
-    return {
-        "accept": "application/json",
-        "Authorization": f"Bearer {bearer}",
-        "Content-Type": "application/json",
-    }
+    return build_json_headers(bearer_token=bearer)
 
 
 def request_with_retry(
@@ -224,9 +220,10 @@ def write_csv(path: Path, rows: List[Dict[str, Any]]) -> None:
 # ------------------------------------------------
 
 def main() -> int:
-    bearer = os.environ.get("XCURES_BEARER_TOKEN")
-    if not bearer:
-        print("Error: XCURES_BEARER_TOKEN not set", file=sys.stderr)
+    try:
+        bearer = get_xcures_bearer_token(timeout_seconds=TIMEOUT)
+    except Exception as e:
+        print(f"Error: {e}", file=sys.stderr)
         return 1
 
     timestamp = utc_timestamp()

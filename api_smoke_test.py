@@ -19,6 +19,12 @@ from pathlib import Path
 from typing import Any, Dict, Optional
 
 import requests
+from auth_common import (
+    build_json_headers,
+    fetch_client_credentials_token,
+    load_env_file,
+    require_env,
+)
 
 
 CHECK = "\u2713"
@@ -38,22 +44,11 @@ class ApiError(RuntimeError):
 
 def load_dotenv_if_present() -> None:
     env_path = Path(__file__).resolve().parent / ".env"
-    if not env_path.exists():
-        return
-
-    for line in env_path.read_text(encoding="utf-8").splitlines():
-        line = line.strip()
-        if not line or line.startswith("#") or "=" not in line:
-            continue
-        key, val = line.split("=", 1)
-        os.environ.setdefault(key.strip(), val.strip().strip('"').strip("'"))
+    load_env_file(env_path)
 
 
 def get_required_env(name: str) -> str:
-    val = os.getenv(name, "").strip()
-    if not val:
-        raise RuntimeError(f"Missing required environment variable: {name}")
-    return val
+    return require_env(name)
 
 
 def request_json(
@@ -65,12 +60,8 @@ def request_json(
     body: Optional[Any] = None,
     timeout_s: int = 30,
 ) -> Any:
-    headers = {
-        "Authorization": f"Bearer {token}",
-        "ProjectId": PROJECT_ID,
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-    }
+    project_id = os.getenv("XCURES_PROJECT_ID", PROJECT_ID)
+    headers = build_json_headers(bearer_token=token, project_id=project_id)
 
     resp = requests.request(
         method=method,
@@ -98,22 +89,20 @@ def request_json(
 
 def get_bearer_token(client_id: str, client_secret: str) -> str:
     print("\nRunning Test: Authentication")
-
-    resp = requests.post(
-        f"{BASE_URL}/oauth/token",
-        json={
-            "client_id": client_id,
-            "client_secret": client_secret,
-            "grant_type": "client_credentials",
-        },
-        timeout=30,
-    )
-
-    if not resp.ok:
-        raise ApiError(resp.text)
+    try:
+        with requests.Session() as session:
+            token = fetch_client_credentials_token(
+                session,
+                auth_url=f"{BASE_URL}/oauth/token",
+                client_id=client_id,
+                client_secret=client_secret,
+                timeout_seconds=30,
+            )
+    except Exception as e:
+        raise ApiError(str(e))
 
     print(f"{CHECK} Authentication successful")
-    return resp.json()["access_token"]
+    return token
 
 
 def create_subject(token: str) -> str:

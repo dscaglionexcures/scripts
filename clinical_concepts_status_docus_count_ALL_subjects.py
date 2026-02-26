@@ -16,8 +16,10 @@ Writes:
 
 import csv
 import math
+import os
 import threading
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -25,6 +27,11 @@ import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 from tqdm import tqdm
+from auth_common import (
+    build_json_headers,
+    fetch_client_credentials_token,
+    load_env_file,
+)
 
 
 # ============================================================
@@ -33,9 +40,15 @@ from tqdm import tqdm
 
 BASE_URL = "https://partner.xcures.com"
 
-PROJECT_ID = "f5dcc615-89f1-4e0e-b886-78a105f94f86"
-CLIENT_ID = "REDACTED"
-CLIENT_SECRET = "REDACTED"
+load_env_file(Path(__file__).resolve().parent / ".env")
+
+BASE_URL = os.getenv("BASE_URL", BASE_URL).strip()
+PROJECT_ID = (
+    os.getenv("XCURES_PROJECT_ID")
+    or "f5dcc615-89f1-4e0e-b886-78a105f94f86"
+).strip()
+CLIENT_ID = (os.getenv("XCURES_CLIENT_ID") or "").strip()
+CLIENT_SECRET = (os.getenv("XCURES_CLIENT_SECRET") or "").strip()
 
 SUBJECTS_CSV_PATH = "/Users/dScaglione/downloads/all_subject_ids.csv"
 RESULTS_CSV_PATH = "/Users/dScaglione/downloads/subject_clinical_concepts_and_doc_counts.csv"
@@ -93,35 +106,21 @@ def build_session() -> requests.Session:
 
 
 def fetch_token(session: requests.Session) -> str:
-    response = session.post(
-        BASE_URL + TOKEN_ENDPOINT,
-        json={
-            "client_id": CLIENT_ID,
-            "client_secret": CLIENT_SECRET,
-            "grant_type": "client_credentials",
-        },
-        timeout=REQUEST_TIMEOUT_SECONDS,
-    )
-
-    if not (200 <= response.status_code < 300):
+    if not CLIENT_ID or not CLIENT_SECRET:
         raise RuntimeError(
-            f"Token request failed ({response.status_code}): {response.text}"
+            "Missing client credentials. Set XCURES_CLIENT_ID and XCURES_CLIENT_SECRET."
         )
-
-    data = response.json()
-    token = data.get("access_token")
-    if not token or not isinstance(token, str):
-        raise RuntimeError(f"Token response missing access_token: {data}")
-
-    return token
+    return fetch_client_credentials_token(
+        session,
+        auth_url=BASE_URL + TOKEN_ENDPOINT,
+        client_id=CLIENT_ID,
+        client_secret=CLIENT_SECRET,
+        timeout_seconds=REQUEST_TIMEOUT_SECONDS,
+    )
 
 
 def build_headers(token: str) -> Dict[str, str]:
-    return {
-        "Authorization": f"Bearer {token}",
-        "ProjectId": PROJECT_ID,
-        "Accept": "application/json",
-    }
+    return build_json_headers(bearer_token=token, project_id=PROJECT_ID)
 
 
 def _extract_total_count(payload: Any) -> Optional[int]:

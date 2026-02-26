@@ -1,5 +1,3 @@
-# export XCURES_BEARER_TOKEN="PASTE_TOKEN_HERE" to set the bearer token from your CLI so you don't add a token to the script and it accidentally gets saved to the repo
-
 """
 Bulk Update xCures Patient Registry user permissions.
 
@@ -10,7 +8,7 @@ Flow:
    - permissions are copied from the GET {id} response, with "Summary_Checklist" added if missing
 
 Auth:
-- Bearer token via --bearer or env var XCURES_BEARER_TOKEN
+- Bearer token via --bearer OR auto-generated from XCURES_CLIENT_ID / XCURES_CLIENT_SECRET
 
 Optional header:
 - ProjectId header via --project-id (some deployments may require it)
@@ -25,9 +23,11 @@ import argparse
 import os
 import sys
 import time
+from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 import requests
+from auth_common import build_json_headers, get_xcures_bearer_token, load_env_file
 
 try:
     from tqdm import tqdm  # type: ignore
@@ -39,16 +39,11 @@ DEFAULT_BASE_URL = "https://partner.xcures.com"
 DEFAULT_TIMEOUT_SECONDS = 60
 PERMISSION_TO_ADD = "Summary_Checklist"
 
+load_env_file(Path(__file__).resolve().parent / ".env")
+
 
 def build_headers(bearer_token: str, project_id: Optional[str] = None) -> Dict[str, str]:
-    headers = {
-        "accept": "application/json",
-        "authorization": f"Bearer {bearer_token}",
-        "content-type": "application/json",
-    }
-    if project_id:
-        headers["ProjectId"] = project_id
-    return headers
+    return build_json_headers(bearer_token=bearer_token, project_id=project_id)
 
 
 def request_with_retry(
@@ -281,8 +276,8 @@ def main() -> int:
     )
     parser.add_argument(
         "--bearer",
-        default=os.environ.get("XCURES_BEARER_TOKEN") or os.environ.get("XCURES_BEARER_TOKEN".upper()),
-        help="Bearer token (or set env var XCURES_BEARER_TOKEN)",
+        default=None,
+        help="Optional bearer token override; otherwise uses XCURES_CLIENT_ID/XCURES_CLIENT_SECRET",
     )
     parser.add_argument(
         "--project-id",
@@ -322,8 +317,11 @@ def main() -> int:
     args = parser.parse_args()
 
     if not args.bearer:
-        print("Error: bearer token is required. Use --bearer or env var XCURES_BEARER_TOKEN.", file=sys.stderr)
-        return 2
+        try:
+            args.bearer = get_xcures_bearer_token(timeout_seconds=args.timeout)
+        except Exception as e:
+            print(f"Error: {e}", file=sys.stderr)
+            return 2
 
     headers = build_headers(args.bearer, args.project_id)
 

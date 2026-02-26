@@ -1,38 +1,27 @@
 # Use this script to update all users in a tenant when new projects are created
 # First use case is MedSync as they have a large number of projects that grows weekly
-# export XCURES_BEARER_TOKEN="PASTE_TOKEN_HERE" to set the bearer token from your CLI so you don't add a token to the script and it accidentally gets saved to the repo
 
-import requests, pandas as pd, json
-import datetime, pytz
-from pandas import json_normalize
-from datetime import date, timedelta, datetime
-import os, glob, pandas as pd, numpy as np, requests, json, pygsheets, tempfile
+import os
+from pathlib import Path
+
+import pandas as pd
+import requests
+from auth_common import build_json_headers, get_xcures_bearer_token, load_env_file
+
+load_env_file(Path(__file__).resolve().parent / ".env")
 
 # Bearer token handling (expects token exported to environment)
 def get_bearer_token() -> str:
-    token = os.environ.get("XCURES_BEARER_TOKEN")
-    if not token:
-        raise RuntimeError(
-            "XCURES_BEARER_TOKEN is not set. "
-            "Run: export XCURES_BEARER_TOKEN='your_token_here'"
-        )
-    return token
+    return get_xcures_bearer_token(timeout_seconds=60)
 
 
-headers = {
-    'accept': 'application/json',
-    'Authorization': 'Bearer ' + get_bearer_token(),
-    'Content-Type': 'application/json'
-}
+def auth_headers():
+    return build_json_headers(bearer_token=get_bearer_token())
 
 # get existing user permissions
 def get_user_permissions(user_id):
     url = 'https://partner.xcures.com/api/patient-registry/user/' + user_id + '?userId=' + user_id
-    headers = {
-        'accept': 'application/json',
-        'Authorization': 'Bearer ' + get_bearer_token(),
-        'Content-Type': 'application/json'
-    }
+    headers = build_json_headers(bearer_token=get_bearer_token())
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
         return response.json()
@@ -46,11 +35,7 @@ def update_user_permissions(user_id, user, coming, going):
     for j in going:
         if j in user['permissions']: user['permissions'].remove(j)
     url = 'https://partner.xcures.com/api/patient-registry/user/' + user_id
-    headers = {
-        'accept': 'application/json',
-        'Authorization': 'Bearer ' + get_bearer_token(),
-        'Content-Type': 'application/json'
-    }
+    headers = build_json_headers(bearer_token=get_bearer_token())
     payload = user
     response = requests.put(url, headers=headers, json=payload)
     if response.status_code == 200:
@@ -66,7 +51,7 @@ pgSize = 25
 pgNumberStr = str(pgNumber)
 url = f'https://partner.xcures.com/api/patient-registry/user?pageSize=25&pageNumber={pgNumberStr}&hasActiveFilter=false&numberOfActiveFilters=0'
 
-response = requests.get(url, headers=headers)
+response = requests.get(url, headers=auth_headers())
 data = response.json()
 all_responses.extend(data['results'])
 totalCount = response.json()['totalCount']
@@ -74,7 +59,7 @@ while pgNumber * pgSize < totalCount:
     pgNumber = pgNumber + 1
     pgNumberStr = str(pgNumber)
     url = f'https://partner.xcures.com/api/patient-registry/user?pageSize=25&pageNumber={pgNumberStr}&hasActiveFilter=false&numberOfActiveFilters=0'
-    response = requests.get(url, headers=headers)
+    response = requests.get(url, headers=auth_headers())
     data = response.json()
     all_responses.extend(data['results'])
     

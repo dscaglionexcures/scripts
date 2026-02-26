@@ -22,7 +22,7 @@ Flow:
 
 No CLI arguments.
 Auth:
-- XCURES_BEARER_TOKEN environment variable required
+- XCURES_CLIENT_ID / XCURES_CLIENT_SECRET environment variables required
 Optional:
 - XCURES_BASE_URL override (defaults to https://partner.xcures.com)
 
@@ -37,9 +37,11 @@ import sys
 import time
 import uuid
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 import requests
+from auth_common import build_json_headers, get_xcures_bearer_token, load_env_file
 
 try:
     from tqdm import tqdm  # type: ignore
@@ -52,6 +54,8 @@ DEFAULT_TIMEOUT_SECONDS = 60
 DEFAULT_MAX_RETRIES = 5
 DEFAULT_BACKOFF_SECONDS = 1.0
 VERBOSE = True
+
+load_env_file(Path(__file__).resolve().parent / ".env")
 
 
 def utc_ts() -> str:
@@ -85,22 +89,11 @@ def prompt_yes_no(msg: str) -> bool:
 
 
 def get_bearer_token() -> str:
-    token = os.environ.get("XCURES_BEARER_TOKEN")
-    if not token:
-        raise RuntimeError(
-            "XCURES_BEARER_TOKEN is not set.\n"
-            "Run:\n"
-            "  export XCURES_BEARER_TOKEN='your_token_here'"
-        )
-    return token
+    return get_xcures_bearer_token(timeout_seconds=DEFAULT_TIMEOUT_SECONDS)
 
 
 def auth_headers() -> Dict[str, str]:
-    return {
-        "accept": "application/json",
-        "Authorization": "Bearer " + get_bearer_token(),
-        "Content-Type": "application/json",
-    }
+    return build_json_headers(bearer_token=get_bearer_token())
 
 
 def request_with_retry(

@@ -1,4 +1,3 @@
-# export XCURES_BEARER_TOKEN="PASTE_TOKEN_HERE" to set the bearer token from your CLI so you don't add a token to the script and it accidentally gets saved to the repo
 """
 Update user email domains in xCures Patient Registry, excluding @xcures.com users.
 
@@ -12,24 +11,24 @@ Safety:
 - Default is --dry-run (no writes). Use --apply to perform updates.
 - Supports --limit to process only first N users for testing.
 - Progress bar: tqdm if installed, otherwise a built-in fallback.
-- Auth: bearer token must be exported to env var XCURES_BEARER_TOKEN.
+- Auth: bearer token is generated from XCURES_CLIENT_ID / XCURES_CLIENT_SECRET.
 
 Examples:
-  export XCURES_BEARER_TOKEN="...jwt..."
-  python3 update_user_email_domain.py --from-domain old.com --to-domain new.com --dry-run
-  python3 update_user_email_domain.py --from-domain old.com --to-domain new.com --apply --only-missing
+  python3 update_user_email_domains.py --from-domain old.com --to-domain new.com --dry-run
+  python3 update_user_email_domains.py --from-domain old.com --to-domain new.com --apply --only-missing
 """
 
 from __future__ import annotations
 
 import argparse
-import os
 import sys
 import time
 from datetime import datetime
+from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 import requests
+from auth_common import build_json_headers, get_xcures_bearer_token, load_env_file
 
 try:
     from tqdm import tqdm  # type: ignore
@@ -41,27 +40,18 @@ DEFAULT_BASE_URL = "https://partner.xcures.com"
 DEFAULT_TIMEOUT_SECONDS = 60
 EXCLUDE_DOMAIN = "xcures.com"
 
+load_env_file(Path(__file__).resolve().parent / ".env")
+
 
 # ----------------------------
 # Auth + headers (standard)
 # ----------------------------
 def get_bearer_token() -> str:
-    token = os.environ.get("XCURES_BEARER_TOKEN")
-    if not token:
-        raise RuntimeError(
-            "XCURES_BEARER_TOKEN is not set.\n"
-            "Run:\n"
-            "  export XCURES_BEARER_TOKEN='your_token_here'"
-        )
-    return token
+    return get_xcures_bearer_token(timeout_seconds=DEFAULT_TIMEOUT_SECONDS)
 
 
 def auth_headers() -> Dict[str, str]:
-    return {
-        "accept": "application/json",
-        "Authorization": "Bearer " + get_bearer_token(),
-        "Content-Type": "application/json",
-    }
+    return build_json_headers(bearer_token=get_bearer_token())
 
 
 # ----------------------------
@@ -121,7 +111,7 @@ def request_with_retry(
     method: str,
     url: str,
     *,
-    params: Optional[Dictifra[str, Any]] = None,  # type: ignore[name-defined]
+    params: Optional[Dict[str, Any]] = None,
     json_body: Optional[Dict[str, Any]] = None,
     timeout: int = DEFAULT_TIMEOUT_SECONDS,
     max_retries: int = 5,

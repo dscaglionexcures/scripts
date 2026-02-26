@@ -1,5 +1,3 @@
-# export XCURES_BEARER_TOKEN="PASTE_TOKEN_HERE" to set the bearer token from your 
-# CLI so you don't add a token to the script and it accidentally gets saved to the repo
 """
 Bulk create Patient Registry users from a CSV file (xCures).
 
@@ -16,7 +14,7 @@ CSV columns:
 
 Behavior:
   - Generates a UUID per row (used for "id" and "identityProviderId" as "auth0|<uuid>").
-  - Uses bearer token from env var XCURES_BEARER_TOKEN (required).
+  - Uses bearer token generated from XCURES_CLIENT_ID / XCURES_CLIENT_SECRET.
   - Permissions, projectIds, and organizationMembership are configured inside this script.
   - identityProvider is always "auth0"
   - type is always "patient_registry_user"
@@ -30,7 +28,6 @@ IMPORTANT:
     --apply     (actually creates users)
 
 Examples:
-  export XCURES_BEARER_TOKEN="...jwt..."
   python3 bulk_create_users_from_csv.py --csv users.csv --dry-run
   python3 bulk_create_users_from_csv.py --csv users.csv --apply --limit 10 --verbose --log-file run.log
 """
@@ -45,9 +42,11 @@ import time
 import uuid
 from dataclasses import dataclass
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 import requests
+from auth_common import build_json_headers, get_xcures_bearer_token, load_env_file
 
 try:
     from tqdm import tqdm  # type: ignore
@@ -89,6 +88,8 @@ DEFAULT_IDENTITY_PROVIDER = "auth0"
 DEFAULT_TYPE = "patient_registry_user"
 DEFAULT_BLOCKED = False
 
+load_env_file(Path(__file__).resolve().parent / ".env")
+
 # ----------------------------
 # CSV schema
 # ----------------------------
@@ -102,22 +103,11 @@ OPTIONAL_CSV_COLUMNS = ["roleCode", "npi", "tin"]
 
 
 def get_bearer_token() -> str:
-    token = os.environ.get("XCURES_BEARER_TOKEN")
-    if not token:
-        raise RuntimeError(
-            "XCURES_BEARER_TOKEN is not set.\n"
-            "Run:\n"
-            "  export XCURES_BEARER_TOKEN='your_token_here'"
-        )
-    return token
+    return get_xcures_bearer_token(timeout_seconds=DEFAULT_TIMEOUT_SECONDS)
 
 
 def auth_headers() -> Dict[str, str]:
-    return {
-        "accept": "application/json",
-        "Authorization": "Bearer " + get_bearer_token(),
-        "Content-Type": "application/json",
-    }
+    return build_json_headers(bearer_token=get_bearer_token())
 
 
 # ----------------------------
