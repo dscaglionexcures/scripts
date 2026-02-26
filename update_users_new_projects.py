@@ -6,6 +6,7 @@ from pathlib import Path
 
 import pandas as pd
 import requests
+from progress_common import progress_iter
 from auth_common import build_json_headers, get_xcures_bearer_token, load_env_file
 
 load_env_file(Path(__file__).resolve().parent / ".env")
@@ -144,15 +145,8 @@ projects = [
 
 # Progress bar setup
 total_users = len(df)
-bar_width = 30
 
-for idx in range(total_users):
-    # Simple progress bar + percentage
-    progress = (idx + 1) / total_users if total_users else 1
-    filled = int(bar_width * progress)
-    bar = "█" * filled + "-" * (bar_width - filled)
-    percent = progress * 100
-    print(f"\rProgress: |{bar}| {percent:6.2f}% ({idx + 1}/{total_users})", end="", flush=True)
+for idx in progress_iter(range(total_users), desc="Updating users", total=total_users, unit="user"):
 
     sId = df['id'][idx]
     user = get_user_permissions(sId)
@@ -160,5 +154,3 @@ for idx in range(total_users):
         if j not in user['projectIds']:
             user['projectIds'].append(j)
     update_user_permissions(sId, user, [], [])
-
-print()  # newline after progress bar

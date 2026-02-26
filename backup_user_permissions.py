@@ -20,6 +20,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 import requests
+from progress_common import progress_iter
 from auth_common import build_json_headers, get_xcures_bearer_token, load_env_file
 
 BASE_URL = "https://partner.xcures.com"
@@ -53,16 +54,6 @@ def normalize_date_only(value: Optional[str]) -> str:
         if "T" in value:
             return value.split("T")[0]
         return ""
-
-
-def progress_bar(current: int, total: int) -> None:
-    width = 30
-    total = max(total, 1)
-    progress = current / total
-    filled = int(width * progress)
-    bar = "█" * filled + "-" * (width - filled)
-    percent = progress * 100
-    print(f"\rProgress: |{bar}| {percent:6.2f}% ({current}/{total})", end="", flush=True)
 
 
 def headers(bearer: str) -> Dict[str, str]:
@@ -238,8 +229,7 @@ def main() -> int:
         rows: List[Dict[str, Any]] = []
         full_records: List[Dict[str, Any]] = []
 
-        for i, u in enumerate(users, start=1):
-            progress_bar(i, total)
+        for u in progress_iter(users, desc="Backing up users", total=total, unit="user"):
 
             user_id = str(u.get("id") or "").strip()
             if not user_id:
@@ -268,8 +258,6 @@ def main() -> int:
 
             rows.append(row)
             full_records.append(detail)
-
-        print()
 
     json_file.write_text(
         json.dumps(

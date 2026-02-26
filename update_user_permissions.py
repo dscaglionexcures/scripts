@@ -27,12 +27,8 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 import requests
+from progress_common import progress_iter
 from auth_common import build_json_headers, get_xcures_bearer_token, load_env_file
-
-try:
-    from tqdm import tqdm  # type: ignore
-except Exception:
-    tqdm = None  # fallback to simple progress if tqdm isn't installed
 
 
 DEFAULT_BASE_URL = "https://partner.xcures.com"
@@ -249,22 +245,6 @@ def put_user_update(
     return resp.json()
 
 
-def simple_progress(iterable, total: int, desc: str):
-    """
-    Fallback progress indicator if tqdm isn't installed.
-    """
-    done = 0
-    last_pct = -1
-    print(desc)
-    for item in iterable:
-        done += 1
-        pct = int((done / total) * 100) if total else 100
-        if pct != last_pct:
-            print(f"  {pct}% ({done}/{total})")
-            last_pct = pct
-        yield item
-
-
 def main() -> int:
     parser = argparse.ArgumentParser(
         description='Add "Summary_Checklist" permission to all users in a tenant.'
@@ -350,13 +330,7 @@ def main() -> int:
             print("No users returned by the API.")
             return 0
 
-        iterator = None
-        if tqdm is not None:
-            iterator = tqdm(users, total=total, desc="Updating users", unit="user")
-        else:
-            iterator = simple_progress(users, total=total, desc="Updating users")
-
-        for user in iterator:
+        for user in progress_iter(users, desc="Updating users", total=total, unit="user"):
             user_id = user.get("id")
             if not user_id:
                 skipped += 1

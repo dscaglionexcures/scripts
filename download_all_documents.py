@@ -3,7 +3,7 @@ import time
 from pathlib import Path
 
 import requests
-from tqdm import tqdm
+from progress_common import progress_bar
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 from requests.exceptions import ConnectionError, Timeout
@@ -232,7 +232,7 @@ def main():
     total_docs_found = 0
     total_docs_downloaded = 0
 
-    with tqdm(total=len(subjects), desc="Patients Processed", unit="patient") as subj_bar:
+    with progress_bar(total=len(subjects), desc="Patients Processed", unit="patient") as subj_bar:
         for subject in subjects:
             subject_id = subject.get("id")
             if not subject_id:
@@ -243,7 +243,7 @@ def main():
             total_docs_found += len(documents)
 
             if documents:
-                with tqdm(
+                with progress_bar(
                     total=len(documents),
                     desc=f"Docs for {subject_id[:8]}",
                     unit="doc",

@@ -41,12 +41,8 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 import requests
+from progress_common import progress_iter
 from auth_common import build_json_headers, get_xcures_bearer_token, load_env_file
-
-try:
-    from tqdm import tqdm  # type: ignore
-except Exception:
-    tqdm = None
 
 SCRIPT_BUILD = "2026-01-12-non-null-create-payload"
 DEFAULT_BASE_URL = "https://partner.xcures.com"
@@ -150,22 +146,6 @@ def parse_json(resp: requests.Response) -> Any:
         return resp.json()
     except Exception:
         raise RuntimeError(f"Non-JSON response: status={resp.status_code} body={body_preview(resp.text)}")
-
-
-def progress_iter(total: int, desc: str):
-    if tqdm is not None:
-        for _ in tqdm(range(total), desc=desc, unit="step"):
-            yield
-        return
-
-    bar_width = 30
-    for i in range(1, total + 1):
-        progress = i / total
-        filled = int(bar_width * progress)
-        bar = "█" * filled + "-" * (bar_width - filled)
-        print(f"\r{desc}: |{bar}| {progress*100:6.2f}% ({i}/{total})", end="", flush=True)
-        yield
-    print()
 
 
 # Create schema fields (excluding id/name)
@@ -410,7 +390,7 @@ def main() -> int:
         print("projectId is required.", file=sys.stderr)
         return 2
 
-    prog = progress_iter(3, "Duplicate project")
+    prog = progress_iter(range(3), desc="Duplicate project", total=3, unit="step")
 
     with requests.Session() as session:
         # Step 1: list all projects

@@ -24,9 +24,9 @@ from typing import Any, Dict, List, Optional, Tuple
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import requests
+from progress_common import progress_bar
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
-from tqdm import tqdm
 from auth_common import (
     build_json_headers,
     fetch_client_credentials_token,
@@ -183,8 +183,8 @@ def fetch_all_subject_ids_with_progress(
 
         page_number = 1
 
-        # Create a tqdm bar for pages. If we learn totalCount, we can set a total pages count.
-        pbar = tqdm(desc="Fetching subject IDs", unit="page", total=None)
+        # Create a progress bar for pages. If we learn totalCount, we can set a total pages count.
+        pbar = progress_bar(desc="Fetching subject IDs", unit="page", total=None)
 
         try:
             while True:
@@ -208,7 +208,8 @@ def fetch_all_subject_ids_with_progress(
                     if total_expected is not None:
                         total_pages = max(1, math.ceil(total_expected / SUBJECT_PAGE_SIZE))
                         pbar.total = total_pages
-                        pbar.refresh()
+                        if hasattr(pbar, "refresh"):
+                            pbar.refresh()
 
                 page_subject_ids = _extract_subject_ids_from_payload(payload)
 
@@ -359,7 +360,7 @@ def main() -> int:
                 for sid in subject_ids
             ]
 
-            with tqdm(total=len(futures), desc="Processing subjects", unit="subject") as pbar:
+            with progress_bar(total=len(futures), desc="Processing subjects", unit="subject") as pbar:
                 for future in as_completed(futures):
                     result = future.result()
 

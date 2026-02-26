@@ -248,7 +248,7 @@ def wait_for_document(token: str, document_id: str) -> None:
             return
         except Exception:
             print("  Document not ready yet, retrying...")
-            time.sleep(2)
+            time.sleep(10)
 
     raise RuntimeError("Document did not become available in time")
 

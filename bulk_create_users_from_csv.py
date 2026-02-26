@@ -46,12 +46,8 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 import requests
+from progress_common import progress_iter
 from auth_common import build_json_headers, get_xcures_bearer_token, load_env_file
-
-try:
-    from tqdm import tqdm  # type: ignore
-except Exception:
-    tqdm = None  # fallback
 
 # ----------------------------
 # Script configuration (edit these once)
@@ -108,34 +104,6 @@ def get_bearer_token() -> str:
 
 def auth_headers() -> Dict[str, str]:
     return build_json_headers(bearer_token=get_bearer_token())
-
-
-# ----------------------------
-# Progress (standard)
-# ----------------------------
-
-
-def progress_iter(iterable, *, desc: str, total: Optional[int] = None):
-    if tqdm is not None:
-        return tqdm(iterable, total=total, desc=desc, unit="user")
-
-    total = total if total is not None else len(iterable)  # type: ignore[arg-type]
-    bar_width = 30
-
-    def _gen():
-        for i, item in enumerate(iterable, start=1):
-            progress = i / total if total else 1
-            filled = int(bar_width * progress)
-            bar = "█" * filled + "-" * (bar_width - filled)
-            print(
-                f"\r{desc}: |{bar}| {progress*100:6.2f}% ({i}/{total})",
-                end="",
-                flush=True,
-            )
-            yield item
-        print()
-
-    return _gen()
 
 
 # ----------------------------
@@ -433,7 +401,10 @@ def main() -> int:
     failed = 0
 
     with requests.Session() as session:
-        for idx, row in enumerate(progress_iter(rows, desc=f"Creating users ({mode_label})", total=len(rows)), start=1):
+        for idx, row in enumerate(
+            progress_iter(rows, desc=f"Creating users ({mode_label})", total=len(rows), unit="user"),
+            start=1,
+        ):
             email = (row.get("email") or "").strip()
             try:
                 require_nonempty(email, "email", idx)
