@@ -23,12 +23,12 @@ import argparse
 import os
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Tuple
 
 import requests
-from api_common import request_with_retry as common_request_with_retry
 from progress_common import progress_iter
-from auth_common import build_json_headers, get_xcures_bearer_token, load_env_file
+from auth_common import get_xcures_bearer_token, load_env_file
+from xcures_client import XcuresApiClient
 
 
 DEFAULT_BASE_URL = "https://partner.xcures.com"
@@ -38,42 +38,10 @@ PERMISSION_TO_ADD = "Summary_Checklist"
 load_env_file(Path(__file__).resolve().parent / ".env")
 
 
-def build_headers(bearer_token: str, project_id: Optional[str] = None) -> Dict[str, str]:
-    return build_json_headers(bearer_token=bearer_token, project_id=project_id)
-
-
-def request_with_retry(
-    session: requests.Session,
-    method: str,
-    url: str,
-    *,
-    headers: Dict[str, str],
-    params: Optional[Dict[str, Any]] = None,
-    json_body: Optional[Dict[str, Any]] = None,
-    timeout: int = DEFAULT_TIMEOUT_SECONDS,
-    max_retries: int = 5,
-) -> requests.Response:
-    return common_request_with_retry(
-        session,
-        method,
-        url,
-        headers=headers,
-        params=params,
-        json_body=json_body,
-        timeout_seconds=timeout,
-        max_retries=max_retries,
-        backoff_seconds=2.0,
-        max_sleep_seconds=20.0,
-    )
-
-
 def get_all_users(
-    session: requests.Session,
-    base_url: str,
-    headers: Dict[str, str],
+    client: XcuresApiClient,
     *,
     page_size: int = 50,
-    timeout: int = DEFAULT_TIMEOUT_SECONDS,
 ) -> List[Dict[str, Any]]:
     """
     Paginates GET /api/patient-registry/user until all users are collected.
@@ -82,71 +50,24 @@ def get_all_users(
       - totalCount
       - results (array)
     """
-    users: List[Dict[str, Any]] = []
-    page_number = 1
-
-    while True:
-        url = f"{base_url}/api/patient-registry/user"
-        params = {
-            "pageNumber": page_number,
-            "pageSize": page_size,
-        }
-
-        try:
-            resp = request_with_retry(
-                session, "GET", url, headers=headers, params=params, timeout=timeout
-            )
-        except RuntimeError as e:
-            # Fallback for occasional 500s when requesting larger page sizes.
-            # The OpenAPI spec default is 50, and some deployments appear sensitive to larger values.
-            msg = str(e)
-            if page_number == 1 and page_size > 50 and "last_status=500" in msg:
-                page_size = 50
-                params["pageSize"] = page_size
-                resp = request_with_retry(
-                    session, "GET", url, headers=headers, params=params, timeout=timeout
-                )
-            else:
-                raise
-
-        if not resp.ok:
-            raise RuntimeError(f"GET {url} failed: {resp.status_code} {resp.text}")
-
-        payload = resp.json()
-
-        # Defensive parsing: some APIs use "results", some use "items"
-        page_results = payload.get("results") or payload.get("items") or []
-        if not isinstance(page_results, list):
-            raise RuntimeError(f"Unexpected list payload format on page {page_number}: {payload}")
-
-        users.extend(page_results)
-
-        total_count = payload.get("totalCount")
-        if isinstance(total_count, (int, float)) and len(users) >= int(total_count):
-            break
-
-        # If API doesn't return totalCount, stop when no results
-        if not page_results:
-            break
-
-        page_number += 1
-
-    return users
+    try:
+        return client.list_paginated("/api/patient-registry/user", page_size=page_size)
+    except RuntimeError as e:
+        # Fallback for occasional 500s when requesting larger page sizes.
+        msg = str(e)
+        if page_size > 50 and ("HTTP 500" in msg or "last_status=500" in msg):
+            return client.list_paginated("/api/patient-registry/user", page_size=50)
+        raise
 
 
 def get_user_detail(
-    session: requests.Session,
-    base_url: str,
+    client: XcuresApiClient,
     user_id: str,
-    headers: Dict[str, str],
-    *,
-    timeout: int = DEFAULT_TIMEOUT_SECONDS,
 ) -> Dict[str, Any]:
-    url = f"{base_url}/api/patient-registry/user/{user_id}"
-    resp = request_with_retry(session, "GET", url, headers=headers, timeout=timeout)
-    if not resp.ok:
-        raise RuntimeError(f"GET {url} failed: {resp.status_code} {resp.text}")
-    return resp.json()
+    data = client.request_json("GET", f"/api/patient-registry/user/{user_id}")
+    if not isinstance(data, dict):
+        raise RuntimeError(f"Unexpected user detail response for id={user_id}: {type(data)}")
+    return data
 
 
 def make_update_payload_from_user_detail(user_detail: Dict[str, Any]) -> Dict[str, Any]:
@@ -187,19 +108,14 @@ def make_update_payload_from_user_detail(user_detail: Dict[str, Any]) -> Dict[st
 
 
 def put_user_update(
-    session: requests.Session,
-    base_url: str,
+    client: XcuresApiClient,
     user_id: str,
-    headers: Dict[str, str],
     payload: Dict[str, Any],
-    *,
-    timeout: int = DEFAULT_TIMEOUT_SECONDS,
 ) -> Dict[str, Any]:
-    url = f"{base_url}/api/patient-registry/user/{user_id}"
-    resp = request_with_retry(session, "PUT", url, headers=headers, json_body=payload, timeout=timeout)
-    if not resp.ok:
-        raise RuntimeError(f"PUT {url} failed: {resp.status_code} {resp.text}")
-    return resp.json()
+    data = client.request_json("PUT", f"/api/patient-registry/user/{user_id}", json_body=payload)
+    if not isinstance(data, dict):
+        raise RuntimeError(f"Unexpected update response for id={user_id}: {type(data)}")
+    return data
 
 
 def main() -> int:
@@ -260,21 +176,26 @@ def main() -> int:
             print(f"Error: {e}", file=sys.stderr)
             return 2
 
-    headers = build_headers(args.bearer, args.project_id)
-
     updated = 0
     skipped = 0
     failed = 0
     failures: List[Tuple[str, str]] = []
 
     with requests.Session() as session:
+        client = XcuresApiClient(
+            session=session,
+            base_url=args.base_url.rstrip("/"),
+            bearer_token=args.bearer,
+            project_id=args.project_id,
+            timeout_seconds=args.timeout,
+            max_retries=5,
+            backoff_seconds=2.0,
+            max_sleep_seconds=20.0,
+        )
         # 1) list users
         users = get_all_users(
-            session,
-            args.base_url.rstrip("/"),
-            headers,
+            client,
             page_size=args.page_size,
-            timeout=args.timeout,
         )
 
         if args.limit is not None:
@@ -296,11 +217,8 @@ def main() -> int:
             try:
                 # 2) detail fetch
                 detail = get_user_detail(
-                    session,
-                    args.base_url.rstrip("/"),
+                    client,
                     user_id,
-                    headers,
-                    timeout=args.timeout,
                 )
 
                 permissions = detail.get("permissions") or []
@@ -324,12 +242,9 @@ def main() -> int:
                     continue
 
                 put_user_update(
-                    session,
-                    args.base_url.rstrip("/"),
+                    client,
                     user_id,
-                    headers,
                     payload,
-                    timeout=args.timeout,
                 )
                 updated += 1
 

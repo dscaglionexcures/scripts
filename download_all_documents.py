@@ -7,10 +7,8 @@ from progress_common import progress_bar
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 from requests.exceptions import ConnectionError, Timeout
-from api_common import request_with_retry as common_request_with_retry
+from xcures_client import XcuresApiClient
 from auth_common import (
-    build_json_headers,
-    fetch_client_credentials_token,
     load_env_file,
     require_env,
 )
@@ -22,10 +20,9 @@ from auth_common import (
 load_env_file(Path(__file__).resolve().parent / ".env")
 
 BASE_URL = os.getenv("BASE_URL", "https://partner.xcures.com").strip()
-AUTH_URL = os.getenv("AUTH_URL", f"{BASE_URL.rstrip('/')}/oauth/token").strip()
-CLIENT_ID = require_env("XCURES_CLIENT_ID")
-CLIENT_SECRET = require_env("XCURES_CLIENT_SECRET")
 PROJECT_ID = require_env("XCURES_PROJECT_ID")
+_ = require_env("XCURES_CLIENT_ID")
+_ = require_env("XCURES_CLIENT_SECRET")
 
 DOWNLOAD_ROOT = Path("downloads")
 DOWNLOAD_ROOT.mkdir(exist_ok=True)
@@ -58,144 +55,68 @@ def build_session():
 
 
 session = build_session()
-
-
-# ----------------------------
-# Token Manager
-# ----------------------------
-class TokenManager:
-    def __init__(self):
-        self.token = None
-        self.acquired_at = 0
-        self.refresh_window = 55 * 60  # refresh slightly before 60 min
-
-    def authenticate(self):
-        print("Authenticating...")
-        try:
-            self.token = fetch_client_credentials_token(
-                session,
-                auth_url=AUTH_URL,
-                client_id=CLIENT_ID,
-                client_secret=CLIENT_SECRET,
-                timeout_seconds=60,
-            )
-        except Exception as e:
-            raise SystemExit(str(e))
-        self.acquired_at = time.time()
-
-        print("Token acquired.")
-        return self.token
-
-    def get_token(self):
-        if (
-            not self.token
-            or (time.time() - self.acquired_at) > self.refresh_window
-        ):
-            return self.authenticate()
-        return self.token
-
-    def get_headers(self):
-        return build_json_headers(bearer_token=self.get_token(), project_id=PROJECT_ID)
-
-
-token_manager = TokenManager()
+api_client = XcuresApiClient(
+    session=session,
+    base_url=BASE_URL,
+    project_id=PROJECT_ID,
+    timeout_seconds=120,
+    max_retries=3,
+    backoff_seconds=2.0,
+    max_sleep_seconds=6.0,
+)
 
 
 # ----------------------------
 # Safe Request Wrapper
 # ----------------------------
 def safe_request(method, url, **kwargs):
-    for auth_attempt in range(2):
-        try:
-            resp = common_request_with_retry(
-                session=session,
-                method=method,
-                url=url,
-                headers=token_manager.get_headers(),
-                params=kwargs.get("params"),
-                json_body=kwargs.get("json"),
-                timeout_seconds=kwargs.get("timeout", 60),
-                max_retries=3,
-                backoff_seconds=2.0,
-                max_sleep_seconds=6.0,
-            )
-            return resp
-        except RuntimeError as e:
-            if "HTTP 401" in str(e) and auth_attempt == 0:
-                print("Token expired mid-run. Re-authenticating...")
-                token_manager.authenticate()
-                continue
-            raise SystemExit(f"Request failed: {e}")
-
-    raise SystemExit("Request failed after auth retries.")
+    try:
+        return api_client.request(
+            method=method,
+            path_or_url=url,
+            params=kwargs.get("params"),
+            json_body=kwargs.get("json"),
+            timeout_seconds=kwargs.get("timeout", 60),
+        )
+    except RuntimeError as e:
+        raise SystemExit(f"Request failed: {e}")
 
 
 # ----------------------------
 # Subjects
 # ----------------------------
 def iter_subjects(page_size=200):
-    url = f"{BASE_URL}/api/v1/patient-registry/subject"
-    page = 1
-
-    while True:
-        params = {"pageNumber": page, "pageSize": page_size}
-        resp = safe_request("GET", url, params=params, timeout=60)
-
-        data = resp.json()
-        results = data.get("results") or []
-
-        if not results:
-            break
-
-        for s in results:
-            yield s
-
-        total = data.get("totalCount")
-        if total and page * page_size >= total:
-            break
-
-        page += 1
+    yield from api_client.iter_paginated(
+        "/api/v1/patient-registry/subject",
+        page_size=page_size,
+        timeout_seconds=60,
+    )
 
 
 # ----------------------------
 # Document Search
 # ----------------------------
 def iter_documents_for_subject(subject_id, page_size=200):
-    url = f"{BASE_URL}/api/v1/patient-registry/document"
-    page = 1
-
-    while True:
-        params = {
-            "subjectId": subject_id,
-            "pageNumber": page,
-            "pageSize": page_size,
-        }
-
-        resp = safe_request("GET", url, params=params, timeout=120)
-
-        data = resp.json()
-        results = data.get("results") or []
-
-        if not results:
-            break
-
-        for d in results:
-            yield d
-
-        total = data.get("totalCount")
-        if total and page * page_size >= total:
-            break
-
-        page += 1
+    yield from api_client.iter_paginated(
+        "/api/v1/patient-registry/document",
+        params={"subjectId": subject_id},
+        page_size=page_size,
+        timeout_seconds=120,
+    )
 
 
 # ----------------------------
 # Document Details (contains signedS3Url)
 # ----------------------------
 def get_document_details(document_id):
-    url = f"{BASE_URL}/api/v1/patient-registry/document/{document_id}"
-    resp = safe_request("GET", url, timeout=120)
-    return resp.json()
+    data = api_client.request_json(
+        "GET",
+        f"/api/v1/patient-registry/document/{document_id}",
+        timeout_seconds=120,
+    )
+    if not isinstance(data, dict):
+        raise SystemExit(f"Unexpected document details for {document_id}: {type(data)}")
+    return data
 
 
 # ----------------------------

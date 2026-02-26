@@ -21,16 +21,16 @@ Examples:
 from __future__ import annotations
 
 import argparse
+import os
 import sys
-import time
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 
 import requests
-from api_common import request_with_retry as common_request_with_retry
 from progress_common import progress_iter
-from auth_common import build_json_headers, get_xcures_bearer_token, load_env_file
+from auth_common import load_env_file
+from xcures_client import XcuresApiClient
 
 
 DEFAULT_BASE_URL = "https://partner.xcures.com"
@@ -38,17 +38,6 @@ DEFAULT_TIMEOUT_SECONDS = 60
 EXCLUDE_DOMAIN = "xcures.com"
 
 load_env_file(Path(__file__).resolve().parent / ".env")
-
-
-# ----------------------------
-# Auth + headers (standard)
-# ----------------------------
-def get_bearer_token() -> str:
-    return get_xcures_bearer_token(timeout_seconds=DEFAULT_TIMEOUT_SECONDS)
-
-
-def auth_headers() -> Dict[str, str]:
-    return build_json_headers(bearer_token=get_bearer_token())
 
 
 # ----------------------------
@@ -70,99 +59,31 @@ def _log(msg: str) -> None:
             pass
 
 
-def _body_preview(text: str, limit: int = 300) -> str:
-    t = (text or "").strip().replace("\n", " ")
-    if len(t) > limit:
-        return t[:limit] + "...<truncated>"
-    return t
-
-
-def request_with_retry(
-    session: requests.Session,
-    method: str,
-    url: str,
-    *,
-    params: Optional[Dict[str, Any]] = None,
-    json_body: Optional[Dict[str, Any]] = None,
-    timeout: int = DEFAULT_TIMEOUT_SECONDS,
-    max_retries: int = 5,
-    backoff_seconds: float = 1.0,
-) -> requests.Response:
-    return common_request_with_retry(
-        session,
-        method,
-        url,
-        headers=auth_headers(),
-        params=params,
-        json_body=json_body,
-        timeout_seconds=timeout,
-        max_retries=max_retries,
-        backoff_seconds=backoff_seconds,
-        logger=_log if VERBOSE else None,
-    )
-
-
-def parse_json(resp: requests.Response) -> Any:
-    try:
-        return resp.json()
-    except Exception:
-        raise RuntimeError(f"Non-JSON response status={resp.status_code} body={_body_preview(resp.text, 800)}")
-
-
 # ----------------------------
 # API operations
 # ----------------------------
 def get_all_users(
-    session: requests.Session,
-    base_url: str,
+    client: XcuresApiClient,
     *,
     page_size: int,
-    timeout: int,
     max_pages: int = 10_000,
 ) -> List[Dict[str, Any]]:
-    url = f"{base_url}/api/patient-registry/user"
-    all_users: List[Dict[str, Any]] = []
-
-    page_number = 1
-    for _ in range(max_pages):
-        params = {"pageNumber": page_number, "pageSize": page_size}
-        resp = request_with_retry(session, "GET", url, params=params, timeout=timeout)
-        data = parse_json(resp)
-
-        if isinstance(data, list):
-            return [x for x in data if isinstance(x, dict)]
-
-        if not isinstance(data, dict):
-            raise RuntimeError(f"Unexpected list-users response type: {type(data)}")
-
-        results = data.get("results") if isinstance(data.get("results"), list) else []
-        all_users.extend([r for r in results if isinstance(r, dict)])
-
-        total_count = data.get("totalCount")
-        if isinstance(total_count, int) and len(all_users) >= total_count:
-            break
-
-        if not results:
-            break
-
-        page_number += 1
-
-    return all_users
+    return client.list_paginated(
+        "/api/patient-registry/user",
+        page_size=page_size,
+        max_pages=max_pages,
+    )
 
 
-def get_user_detail(session: requests.Session, base_url: str, user_id: str, *, timeout: int) -> Dict[str, Any]:
-    url = f"{base_url}/api/patient-registry/user/{user_id}"
-    resp = request_with_retry(session, "GET", url, timeout=timeout)
-    data = parse_json(resp)
+def get_user_detail(client: XcuresApiClient, user_id: str) -> Dict[str, Any]:
+    data = client.request_json("GET", f"/api/patient-registry/user/{user_id}")
     if not isinstance(data, dict):
         raise RuntimeError(f"Unexpected user detail type for id={user_id}: {type(data)}")
     return data
 
 
-def update_user(session: requests.Session, base_url: str, user_id: str, payload: Dict[str, Any], *, timeout: int) -> Dict[str, Any]:
-    url = f"{base_url}/api/patient-registry/user/{user_id}"
-    resp = request_with_retry(session, "PUT", url, json_body=payload, timeout=timeout)
-    data = parse_json(resp)
+def update_user(client: XcuresApiClient, user_id: str, payload: Dict[str, Any]) -> Dict[str, Any]:
+    data = client.request_json("PUT", f"/api/patient-registry/user/{user_id}", json_body=payload)
     if not isinstance(data, dict):
         raise RuntimeError(f"Unexpected update response type for id={user_id}: {type(data)}")
     return data
@@ -237,11 +158,17 @@ def main() -> int:
         print(f"Refusing: --to-domain is {EXCLUDE_DOMAIN}, but @xcures.com is always excluded.", file=sys.stderr)
         return 2
 
-    # Auth presence check early
-    _ = get_bearer_token()
-
     with requests.Session() as session:
-        users = get_all_users(session, base_url, page_size=args.page_size, timeout=args.timeout)
+        client = XcuresApiClient(
+            session=session,
+            base_url=base_url,
+            project_id=os.environ.get("XCURES_PROJECT_ID"),
+            timeout_seconds=args.timeout,
+            max_retries=5,
+            backoff_seconds=1.0,
+            logger=_log if VERBOSE else None,
+        )
+        users = get_all_users(client, page_size=args.page_size)
 
         if args.limit is not None:
             if args.limit < 0:
@@ -267,7 +194,7 @@ def main() -> int:
                 continue
 
             try:
-                detail = get_user_detail(session, base_url, str(user_id), timeout=args.timeout)
+                detail = get_user_detail(client, str(user_id))
                 email = str(detail.get("email") or "").strip()
 
                 if not email:
@@ -299,7 +226,7 @@ def main() -> int:
                 # Some backends dislike None values; optionally drop keys with None.
                 payload = {k: v for k, v in payload.items() if v is not None}
 
-                update_user(session, base_url, str(user_id), payload, timeout=args.timeout)
+                update_user(client, str(user_id), payload)
                 updated += 1
 
             except Exception as e:

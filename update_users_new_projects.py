@@ -5,64 +5,55 @@ import os
 from pathlib import Path
 
 import pandas as pd
-import requests
 from progress_common import progress_iter
-from auth_common import build_json_headers, get_xcures_bearer_token, load_env_file
+from auth_common import load_env_file
+from xcures_client import XcuresApiClient
+import requests
 
 load_env_file(Path(__file__).resolve().parent / ".env")
 
-# Bearer token handling (expects token exported to environment)
-def get_bearer_token() -> str:
-    return get_xcures_bearer_token(timeout_seconds=60)
-
-
-def auth_headers():
-    return build_json_headers(bearer_token=get_bearer_token())
-
 # get existing user permissions
-def get_user_permissions(user_id):
-    url = 'https://partner.xcures.com/api/patient-registry/user/' + user_id + '?userId=' + user_id
-    headers = build_json_headers(bearer_token=get_bearer_token())
-    response = requests.get(url, headers=headers)
-    if response.status_code == 200:
-        return response.json()
-    else:
-        return f"{response.status_code}: {response.text}"
+def get_user_permissions(client: XcuresApiClient, user_id):
+    data = client.request_json(
+        "GET",
+        f"/api/patient-registry/user/{user_id}",
+        params={"userId": user_id},
+    )
+    if not isinstance(data, dict):
+        raise RuntimeError(f"Unexpected user detail payload for id={user_id}: {type(data)}")
+    return data
     
 # update user permissions  
-def update_user_permissions(user_id, user, coming, going):
+def update_user_permissions(client: XcuresApiClient, user_id, user, coming, going):
     for i in coming:
         if i not in user['permissions']: user['permissions'].append(i)
     for j in going:
         if j in user['permissions']: user['permissions'].remove(j)
-    url = 'https://partner.xcures.com/api/patient-registry/user/' + user_id
-    headers = build_json_headers(bearer_token=get_bearer_token())
     payload = user
-    response = requests.put(url, headers=headers, json=payload)
-    if response.status_code == 200:
-        return response.json()
-    else:
-        return f"{response.status_code}: {response.text}"
+    data = client.request_json("PUT", f"/api/patient-registry/user/{user_id}", json_body=payload)
+    if not isinstance(data, dict):
+        raise RuntimeError(f"Unexpected update response payload for id={user_id}: {type(data)}")
+    return data
 
 # Get all users
 
 all_responses = []
-pgNumber = 1
-pgSize = 25
-pgNumberStr = str(pgNumber)
-url = f'https://partner.xcures.com/api/patient-registry/user?pageSize=25&pageNumber={pgNumberStr}&hasActiveFilter=false&numberOfActiveFilters=0'
-
-response = requests.get(url, headers=auth_headers())
-data = response.json()
-all_responses.extend(data['results'])
-totalCount = response.json()['totalCount']
-while pgNumber * pgSize < totalCount:
-    pgNumber = pgNumber + 1
-    pgNumberStr = str(pgNumber)
-    url = f'https://partner.xcures.com/api/patient-registry/user?pageSize=25&pageNumber={pgNumberStr}&hasActiveFilter=false&numberOfActiveFilters=0'
-    response = requests.get(url, headers=auth_headers())
-    data = response.json()
-    all_responses.extend(data['results'])
+with requests.Session() as _session:
+    client = XcuresApiClient(
+        session=_session,
+        base_url=os.environ.get("BASE_URL", "https://partner.xcures.com"),
+        project_id=os.environ.get("XCURES_PROJECT_ID"),
+        timeout_seconds=60,
+        max_retries=5,
+        backoff_seconds=1.0,
+    )
+    all_responses.extend(
+        client.list_paginated(
+            "/api/patient-registry/user",
+            params={"hasActiveFilter": "false", "numberOfActiveFilters": 0},
+            page_size=25,
+        )
+    )
     
 df = pd.DataFrame(all_responses)
 df
@@ -146,11 +137,19 @@ projects = [
 # Progress bar setup
 total_users = len(df)
 
-for idx in progress_iter(range(total_users), desc="Updating users", total=total_users, unit="user"):
-
-    sId = df['id'][idx]
-    user = get_user_permissions(sId)
-    for j in projects:
-        if j not in user['projectIds']:
-            user['projectIds'].append(j)
-    update_user_permissions(sId, user, [], [])
+with requests.Session() as _session:
+    client = XcuresApiClient(
+        session=_session,
+        base_url=os.environ.get("BASE_URL", "https://partner.xcures.com"),
+        project_id=os.environ.get("XCURES_PROJECT_ID"),
+        timeout_seconds=60,
+        max_retries=5,
+        backoff_seconds=1.0,
+    )
+    for idx in progress_iter(range(total_users), desc="Updating users", total=total_users, unit="user"):
+        sId = df['id'][idx]
+        user = get_user_permissions(client, sId)
+        for j in projects:
+            if j not in user['projectIds']:
+                user['projectIds'].append(j)
+        update_user_permissions(client, sId, user, [], [])

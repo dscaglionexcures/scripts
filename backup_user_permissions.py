@@ -20,9 +20,9 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 import requests
-from api_common import request_with_retry as common_request_with_retry
 from progress_common import progress_iter
-from auth_common import build_json_headers, get_xcures_bearer_token, load_env_file
+from auth_common import get_xcures_bearer_token, load_env_file
+from xcures_client import XcuresApiClient
 
 BASE_URL = "https://partner.xcures.com"
 TIMEOUT = 60
@@ -57,38 +57,12 @@ def normalize_date_only(value: Optional[str]) -> str:
         return ""
 
 
-def headers(bearer: str) -> Dict[str, str]:
-    return build_json_headers(bearer_token=bearer)
-
-
-def request_with_retry(
-    session: requests.Session,
-    method: str,
-    url: str,
-    *,
-    bearer: str,
-    params: Optional[Dict[str, Any]] = None,
-) -> requests.Response:
-    return common_request_with_retry(
-        session,
-        method,
-        url,
-        headers=headers(bearer),
-        params=params,
-        timeout_seconds=TIMEOUT,
-        max_retries=MAX_RETRIES,
-        backoff_seconds=BACKOFF,
-    )
-
-
 # ------------------------------------------------
 # API Calls
 # ------------------------------------------------
 
-def get_project_name_map(session: requests.Session, bearer: str) -> Dict[str, str]:
-    url = f"{BASE_URL}/api/patient-registry/project"
-    resp = request_with_retry(session, "GET", url, bearer=bearer)
-    data = resp.json()
+def get_project_name_map(client: XcuresApiClient) -> Dict[str, str]:
+    data = client.request_json("GET", "/api/patient-registry/project")
 
     if not isinstance(data, list):
         raise RuntimeError("Unexpected project list response")
@@ -105,55 +79,27 @@ def get_project_name_map(session: requests.Session, bearer: str) -> Dict[str, st
 
 
 def get_all_users_and_last_login(
-    session: requests.Session,
-    bearer: str,
+    client: XcuresApiClient,
     page_size: int = 50,
 ) -> Tuple[List[Dict[str, Any]], Dict[str, str]]:
-
-    url = f"{BASE_URL}/api/patient-registry/user"
-    page_number = 1
 
     users: List[Dict[str, Any]] = []
     last_login_by_id: Dict[str, str] = {}
 
-    while True:
-        resp = request_with_retry(
-            session,
-            "GET",
-            url,
-            bearer=bearer,
-            params={"pageNumber": page_number, "pageSize": page_size},
-        )
-
-        data = resp.json()
-        results = data.get("results", []) if isinstance(data, dict) else data
-
-        if not isinstance(results, list):
-            break
-
-        users.extend(results)
-
-        for u in results:
-            uid = str(u.get("id") or "").strip()
-            if uid:
-                last_login_by_id[uid] = normalize_date_only(u.get("lastLogin"))
-
-        total = data.get("totalCount") if isinstance(data, dict) else None
-        if isinstance(total, int) and len(users) >= total:
-            break
-
-        if not results:
-            break
-
-        page_number += 1
+    for u in client.iter_paginated("/api/patient-registry/user", page_size=page_size):
+        users.append(u)
+        uid = str(u.get("id") or "").strip()
+        if uid:
+            last_login_by_id[uid] = normalize_date_only(u.get("lastLogin"))
 
     return users, last_login_by_id
 
 
-def get_user_detail(session: requests.Session, bearer: str, user_id: str) -> Dict[str, Any]:
-    url = f"{BASE_URL}/api/patient-registry/user/{user_id}"
-    resp = request_with_retry(session, "GET", url, bearer=bearer)
-    return resp.json()
+def get_user_detail(client: XcuresApiClient, user_id: str) -> Dict[str, Any]:
+    data = client.request_json("GET", f"/api/patient-registry/user/{user_id}")
+    if not isinstance(data, dict):
+        raise RuntimeError(f"Unexpected user detail response for id={user_id}: {type(data)}")
+    return data
 
 
 # ------------------------------------------------
@@ -209,8 +155,16 @@ def main() -> int:
     csv_file = Path(f"permissions_backup_{timestamp}.csv")
 
     with requests.Session() as session:
-        project_name_map = get_project_name_map(session, bearer)
-        users, last_login_map = get_all_users_and_last_login(session, bearer)
+        client = XcuresApiClient(
+            session=session,
+            base_url=BASE_URL,
+            bearer_token=bearer,
+            timeout_seconds=TIMEOUT,
+            max_retries=MAX_RETRIES,
+            backoff_seconds=BACKOFF,
+        )
+        project_name_map = get_project_name_map(client)
+        users, last_login_map = get_all_users_and_last_login(client)
 
         total = len(users)
         rows: List[Dict[str, Any]] = []
@@ -222,7 +176,7 @@ def main() -> int:
             if not user_id:
                 continue
 
-            detail = get_user_detail(session, bearer, user_id)
+            detail = get_user_detail(client, user_id)
 
             project_ids = detail.get("projectIds") if isinstance(detail.get("projectIds"), list) else []
             project_names = [
