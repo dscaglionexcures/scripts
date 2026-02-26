@@ -41,6 +41,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 import requests
+from api_common import request_with_retry as common_request_with_retry
 from progress_common import progress_iter
 from auth_common import build_json_headers, get_xcures_bearer_token, load_env_file
 
@@ -102,42 +103,16 @@ def request_with_retry(
     max_retries: int = DEFAULT_MAX_RETRIES,
     backoff_seconds: float = DEFAULT_BACKOFF_SECONDS,
 ) -> requests.Response:
-    last_resp: Optional[requests.Response] = None
-    last_exc: Optional[BaseException] = None
-
-    for attempt in range(1, max_retries + 1):
-        try:
-            log(f"{method} {url} attempt={attempt}/{max_retries} timeout={timeout}s")
-            resp = session.request(
-                method,
-                url,
-                headers=auth_headers(),
-                json=json_body,
-                timeout=timeout,
-            )
-            last_resp = resp
-
-            if 200 <= resp.status_code < 300:
-                return resp
-
-            if resp.status_code in (429, 500, 502, 503, 504):
-                log(f"HTTP {resp.status_code} retryable. body={body_preview(resp.text, 400)}")
-                time.sleep(backoff_seconds * (2 ** (attempt - 1)))
-                continue
-
-            raise RuntimeError(f"HTTP {resp.status_code} {url} body={body_preview(resp.text)}")
-
-        except (requests.Timeout, requests.ConnectionError, requests.RequestException) as e:
-            last_exc = e
-            log(f"Request error (no HTTP response): {type(e).__name__}: {e}")
-            time.sleep(backoff_seconds * (2 ** (attempt - 1)))
-
-    if last_resp is not None:
-        raise RuntimeError(
-            f"request_with_retry exhausted; last_status={last_resp.status_code} url={url} body={body_preview(last_resp.text)}"
-        )
-    raise RuntimeError(
-        f"request_with_retry exhausted; no HTTP response received; url={url} last_error={type(last_exc).__name__ if last_exc else 'unknown'}: {last_exc}"
+    return common_request_with_retry(
+        session,
+        method,
+        url,
+        headers=auth_headers(),
+        json_body=json_body,
+        timeout_seconds=timeout,
+        max_retries=max_retries,
+        backoff_seconds=backoff_seconds,
+        logger=log,
     )
 
 

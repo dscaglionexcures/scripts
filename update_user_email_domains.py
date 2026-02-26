@@ -28,6 +28,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 import requests
+from api_common import request_with_retry as common_request_with_retry
 from progress_common import progress_iter
 from auth_common import build_json_headers, get_xcures_bearer_token, load_env_file
 
@@ -87,52 +88,18 @@ def request_with_retry(
     max_retries: int = 5,
     backoff_seconds: float = 1.0,
 ) -> requests.Response:
-    """
-    Retries on transient failures (429, 5xx). Surfaces useful details if exhausted.
-    """
-    headers = auth_headers()
-    last_resp: Optional[requests.Response] = None
-    last_exc: Optional[BaseException] = None
-
-    for attempt in range(1, max_retries + 1):
-        try:
-            if VERBOSE:
-                _log(f"{method} {url} params={params or {}}")
-            t0 = time.time()
-            resp = session.request(
-                method,
-                url,
-                headers=headers,
-                params=params,
-                json=json_body,
-                timeout=timeout,
-            )
-            last_resp = resp
-            elapsed_ms = int((time.time() - t0) * 1000)
-
-            if VERBOSE:
-                _log(f"-> {resp.status_code} in {elapsed_ms}ms body={_body_preview(resp.text)}")
-
-            if 200 <= resp.status_code < 300:
-                return resp
-
-            if resp.status_code in (429, 500, 502, 503, 504):
-                time.sleep(backoff_seconds * (2 ** (attempt - 1)))
-                continue
-
-            raise RuntimeError(f"HTTP {resp.status_code} {url} body={_body_preview(resp.text, 800)}")
-
-        except (requests.Timeout, requests.ConnectionError) as e:
-            last_exc = e
-            if VERBOSE:
-                _log(f"!! network error {type(e).__name__}: {e}")
-            time.sleep(backoff_seconds * (2 ** (attempt - 1)))
-
-    if last_resp is not None:
-        raise RuntimeError(
-            f"request_with_retry exhausted; last_status={last_resp.status_code} url={url} body={_body_preview(last_resp.text, 800)}"
-        )
-    raise RuntimeError(f"request_with_retry exhausted; no response; last_exc={last_exc}")
+    return common_request_with_retry(
+        session,
+        method,
+        url,
+        headers=auth_headers(),
+        params=params,
+        json_body=json_body,
+        timeout_seconds=timeout,
+        max_retries=max_retries,
+        backoff_seconds=backoff_seconds,
+        logger=_log if VERBOSE else None,
+    )
 
 
 def parse_json(resp: requests.Response) -> Any:

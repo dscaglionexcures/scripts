@@ -19,6 +19,7 @@ from pathlib import Path
 from typing import Any, Dict, Optional
 
 import requests
+from api_common import request_with_retry
 from auth_common import (
     build_json_headers,
     fetch_client_credentials_token,
@@ -63,18 +64,23 @@ def request_json(
     project_id = os.getenv("XCURES_PROJECT_ID", PROJECT_ID)
     headers = build_json_headers(bearer_token=token, project_id=project_id)
 
-    resp = requests.request(
-        method=method,
-        url=url,
-        headers=headers,
-        params=params,
-        json=body,
-        timeout=timeout_s,
-    )
-
-    if not resp.ok:
+    try:
+        with requests.Session() as session:
+            resp = request_with_retry(
+                session=session,
+                method=method,
+                url=url,
+                headers=headers,
+                params=params,
+                json_body=body,
+                timeout_seconds=timeout_s,
+                max_retries=3,
+                backoff_seconds=1.0,
+                max_sleep_seconds=5.0,
+            )
+    except RuntimeError as e:
         raise ApiError(
-            f"{method} {url} failed: HTTP {resp.status_code}\n{resp.text}"
+            f"{method} {url} failed: {e}"
         )
 
     if resp.status_code == 204 or not resp.text.strip():

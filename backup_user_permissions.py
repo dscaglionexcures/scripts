@@ -20,6 +20,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 import requests
+from api_common import request_with_retry as common_request_with_retry
 from progress_common import progress_iter
 from auth_common import build_json_headers, get_xcures_bearer_token, load_env_file
 
@@ -68,30 +69,16 @@ def request_with_retry(
     bearer: str,
     params: Optional[Dict[str, Any]] = None,
 ) -> requests.Response:
-
-    for attempt in range(1, MAX_RETRIES + 1):
-        try:
-            resp = session.request(
-                method,
-                url,
-                headers=headers(bearer),
-                params=params,
-                timeout=TIMEOUT,
-            )
-
-            if 200 <= resp.status_code < 300:
-                return resp
-
-            if resp.status_code in (429, 500, 502, 503, 504):
-                time.sleep(BACKOFF * (2 ** (attempt - 1)))
-                continue
-
-            raise RuntimeError(f"HTTP {resp.status_code}: {resp.text[:800]}")
-
-        except requests.RequestException:
-            time.sleep(BACKOFF * (2 ** (attempt - 1)))
-
-    raise RuntimeError(f"Request failed after retries: {url}")
+    return common_request_with_retry(
+        session,
+        method,
+        url,
+        headers=headers(bearer),
+        params=params,
+        timeout_seconds=TIMEOUT,
+        max_retries=MAX_RETRIES,
+        backoff_seconds=BACKOFF,
+    )
 
 
 # ------------------------------------------------

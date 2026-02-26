@@ -7,6 +7,7 @@ from progress_common import progress_bar
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 from requests.exceptions import ConnectionError, Timeout
+from api_common import request_with_retry as common_request_with_retry
 from auth_common import (
     build_json_headers,
     fetch_client_credentials_token,
@@ -104,26 +105,29 @@ token_manager = TokenManager()
 # Safe Request Wrapper
 # ----------------------------
 def safe_request(method, url, **kwargs):
-    for attempt in range(3):
+    for auth_attempt in range(2):
         try:
-            kwargs["headers"] = token_manager.get_headers()
-            resp = session.request(method, url, **kwargs)
-
-            if resp.status_code == 401:
+            resp = common_request_with_retry(
+                session=session,
+                method=method,
+                url=url,
+                headers=token_manager.get_headers(),
+                params=kwargs.get("params"),
+                json_body=kwargs.get("json"),
+                timeout_seconds=kwargs.get("timeout", 60),
+                max_retries=3,
+                backoff_seconds=2.0,
+                max_sleep_seconds=6.0,
+            )
+            return resp
+        except RuntimeError as e:
+            if "HTTP 401" in str(e) and auth_attempt == 0:
                 print("Token expired mid-run. Re-authenticating...")
                 token_manager.authenticate()
                 continue
+            raise SystemExit(f"Request failed: {e}")
 
-            if not resp.ok:
-                raise SystemExit(f"Request failed: {resp.status_code} {resp.text}")
-
-            return resp
-
-        except (ConnectionError, Timeout):
-            print(f"Network error. Retry attempt {attempt + 1}/3...")
-            time.sleep(2 * (attempt + 1))
-
-    raise SystemExit("Request failed after retries.")
+    raise SystemExit("Request failed after auth retries.")
 
 
 # ----------------------------

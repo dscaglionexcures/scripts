@@ -22,11 +22,11 @@ from __future__ import annotations
 import argparse
 import os
 import sys
-import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 import requests
+from api_common import request_with_retry as common_request_with_retry
 from progress_common import progress_iter
 from auth_common import build_json_headers, get_xcures_bearer_token, load_env_file
 
@@ -53,60 +53,17 @@ def request_with_retry(
     timeout: int = DEFAULT_TIMEOUT_SECONDS,
     max_retries: int = 5,
 ) -> requests.Response:
-    """
-    Basic retry for transient errors (429/5xx/timeouts).
-    - Keeps the last HTTP response (status + body snippet) so failures are actionable.
-    - Includes the last exception message when the failure is network-level.
-    """
-    last_exc: Optional[Exception] = None
-    last_resp: Optional[requests.Response] = None
-
-    for attempt in range(1, max_retries + 1):
-        try:
-            resp = session.request(
-                method=method,
-                url=url,
-                headers=headers,
-                params=params,
-                json=json_body,
-                timeout=timeout,
-            )
-            last_resp = resp
-
-            if resp.status_code in (429, 500, 502, 503, 504):
-                # Exponential backoff with cap
-                sleep_s = min(2 ** attempt, 20)
-                time.sleep(sleep_s)
-                continue
-
-            return resp
-
-        except (requests.Timeout, requests.ConnectionError) as e:
-            last_exc = e
-            sleep_s = min(2 ** attempt, 20)
-            time.sleep(sleep_s)
-
-    # If we got HTTP responses but they were always retryable, surface details.
-    if last_resp is not None:
-        body_preview = (last_resp.text or "").strip().replace("\\n", " ")
-        if len(body_preview) > 800:
-            body_preview = body_preview[:800] + "...<truncated>"
-        raise RuntimeError(
-            "request_with_retry: exhausted retries; "
-            f"last_status={last_resp.status_code} "
-            f"url={url} "
-            f"body={body_preview}"
-        )
-
-    # Otherwise it was a network-level failure with no HTTP response.
-    if last_exc is not None:
-        raise RuntimeError(
-            "request_with_retry: exhausted retries due to network error; "
-            f"url={url} error={type(last_exc).__name__}: {last_exc}"
-        ) from last_exc
-
-    raise RuntimeError(
-        "request_with_retry: exhausted retries without response or exception (unexpected)"
+    return common_request_with_retry(
+        session,
+        method,
+        url,
+        headers=headers,
+        params=params,
+        json_body=json_body,
+        timeout_seconds=timeout,
+        max_retries=max_retries,
+        backoff_seconds=2.0,
+        max_sleep_seconds=20.0,
     )
 
 
