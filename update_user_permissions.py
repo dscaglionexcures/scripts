@@ -26,13 +26,17 @@ from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
 import requests
+from api_common import (
+    DEFAULT_BACKOFF_SECONDS,
+    DEFAULT_MAX_SLEEP_SECONDS,
+    DEFAULT_TIMEOUT_SECONDS,
+)
 from progress_common import progress_iter
 from auth_common import get_xcures_bearer_token, load_env_file
 from xcures_client import XcuresApiClient
 
 
 DEFAULT_BASE_URL = "https://partner.xcures.com"
-DEFAULT_TIMEOUT_SECONDS = 60
 PERMISSION_TO_ADD = "Summary_Checklist"
 
 load_env_file(Path(__file__).resolve().parent / ".env")
@@ -188,9 +192,8 @@ def main() -> int:
             bearer_token=args.bearer,
             project_id=args.project_id,
             timeout_seconds=args.timeout,
-            max_retries=5,
-            backoff_seconds=2.0,
-            max_sleep_seconds=20.0,
+            backoff_seconds=DEFAULT_BACKOFF_SECONDS,
+            max_sleep_seconds=DEFAULT_MAX_SLEEP_SECONDS,
         )
         # 1) list users
         users = get_all_users(

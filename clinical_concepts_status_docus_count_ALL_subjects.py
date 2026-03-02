@@ -24,6 +24,7 @@ from typing import Any, Dict, List, Optional, Tuple
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import requests
+from api_common import DEFAULT_MAX_RETRIES
 from progress_common import progress_bar
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
@@ -91,7 +92,7 @@ def build_session() -> requests.Session:
     session = requests.Session()
 
     retry = Retry(
-        total=5,
+        total=DEFAULT_MAX_RETRIES,
         backoff_factor=0.5,
         status_forcelist=[429, 500, 502, 503, 504],
         allowed_methods=["GET", "POST"],

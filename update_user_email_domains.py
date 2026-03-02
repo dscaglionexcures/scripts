@@ -28,13 +28,13 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 import requests
+from api_common import DEFAULT_BACKOFF_SECONDS, DEFAULT_TIMEOUT_SECONDS
 from progress_common import progress_iter
 from auth_common import load_env_file
 from xcures_client import XcuresApiClient
 
 
 DEFAULT_BASE_URL = "https://partner.xcures.com"
-DEFAULT_TIMEOUT_SECONDS = 60
 EXCLUDE_DOMAIN = "xcures.com"
 
 load_env_file(Path(__file__).resolve().parent / ".env")
@@ -164,8 +164,7 @@ def main() -> int:
             base_url=base_url,
             project_id=os.environ.get("XCURES_PROJECT_ID"),
             timeout_seconds=args.timeout,
-            max_retries=5,
-            backoff_seconds=1.0,
+            backoff_seconds=DEFAULT_BACKOFF_SECONDS,
             logger=_log if VERBOSE else None,
         )
         users = get_all_users(client, page_size=args.page_size)

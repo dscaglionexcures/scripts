@@ -19,7 +19,7 @@ from pathlib import Path
 from typing import Any, Dict, Optional
 
 import requests
-from api_common import request_with_retry
+from api_common import request_json_with_retry_and_headers
 from auth_common import (
     build_json_headers,
     fetch_client_credentials_token,
@@ -66,7 +66,7 @@ def request_json(
 
     try:
         with requests.Session() as session:
-            resp = request_with_retry(
+            return request_json_with_retry_and_headers(
                 session=session,
                 method=method,
                 url=url,
@@ -74,19 +74,11 @@ def request_json(
                 params=params,
                 json_body=body,
                 timeout_seconds=timeout_s,
-                max_retries=3,
-                backoff_seconds=1.0,
-                max_sleep_seconds=5.0,
             )
     except RuntimeError as e:
         raise ApiError(
             f"{method} {url} failed: {e}"
         )
-
-    if resp.status_code == 204 or not resp.text.strip():
-        return None
-
-    return resp.json()
 
 
 # -------------------------

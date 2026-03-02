@@ -3,6 +3,7 @@ import time
 from pathlib import Path
 
 import requests
+from api_common import DEFAULT_MAX_RETRIES
 from progress_common import progress_bar
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
@@ -19,13 +20,59 @@ from auth_common import (
 # ----------------------------
 load_env_file(Path(__file__).resolve().parent / ".env")
 
-BASE_URL = os.getenv("BASE_URL", "https://partner.xcures.com").strip()
+# Prefer internal API base-url env var used across scripts; keep BASE_URL fallback.
+BASE_URL = os.getenv(
+    "XCURES_BASE_URL",
+    os.getenv("BASE_URL", "https://partner.xcures.com"),
+).strip()
 PROJECT_ID = require_env("XCURES_PROJECT_ID")
-_ = require_env("XCURES_CLIENT_ID")
-_ = require_env("XCURES_CLIENT_SECRET")
+INITIAL_BEARER_TOKEN = require_env("XCURES_BEARER_TOKEN")
+TOKEN_ROTATE_AFTER_SECONDS = 55 * 60
+DOCUMENT_DELAY_SECONDS = float(os.getenv("DOCUMENT_DELAY_SECONDS", "2").strip() or "2")
 
 DOWNLOAD_ROOT = Path("downloads")
 DOWNLOAD_ROOT.mkdir(exist_ok=True)
+
+SUBJECTS_ENDPOINT = "/api/patient-registry/subject"
+DOCUMENTS_ENDPOINT = "/api/patient-registry/document"
+
+
+class ManualBearerTokenManager:
+    def __init__(self, initial_token: str, rotate_after_seconds: int) -> None:
+        self._token = initial_token.strip()
+        self._rotate_after_seconds = rotate_after_seconds
+        self._updated_at = time.monotonic()
+
+    def _prompt_for_new_token(self, reason: str) -> None:
+        print(f"\n{reason}")
+        while True:
+            new_token = input("Enter new XCURES_BEARER_TOKEN: ").strip()
+            if new_token:
+                self._token = new_token
+                self._updated_at = time.monotonic()
+                print("Token updated. Resuming...\n")
+                return
+            print("Token cannot be blank.")
+
+    def get_token(self, *, force_refresh: bool = False) -> str:
+        elapsed = time.monotonic() - self._updated_at
+        if force_refresh:
+            self._prompt_for_new_token("API returned 401. A new bearer token is required.")
+        elif elapsed >= self._rotate_after_seconds:
+            mins = int(elapsed // 60)
+            self._prompt_for_new_token(
+                f"Bearer token has been active for {mins} minutes (rotation threshold: 55)."
+            )
+        return self._token
+
+
+class RotatingBearerXcuresApiClient(XcuresApiClient):
+    def __init__(self, *, token_manager: ManualBearerTokenManager, **kwargs) -> None:
+        super().__init__(**kwargs)
+        self._token_manager = token_manager
+
+    def _get_bearer_token(self, *, force_refresh: bool = False) -> str:
+        return self._token_manager.get_token(force_refresh=force_refresh)
 
 
 # ----------------------------
@@ -35,7 +82,7 @@ def build_session():
     session = requests.Session()
 
     retry = Retry(
-        total=5,
+        total=DEFAULT_MAX_RETRIES,
         backoff_factor=1.5,
         status_forcelist=[502, 503, 504],
         allowed_methods=["GET", "POST"],
@@ -55,12 +102,16 @@ def build_session():
 
 
 session = build_session()
-api_client = XcuresApiClient(
+token_manager = ManualBearerTokenManager(
+    initial_token=INITIAL_BEARER_TOKEN,
+    rotate_after_seconds=TOKEN_ROTATE_AFTER_SECONDS,
+)
+api_client = RotatingBearerXcuresApiClient(
     session=session,
+    token_manager=token_manager,
     base_url=BASE_URL,
     project_id=PROJECT_ID,
     timeout_seconds=120,
-    max_retries=3,
     backoff_seconds=2.0,
     max_sleep_seconds=6.0,
 )
@@ -87,7 +138,7 @@ def safe_request(method, url, **kwargs):
 # ----------------------------
 def iter_subjects(page_size=200):
     yield from api_client.iter_paginated(
-        "/api/v1/patient-registry/subject",
+        SUBJECTS_ENDPOINT,
         page_size=page_size,
         timeout_seconds=60,
     )
@@ -98,20 +149,17 @@ def iter_subjects(page_size=200):
 # ----------------------------
 def iter_documents_for_subject(subject_id, page_size=200):
     yield from api_client.iter_paginated(
-        "/api/v1/patient-registry/document",
+        DOCUMENTS_ENDPOINT,
         params={"subjectId": subject_id},
         page_size=page_size,
         timeout_seconds=120,
     )
 
 
-# ----------------------------
-# Document Details (contains signedS3Url)
-# ----------------------------
 def get_document_details(document_id):
     data = api_client.request_json(
         "GET",
-        f"/api/v1/patient-registry/document/{document_id}",
+        f"{DOCUMENTS_ENDPOINT}/{document_id}",
         timeout_seconds=120,
     )
     if not isinstance(data, dict):
@@ -119,8 +167,25 @@ def get_document_details(document_id):
     return data
 
 
+def get_document_pdf_url(document_id):
+    data = api_client.request_json(
+        "GET",
+        f"{DOCUMENTS_ENDPOINT}/{document_id}/pdf",
+        timeout_seconds=120,
+    )
+    if not isinstance(data, dict):
+        raise SystemExit(f"Unexpected PDF URL payload for {document_id}: {type(data)}")
+    return data
+
+
+def is_xml_document(file_name: str, content_type: str) -> bool:
+    file_name_l = (file_name or "").strip().lower()
+    content_type_l = (content_type or "").strip().lower()
+    return file_name_l.endswith(".xml") or ("xml" in content_type_l)
+
+
 # ----------------------------
-# Download from Signed S3 URL
+# Download from Signed URL
 # ----------------------------
 def download_file(signed_url, output_path: Path):
     for attempt in range(3):
@@ -145,6 +210,11 @@ def download_file(signed_url, output_path: Path):
     raise SystemExit("S3 download failed after retries.")
 
 
+def pause_between_documents() -> None:
+    if DOCUMENT_DELAY_SECONDS > 0:
+        time.sleep(DOCUMENT_DELAY_SECONDS)
+
+
 # ----------------------------
 # Main
 # ----------------------------
@@ -156,6 +226,7 @@ def main():
 
     total_docs_found = 0
     total_docs_downloaded = 0
+    total_docs_skipped = 0
 
     with progress_bar(total=len(subjects), desc="Patients Processed", unit="patient") as subj_bar:
         for subject in subjects:
@@ -179,15 +250,34 @@ def main():
                         doc_id = doc.get("id")
                         if not doc_id:
                             doc_bar.update(1)
+                            pause_between_documents()
                             continue
 
                         details = get_document_details(doc_id)
-                        signed_url = details.get("signedS3Url")
-                        file_name = details.get("fileName") or f"{doc_id}"
+                        file_name = str(details.get("fileName") or f"{doc_id}")
+                        content_type = str(details.get("contentType") or "")
+
+                        if is_xml_document(file_name, content_type):
+                            try:
+                                pdf_meta = get_document_pdf_url(doc_id)
+                            except RuntimeError as e:
+                                print(f"XML->PDF failed for document {doc_id}: {e}")
+                                total_docs_skipped += 1
+                                doc_bar.update(1)
+                                pause_between_documents()
+                                continue
+                            signed_url = pdf_meta.get("signedUrl")
+                            file_name = str(pdf_meta.get("fileName") or f"{doc_id}.pdf")
+                            if not file_name.lower().endswith(".pdf"):
+                                file_name = f"{file_name}.pdf"
+                        else:
+                            signed_url = details.get("signedS3Url")
 
                         if not signed_url:
-                            print(f"No signedS3Url for document {doc_id}")
+                            print(f"No downloadable URL available for document {doc_id}")
+                            total_docs_skipped += 1
                             doc_bar.update(1)
+                            pause_between_documents()
                             continue
 
                         subject_folder = DOWNLOAD_ROOT / subject_id
@@ -199,6 +289,7 @@ def main():
 
                         total_docs_downloaded += 1
                         doc_bar.update(1)
+                        pause_between_documents()
 
             subj_bar.update(1)
 
@@ -206,6 +297,7 @@ def main():
     print("Processing Complete")
     print("Total Documents Found:", total_docs_found)
     print("Total Documents Downloaded:", total_docs_downloaded)
+    print("Total Documents Skipped:", total_docs_skipped)
     print("-----------------------------------------")
 
 

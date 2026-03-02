@@ -41,15 +41,17 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 import requests
-from api_common import request_with_retry as common_request_with_retry
+from api_common import (
+    DEFAULT_BACKOFF_SECONDS,
+    DEFAULT_TIMEOUT_SECONDS,
+    parse_json_or_raise,
+    request_with_retry as common_request_with_retry,
+)
 from progress_common import progress_iter
 from auth_common import build_json_headers, get_xcures_bearer_token, load_env_file
 
 SCRIPT_BUILD = "2026-01-12-non-null-create-payload"
 DEFAULT_BASE_URL = "https://partner.xcures.com"
-DEFAULT_TIMEOUT_SECONDS = 60
-DEFAULT_MAX_RETRIES = 5
-DEFAULT_BACKOFF_SECONDS = 1.0
 VERBOSE = True
 
 load_env_file(Path(__file__).resolve().parent / ".env")
@@ -62,11 +64,6 @@ def utc_ts() -> str:
 def log(msg: str) -> None:
     if VERBOSE:
         print(f"[{utc_ts()}] {msg}", file=sys.stderr)
-
-
-def body_preview(text: str, limit: int = 1200) -> str:
-    t = (text or "").strip().replace("\n", " ")
-    return t if len(t) <= limit else t[:limit] + "...<truncated>"
 
 
 def pretty(obj: Any) -> str:
@@ -100,7 +97,6 @@ def request_with_retry(
     *,
     json_body: Optional[Dict[str, Any]] = None,
     timeout: int = DEFAULT_TIMEOUT_SECONDS,
-    max_retries: int = DEFAULT_MAX_RETRIES,
     backoff_seconds: float = DEFAULT_BACKOFF_SECONDS,
 ) -> requests.Response:
     return common_request_with_retry(
@@ -110,17 +106,9 @@ def request_with_retry(
         headers=auth_headers(),
         json_body=json_body,
         timeout_seconds=timeout,
-        max_retries=max_retries,
         backoff_seconds=backoff_seconds,
         logger=log,
     )
-
-
-def parse_json(resp: requests.Response) -> Any:
-    try:
-        return resp.json()
-    except Exception:
-        raise RuntimeError(f"Non-JSON response: status={resp.status_code} body={body_preview(resp.text)}")
 
 
 # Create schema fields (excluding id/name)
@@ -372,7 +360,7 @@ def main() -> int:
         next(prog)
         list_url = f"{base_url}/api/patient-registry/project"
         list_resp = request_with_retry(session, "GET", list_url)
-        projects_raw = parse_json(list_resp)
+        projects_raw = parse_json_or_raise(list_resp)
         if not isinstance(projects_raw, list):
             raise RuntimeError(f"Unexpected /project list response type: {type(projects_raw)}")
         projects: List[Dict[str, Any]] = [p for p in projects_raw if isinstance(p, dict)]
@@ -384,7 +372,7 @@ def main() -> int:
         next(prog)
         detail_url = f"{base_url}/api/patient-registry/project/{source_project_id}"
         detail_resp = request_with_retry(session, "GET", detail_url)
-        detail = parse_json(detail_resp)
+        detail = parse_json_or_raise(detail_resp)
         if not isinstance(detail, dict):
             raise RuntimeError(f"Unexpected /project/{{id}} response type: {type(detail)}")
 
@@ -443,7 +431,7 @@ def main() -> int:
         next(prog)
         post_url = f"{base_url}/api/patient-registry/project"
         post_resp = request_with_retry(session, "POST", post_url, json_body=normalized_payload)
-        created = parse_json(post_resp)
+        created = parse_json_or_raise(post_resp)
 
     print("\n=== Created Project Response ===\n")
     print(pretty(created))

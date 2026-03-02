@@ -1,155 +1,679 @@
-# Use this script to update all users in a tenant when new projects are created
-# First use case is MedSync as they have a large number of projects that grows weekly
+#!/usr/bin/env python3
+# export XCURES_BEARER_TOKEN="PASTE_TOKEN_HERE"
 
+"""
+Hardened bulk project assignment tool for xCures users.
+
+Safety model:
+- Default mode is --dry-run (no writes).
+- Use explicit --apply to perform PUT updates.
+- Pre-write backup snapshot is required in apply mode.
+- Audit log (JSONL) captures plan and execution events.
+- Config-driven target project list via JSON file.
+
+Default config path:
+  configs/update_users_new_projects.json
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
 import os
+import sys
+import time
+from dataclasses import dataclass
+from datetime import datetime, timezone
 from pathlib import Path
+from typing import Any, Dict, Iterable, List, Optional, Tuple
 
-import pandas as pd
-from progress_common import progress_iter
-from auth_common import load_env_file
-from xcures_client import XcuresApiClient
 import requests
 
-load_env_file(Path(__file__).resolve().parent / ".env")
+try:
+    from tqdm import tqdm  # type: ignore
+except Exception:
+    tqdm = None
 
-# get existing user permissions
-def get_user_permissions(client: XcuresApiClient, user_id):
-    data = client.request_json(
-        "GET",
-        f"/api/patient-registry/user/{user_id}",
-        params={"userId": user_id},
-    )
-    if not isinstance(data, dict):
-        raise RuntimeError(f"Unexpected user detail payload for id={user_id}: {type(data)}")
-    return data
-    
-# update user permissions  
-def update_user_permissions(client: XcuresApiClient, user_id, user, coming, going):
-    for i in coming:
-        if i not in user['permissions']: user['permissions'].append(i)
-    for j in going:
-        if j in user['permissions']: user['permissions'].remove(j)
-    payload = user
-    data = client.request_json("PUT", f"/api/patient-registry/user/{user_id}", json_body=payload)
-    if not isinstance(data, dict):
-        raise RuntimeError(f"Unexpected update response payload for id={user_id}: {type(data)}")
-    return data
 
-# Get all users
+DEFAULT_BASE_URL = "https://partner.xcures.com"
+DEFAULT_CONFIG_PATH = Path(__file__).resolve().parent / "configs" / "update_users_new_projects.json"
+DEFAULT_TIMEOUT_SECONDS = 60
+DEFAULT_MAX_RETRIES = 5
+DEFAULT_BACKOFF_SECONDS = 1.0
+DEFAULT_PAGE_SIZE = 25
 
-all_responses = []
-with requests.Session() as _session:
-    client = XcuresApiClient(
-        session=_session,
-        base_url=os.environ.get("BASE_URL", "https://partner.xcures.com"),
-        project_id=os.environ.get("XCURES_PROJECT_ID"),
-        timeout_seconds=60,
-        max_retries=5,
-        backoff_seconds=1.0,
-    )
-    all_responses.extend(
-        client.list_paginated(
-            "/api/patient-registry/user",
-            params={"hasActiveFilter": "false", "numberOfActiveFilters": 0},
-            page_size=25,
+
+def utc_iso() -> str:
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def utc_compact() -> str:
+    return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+
+
+def parse_env_file(path: Path) -> Dict[str, str]:
+    loaded: Dict[str, str] = {}
+    if not path.exists():
+        raise RuntimeError(f"Env file not found: {path}")
+
+    for raw in path.read_text(encoding="utf-8").splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        key = key.strip()
+        value = value.strip().strip('"').strip("'")
+        if not key:
+            continue
+        loaded[key] = value
+        os.environ.setdefault(key, value)
+
+    return loaded
+
+
+class AuditLog:
+    def __init__(self, path: Path):
+        self.path = path
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+
+    def write(self, event: str, **fields: Any) -> None:
+        row = {
+            "ts": utc_iso(),
+            "event": event,
+            **fields,
+        }
+        with self.path.open("a", encoding="utf-8") as f:
+            f.write(json.dumps(row, ensure_ascii=True) + "\n")
+
+
+def progress_iter(items: Iterable[Any], *, desc: str, total: int):
+    if tqdm is not None:
+        return tqdm(items, total=total, desc=desc, unit="user")
+
+    width = 30
+
+    def _gen():
+        for idx, item in enumerate(items, start=1):
+            pct = idx / total if total else 1
+            filled = int(width * pct)
+            bar = "#" * filled + "-" * (width - filled)
+            print(f"\r{desc}: |{bar}| {pct*100:6.2f}% ({idx}/{total})", end="", flush=True)
+            yield item
+        print()
+
+    return _gen()
+
+
+def body_preview(text: str, limit: int = 1000) -> str:
+    flat = (text or "").strip().replace("\n", " ")
+    if len(flat) > limit:
+        return flat[:limit] + "...<truncated>"
+    return flat
+
+
+def get_bearer_token() -> str:
+    token = os.environ.get("XCURES_BEARER_TOKEN", "").strip()
+    if not token:
+        raise RuntimeError(
+            "XCURES_BEARER_TOKEN is not set. "
+            "Run: export XCURES_BEARER_TOKEN='your_token_here'"
         )
+    return token
+
+
+def dedupe_strings(values: Iterable[str]) -> List[str]:
+    out: List[str] = []
+    seen = set()
+    for value in values:
+        if not isinstance(value, str):
+            continue
+        cleaned = value.strip()
+        if not cleaned or cleaned in seen:
+            continue
+        seen.add(cleaned)
+        out.append(cleaned)
+    return out
+
+
+def build_headers(token: str, project_id_header: Optional[str]) -> Dict[str, str]:
+    headers = {
+        "accept": "application/json",
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json",
+    }
+    if project_id_header:
+        headers["ProjectId"] = project_id_header
+    return headers
+
+
+def request_with_retry(
+    session: requests.Session,
+    method: str,
+    url: str,
+    *,
+    headers: Dict[str, str],
+    params: Optional[Dict[str, Any]] = None,
+    json_body: Optional[Dict[str, Any]] = None,
+    timeout_seconds: int,
+    max_retries: int,
+    backoff_seconds: float,
+) -> requests.Response:
+    last_response: Optional[requests.Response] = None
+    last_exception: Optional[BaseException] = None
+
+    for attempt in range(1, max_retries + 1):
+        try:
+            response = session.request(
+                method=method,
+                url=url,
+                headers=headers,
+                params=params,
+                json=json_body,
+                timeout=timeout_seconds,
+            )
+            last_response = response
+
+            if 200 <= response.status_code < 300:
+                return response
+
+            if response.status_code in (429, 500, 502, 503, 504):
+                time.sleep(backoff_seconds * (2 ** (attempt - 1)))
+                continue
+
+            raise RuntimeError(
+                f"HTTP {response.status_code} {url} body={body_preview(response.text)}"
+            )
+
+        except (requests.Timeout, requests.ConnectionError, requests.RequestException) as exc:
+            last_exception = exc
+            time.sleep(backoff_seconds * (2 ** (attempt - 1)))
+
+    if last_response is not None:
+        raise RuntimeError(
+            f"request_with_retry exhausted; last_status={last_response.status_code} "
+            f"url={url} body={body_preview(last_response.text)}"
+        )
+
+    raise RuntimeError(
+        "request_with_retry exhausted with no HTTP response; "
+        f"url={url} last_exception={type(last_exception).__name__ if last_exception else 'unknown'}"
     )
-    
-df = pd.DataFrame(all_responses)
-df
 
 
-# Include the ProjectIds to update each user with.
-# Example: ['96e14c84-50bb-4a4c-b5a7-1ae81e7245d2','a011aa0f-7b3f-4d94-989f-6c6213fd0683','bfa7829b-eb54-424a-aabe-0e9a6057b9f6']
-projects = [
-'90736e20-588a-41f6-b1aa-2181186dcd69',
-'cf9e4891-55cf-4af5-9d8a-b3be685aea20',
-'25a70947-a567-468c-b056-a0dc000721de',
-'6ff565a2-3272-4135-b8d9-f3785878a6ff',
-'5ad607d9-6023-464e-b846-2b905313fd99',
-'68015165-017f-4009-a987-f99cb5d1f315',
-'5f509a2a-52f1-4c30-93a3-8280209e2747',
-'08a9ffb7-4af6-416b-ac10-0c9aaab47d6d',
-'3677201e-6f48-4cb5-92c9-15bce94dd659',
-'126761ff-d462-4464-8b15-236d811d624c',
-'1fdd8141-f3f2-42d8-9bb0-04f5494c60fe',
-'d5ad6669-9bb6-4a03-b54d-d8aa43378caa',
-'a16b4084-88c4-429d-8546-361b0ecf31be',
-'9063352d-101d-4374-a5ae-383608dfbf59',
-'27ad7c49-a24c-4b76-8d25-6494fd9a1ac0',
-'48247b05-82c6-4c67-b7e8-4bb80e792bb9',
-'47356735-48a9-48c8-bc51-af277d2ee146',
-'47920c44-1e3e-401e-bfb7-6abb9f92894d',
-'7e311ef4-9821-4354-981c-7d37483fad29',
-'526be917-d70b-482d-902a-07d632c98568',
-'90c1579a-2c0a-478a-9787-c017cce03c91',
-'a8fcecc9-33d0-46c7-9e74-0c7fa01a0333',
-'7b41a105-3826-4082-8a60-624a6cd7fb2f',
-'1b290e2e-f719-40bf-b23e-904f23083a8b',
-'0565fdf4-b32d-426d-ae3d-0d47ce2492a8',
-'41154807-33c4-4c6e-a53b-66d4554c68fb',
-'54687b01-8c63-4423-883d-4da60ca7b0ee',
-'9d79296b-247a-4145-86fa-ca2e7c9e4e19',
-'af066386-09a7-4a89-9de5-77ac81fb7f4c',
-'f1a410d3-d92a-4450-bcaf-d983a376fe48',
-'cffaae10-abce-464d-8fcf-0a78c9a2f9d0',
-'473bf50d-cd9c-467f-b646-b489710c55fb',
-'3364d9c9-d82f-4bef-a781-bb7accaa314e',
-'683840f7-56a1-42d4-804b-4bae2ae9a84a',
-'0aef2842-1a62-4b2b-81b3-e3292a9df1ef',
-'96e14c84-50bb-4a4c-b5a7-1ae81e7245d2',
-'a011aa0f-7b3f-4d94-989f-6c6213fd0683',
-'bfa7829b-eb54-424a-aabe-0e9a6057b9f6',
-'8a59d558-bcd6-4832-b3c3-6adfe81c2f85',
-'44923042-5ad4-4929-a39b-9123760790bf',
-'f6f7a0ac-6c68-40ec-89cb-b46862916d4c',
-'976e15e0-5772-49e4-b047-f2305cc69f9a',
-'7891f88d-9c5b-4306-a574-a4ebeb41d3e6',
-'c038f864-ee31-4206-959f-5bcf0cf16d63',
-'6aa0e547-f065-416a-a777-b1616fc87f48',
-'715dd62d-99ba-42f4-8eee-83596e10c867',
-'d33bd469-ae16-4080-a60d-619a4855b54a',
-'b8b7d34f-4c00-4318-af57-0ad2d6249cea',
-'09c39a0d-59cb-4ab0-93e4-4b73f825f0f1',
-'2e3eb018-1949-48ba-bb21-879e95dd93a5',
-'a86a83a5-399e-4c80-9d91-e565fc010a7b',
-'30426858-c6a3-4adb-8127-9418502528b1',
-'9f89a8ae-694f-4b96-a16a-de7f975b3ec2',
-'52fa4a8e-8757-4c10-a30e-2806c037d512',
-'42b9ddb2-6c13-4100-b947-0ee6036a99c2',
-'1cb57724-eab3-4495-aebf-6da44e1ad563',
-'36aa21a3-c160-4fd6-90c4-dec30a71fff7',
-'19e55d7e-7d24-4e27-b4a6-eea1e2ce0f8c',
-'a3d64c80-55d2-42c0-86de-fce6ceab740b',
-'09d23035-6762-45b2-a40e-a4209a075651',
-'ac60824e-ef26-4423-8cce-766023763be0',
-'62d2a70d-7783-4e03-9f29-bd1ea57151a0',
-'43fbca45-2898-497d-8ad4-334dac255544',
-'9e622c9c-8a50-4f09-b838-14981548cd45',
-'27d6fac2-a675-43a8-a510-c42345d05403',
-'726cb4cb-4623-4770-8411-e9584c84bb30',
-'8db3abb0-10a5-4723-a50f-fe3845cd807b',
-'701e2bda-a9f5-4067-9e07-f617e17452d9',
-'1dfda117-7dc3-4987-a9d6-58650a64f36a'
-]
+def load_config(path: Path) -> Dict[str, Any]:
+    if not path.exists():
+        raise RuntimeError(f"Config not found: {path}")
+
+    raw = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(raw, dict):
+        raise RuntimeError(f"Config must be a JSON object: {path}")
+    return raw
 
 
-# Progress bar setup
-total_users = len(df)
+def require_int(name: str, value: Any, default: int) -> int:
+    if value is None:
+        return default
+    if isinstance(value, int):
+        return value
+    if isinstance(value, str) and value.strip().isdigit():
+        return int(value.strip())
+    raise RuntimeError(f"Invalid integer for {name}: {value}")
 
-with requests.Session() as _session:
-    client = XcuresApiClient(
-        session=_session,
-        base_url=os.environ.get("BASE_URL", "https://partner.xcures.com"),
-        project_id=os.environ.get("XCURES_PROJECT_ID"),
-        timeout_seconds=60,
-        max_retries=5,
-        backoff_seconds=1.0,
+
+def require_float(name: str, value: Any, default: float) -> float:
+    if value is None:
+        return default
+    if isinstance(value, (int, float)):
+        return float(value)
+    if isinstance(value, str):
+        try:
+            return float(value.strip())
+        except Exception:
+            pass
+    raise RuntimeError(f"Invalid float for {name}: {value}")
+
+
+def get_all_users(
+    session: requests.Session,
+    base_url: str,
+    headers: Dict[str, str],
+    *,
+    page_size: int,
+    timeout_seconds: int,
+    max_retries: int,
+    backoff_seconds: float,
+) -> List[Dict[str, Any]]:
+    endpoint = f"{base_url}/api/patient-registry/user"
+    users: List[Dict[str, Any]] = []
+    page_number = 1
+
+    while True:
+        response = request_with_retry(
+            session,
+            "GET",
+            endpoint,
+            headers=headers,
+            params={
+                "pageSize": page_size,
+                "pageNumber": page_number,
+                "hasActiveFilter": "false",
+                "numberOfActiveFilters": "0",
+            },
+            timeout_seconds=timeout_seconds,
+            max_retries=max_retries,
+            backoff_seconds=backoff_seconds,
+        )
+        payload = response.json()
+
+        if isinstance(payload, dict):
+            page_results = payload.get("results") or []
+            total_count = payload.get("totalCount")
+        elif isinstance(payload, list):
+            page_results = payload
+            total_count = None
+        else:
+            raise RuntimeError(f"Unexpected user list response type: {type(payload)}")
+
+        if not isinstance(page_results, list):
+            raise RuntimeError("Unexpected user list response shape: results is not a list")
+
+        page_users = [u for u in page_results if isinstance(u, dict)]
+        users.extend(page_users)
+
+        if not page_users:
+            break
+
+        if isinstance(total_count, int) and len(users) >= total_count:
+            break
+
+        page_number += 1
+
+    return users
+
+
+def get_user_detail(
+    session: requests.Session,
+    base_url: str,
+    headers: Dict[str, str],
+    user_id: str,
+    *,
+    timeout_seconds: int,
+    max_retries: int,
+    backoff_seconds: float,
+) -> Dict[str, Any]:
+    endpoint = f"{base_url}/api/patient-registry/user/{user_id}"
+    response = request_with_retry(
+        session,
+        "GET",
+        endpoint,
+        headers=headers,
+        params={"userId": user_id},
+        timeout_seconds=timeout_seconds,
+        max_retries=max_retries,
+        backoff_seconds=backoff_seconds,
     )
-    for idx in progress_iter(range(total_users), desc="Updating users", total=total_users, unit="user"):
-        sId = df['id'][idx]
-        user = get_user_permissions(client, sId)
-        for j in projects:
-            if j not in user['projectIds']:
-                user['projectIds'].append(j)
-        update_user_permissions(client, sId, user, [], [])
+    payload = response.json()
+    if not isinstance(payload, dict):
+        raise RuntimeError(f"Unexpected user detail response type for {user_id}: {type(payload)}")
+    return payload
+
+
+def put_user(
+    session: requests.Session,
+    base_url: str,
+    headers: Dict[str, str],
+    user_id: str,
+    payload: Dict[str, Any],
+    *,
+    timeout_seconds: int,
+    max_retries: int,
+    backoff_seconds: float,
+) -> None:
+    endpoint = f"{base_url}/api/patient-registry/user/{user_id}"
+    request_with_retry(
+        session,
+        "PUT",
+        endpoint,
+        headers=headers,
+        json_body=payload,
+        timeout_seconds=timeout_seconds,
+        max_retries=max_retries,
+        backoff_seconds=backoff_seconds,
+    )
+
+
+@dataclass
+class PlannedUpdate:
+    user_id: str
+    email: str
+    project_ids_before: List[str]
+    project_ids_after: List[str]
+    user_record: Dict[str, Any]
+
+
+def build_updated_project_ids(existing: List[str], target: List[str]) -> Tuple[List[str], List[str]]:
+    existing_clean = dedupe_strings(existing)
+    current = set(existing_clean)
+    missing = [pid for pid in target if pid not in current]
+    return existing_clean + missing, missing
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Safely bulk-add project IDs to all users in a tenant.",
+    )
+    parser.add_argument("--env", default=None, help="Path to .env file to preload")
+    parser.add_argument(
+        "--config",
+        default=str(DEFAULT_CONFIG_PATH),
+        help=f"Path to config JSON (default: {DEFAULT_CONFIG_PATH})",
+    )
+    parser.add_argument("--base-url", default=None, help="Override base URL from config")
+    parser.add_argument(
+        "--project-id-header",
+        default=None,
+        help="Optional ProjectId header override",
+    )
+    parser.add_argument(
+        "--project-id",
+        action="append",
+        default=None,
+        help="Target project ID override (repeatable); overrides config list when provided.",
+    )
+
+    mode = parser.add_mutually_exclusive_group(required=False)
+    mode.add_argument("--dry-run", action="store_true", help="Preview only (default)")
+    mode.add_argument("--apply", action="store_true", help="Execute PUT updates")
+
+    parser.add_argument("--limit", type=int, default=None, help="Only process first N users")
+    parser.add_argument("--page-size", type=int, default=None, help="User list page size")
+    parser.add_argument("--timeout", type=int, default=None, help="Request timeout seconds")
+    parser.add_argument("--max-retries", type=int, default=None, help="Retry attempts for transient failures")
+    parser.add_argument("--backoff", type=float, default=None, help="Backoff base seconds")
+    parser.add_argument("--audit-log", default=None, help="Audit JSONL path")
+    parser.add_argument("--backup-path", default=None, help="Backup JSON path (apply mode)")
+    parser.add_argument("--verbose", action="store_true", help="Print each planned/apply action")
+    return parser.parse_args()
+
+
+def main() -> int:
+    args = parse_args()
+
+    mode_name = "apply" if args.apply else "dry-run"
+
+    if args.env:
+        env_path = Path(args.env).expanduser().resolve()
+        loaded = parse_env_file(env_path)
+    else:
+        env_path = None
+        loaded = {}
+
+    config_path = Path(args.config).expanduser().resolve()
+    config = load_config(config_path)
+
+    base_url = str(args.base_url or config.get("base_url") or DEFAULT_BASE_URL).rstrip("/")
+
+    project_id_header = args.project_id_header
+    if project_id_header is None:
+        cfg_header = config.get("project_id_header")
+        project_id_header = str(cfg_header).strip() if isinstance(cfg_header, str) and cfg_header.strip() else None
+
+    if args.project_id:
+        target_project_ids = dedupe_strings(args.project_id)
+    else:
+        target_project_ids = dedupe_strings(config.get("target_project_ids") or [])
+
+    if not target_project_ids:
+        print("Error: no target project IDs provided via --project-id or config.target_project_ids", file=sys.stderr)
+        return 2
+
+    page_size = args.page_size if args.page_size is not None else require_int(
+        "user_page_size", config.get("user_page_size"), DEFAULT_PAGE_SIZE
+    )
+    timeout_seconds = args.timeout if args.timeout is not None else require_int(
+        "request_timeout_seconds", config.get("request_timeout_seconds"), DEFAULT_TIMEOUT_SECONDS
+    )
+    max_retries = args.max_retries if args.max_retries is not None else require_int(
+        "max_retries", config.get("max_retries"), DEFAULT_MAX_RETRIES
+    )
+    backoff_seconds = args.backoff if args.backoff is not None else require_float(
+        "backoff_seconds", config.get("backoff_seconds"), DEFAULT_BACKOFF_SECONDS
+    )
+
+    if args.limit is not None and args.limit < 0:
+        print("Error: --limit must be >= 0", file=sys.stderr)
+        return 2
+
+    token = get_bearer_token()
+    headers = build_headers(token, project_id_header)
+
+    if args.audit_log:
+        audit_path = Path(args.audit_log).expanduser().resolve()
+    else:
+        audit_path = Path.cwd() / "logs" / f"update_users_new_projects_{utc_compact()}.jsonl"
+    audit = AuditLog(audit_path)
+
+    audit.write(
+        "run_start",
+        mode=mode_name,
+        base_url=base_url,
+        config_path=str(config_path),
+        env_path=str(env_path) if env_path else None,
+        env_keys=sorted(loaded.keys()),
+        page_size=page_size,
+        timeout_seconds=timeout_seconds,
+        max_retries=max_retries,
+        backoff_seconds=backoff_seconds,
+        target_project_count=len(target_project_ids),
+        project_id_header=project_id_header,
+    )
+
+    print(f"Mode: {mode_name}")
+    print(f"Config: {config_path}")
+    print(f"Audit log: {audit_path}")
+    print(f"Target project IDs: {len(target_project_ids)}")
+
+    planned_updates: List[PlannedUpdate] = []
+    failed_planning: List[Tuple[str, str]] = []
+
+    with requests.Session() as session:
+        users = get_all_users(
+            session,
+            base_url,
+            headers,
+            page_size=page_size,
+            timeout_seconds=timeout_seconds,
+            max_retries=max_retries,
+            backoff_seconds=backoff_seconds,
+        )
+
+        if args.limit is not None:
+            users = users[: args.limit]
+
+        if not users:
+            print("No users found.")
+            audit.write("run_end", ok=True, users=0, planned_updates=0, updated=0, failed=0)
+            return 0
+
+        print(f"Users discovered: {len(users)}")
+
+        for u in progress_iter(users, desc="Planning updates", total=len(users)):
+            user_id = str(u.get("id") or "").strip()
+            if not user_id:
+                failed_planning.append(("", "missing user id in list payload"))
+                continue
+
+            try:
+                detail = get_user_detail(
+                    session,
+                    base_url,
+                    headers,
+                    user_id,
+                    timeout_seconds=timeout_seconds,
+                    max_retries=max_retries,
+                    backoff_seconds=backoff_seconds,
+                )
+
+                existing_project_ids = detail.get("projectIds") if isinstance(detail.get("projectIds"), list) else []
+                existing_project_ids = [str(x) for x in existing_project_ids]
+
+                merged_project_ids, missing = build_updated_project_ids(existing_project_ids, target_project_ids)
+                if not missing:
+                    continue
+
+                planned = PlannedUpdate(
+                    user_id=user_id,
+                    email=str(detail.get("email") or "").strip(),
+                    project_ids_before=existing_project_ids,
+                    project_ids_after=merged_project_ids,
+                    user_record=detail,
+                )
+                planned_updates.append(planned)
+
+                audit.write(
+                    "planned_update",
+                    user_id=user_id,
+                    email=planned.email,
+                    missing_project_count=len(missing),
+                    missing_project_ids=missing,
+                )
+
+                if args.verbose:
+                    print(f"[PLAN] {user_id} add {len(missing)} project(s)")
+
+            except Exception as exc:
+                failed_planning.append((user_id, str(exc)))
+                audit.write("planning_error", user_id=user_id, error=str(exc))
+
+        print(f"Planned updates: {len(planned_updates)}")
+        print(f"Planning failures: {len(failed_planning)}")
+
+        if mode_name == "dry-run":
+            if planned_updates:
+                print("\nDry-run preview (up to 20 users):")
+                for planned in planned_updates[:20]:
+                    print(
+                        f"- {planned.user_id} ({planned.email or 'no-email'}): "
+                        f"{len(planned.project_ids_before)} -> {len(planned.project_ids_after)} projects"
+                    )
+
+            if failed_planning:
+                print("\nPlanning errors (up to 20):")
+                for user_id, err in failed_planning[:20]:
+                    print(f"- {user_id or '(unknown)'}: {err}")
+
+            audit.write(
+                "run_end",
+                ok=True,
+                mode="dry-run",
+                users_discovered=len(users),
+                planned_updates=len(planned_updates),
+                planning_failures=len(failed_planning),
+                updated=0,
+                apply_failures=0,
+            )
+            return 0
+
+        if not planned_updates:
+            print("No updates required.")
+            audit.write(
+                "run_end",
+                ok=True,
+                mode="apply",
+                users_discovered=len(users),
+                planned_updates=0,
+                planning_failures=len(failed_planning),
+                updated=0,
+                apply_failures=0,
+            )
+            return 0
+
+        if args.backup_path:
+            backup_path = Path(args.backup_path).expanduser().resolve()
+        else:
+            backup_path = Path.cwd() / "backups" / "update_users_new_projects" / f"prewrite_snapshot_{utc_compact()}.json"
+        backup_path.parent.mkdir(parents=True, exist_ok=True)
+
+        backup_payload = {
+            "generatedAtUtc": utc_iso(),
+            "baseUrl": base_url,
+            "targetProjectIds": target_project_ids,
+            "plannedUpdateCount": len(planned_updates),
+            "plannedUpdates": [
+                {
+                    "userId": p.user_id,
+                    "email": p.email,
+                    "projectIdsBefore": p.project_ids_before,
+                    "projectIdsAfter": p.project_ids_after,
+                    "userRecordBefore": p.user_record,
+                }
+                for p in planned_updates
+            ],
+        }
+        backup_path.write_text(json.dumps(backup_payload, indent=2), encoding="utf-8")
+        print(f"Backup written: {backup_path}")
+        audit.write("backup_written", backup_path=str(backup_path), planned_updates=len(planned_updates))
+
+        updated = 0
+        apply_failures: List[Tuple[str, str]] = []
+
+        for planned in progress_iter(planned_updates, desc="Applying updates", total=len(planned_updates)):
+            try:
+                payload = dict(planned.user_record)
+                payload["projectIds"] = planned.project_ids_after
+                payload = {k: v for k, v in payload.items() if v is not None}
+
+                put_user(
+                    session,
+                    base_url,
+                    headers,
+                    planned.user_id,
+                    payload,
+                    timeout_seconds=timeout_seconds,
+                    max_retries=max_retries,
+                    backoff_seconds=backoff_seconds,
+                )
+
+                updated += 1
+                audit.write(
+                    "update_applied",
+                    user_id=planned.user_id,
+                    email=planned.email,
+                    project_count_before=len(planned.project_ids_before),
+                    project_count_after=len(planned.project_ids_after),
+                )
+
+                if args.verbose:
+                    print(f"[APPLY] updated {planned.user_id}")
+
+            except Exception as exc:
+                apply_failures.append((planned.user_id, str(exc)))
+                audit.write("apply_error", user_id=planned.user_id, email=planned.email, error=str(exc))
+
+        print("\nApply complete.")
+        print(f"Updated: {updated}")
+        print(f"Apply failures: {len(apply_failures)}")
+        if failed_planning:
+            print(f"Planning failures: {len(failed_planning)}")
+
+        if apply_failures:
+            print("\nApply errors (up to 20):")
+            for user_id, err in apply_failures[:20]:
+                print(f"- {user_id}: {err}")
+
+        audit.write(
+            "run_end",
+            ok=len(apply_failures) == 0,
+            mode="apply",
+            users_discovered=len(users),
+            planned_updates=len(planned_updates),
+            planning_failures=len(failed_planning),
+            updated=updated,
+            apply_failures=len(apply_failures),
+        )
+
+        return 1 if apply_failures else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

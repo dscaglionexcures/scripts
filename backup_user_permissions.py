@@ -11,7 +11,6 @@ Includes:
 - Progress bar indicator
 """
 
-import csv
 import json
 import sys
 import time
@@ -20,14 +19,15 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 import requests
+from api_common import DEFAULT_BACKOFF_SECONDS, DEFAULT_TIMEOUT_SECONDS
 from progress_common import progress_iter
 from auth_common import get_xcures_bearer_token, load_env_file
 from xcures_client import XcuresApiClient
+from csv_common import write_csv_dict_rows
 
 BASE_URL = "https://partner.xcures.com"
-TIMEOUT = 60
-MAX_RETRIES = 5
-BACKOFF = 1.0
+TIMEOUT = DEFAULT_TIMEOUT_SECONDS
+BACKOFF = DEFAULT_BACKOFF_SECONDS
 
 load_env_file(Path(__file__).resolve().parent / ".env")
 
@@ -118,25 +118,24 @@ def write_csv(path: Path, rows: List[Dict[str, Any]]) -> None:
         "permissions",
         "projects",
     ]
-
-    with path.open("w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
-        writer.writeheader()
-
-        for r in rows:
-            writer.writerow(
-                {
-                    "id": r.get("id") or "",
-                    "email": r.get("email") or "",
-                    "firstName": r.get("firstName") or "",
-                    "lastName": r.get("lastName") or "",
-                    "roleCode": r.get("roleCode") or "",
-                    "created": r.get("created") or "",
-                    "lastLogin": r.get("lastLogin") or "",
-                    "permissions": "|".join(r.get("permissions") or []),
-                    "projects": "|".join(r.get("projectNames") or []),
-                }
-            )
+    write_csv_dict_rows(
+        path,
+        fieldnames=fieldnames,
+        rows=[
+            {
+                "id": r.get("id") or "",
+                "email": r.get("email") or "",
+                "firstName": r.get("firstName") or "",
+                "lastName": r.get("lastName") or "",
+                "roleCode": r.get("roleCode") or "",
+                "created": r.get("created") or "",
+                "lastLogin": r.get("lastLogin") or "",
+                "permissions": "|".join(r.get("permissions") or []),
+                "projects": "|".join(r.get("projectNames") or []),
+            }
+            for r in rows
+        ],
+    )
 
 
 # ------------------------------------------------
@@ -160,7 +159,6 @@ def main() -> int:
             base_url=BASE_URL,
             bearer_token=bearer,
             timeout_seconds=TIMEOUT,
-            max_retries=MAX_RETRIES,
             backoff_seconds=BACKOFF,
         )
         project_name_map = get_project_name_map(client)

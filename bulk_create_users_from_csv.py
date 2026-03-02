@@ -35,7 +35,6 @@ Examples:
 from __future__ import annotations
 
 import argparse
-import csv
 import os
 import sys
 import time
@@ -46,16 +45,23 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 import requests
-from api_common import request_with_retry as common_request_with_retry
+from api_common import (
+    DEFAULT_BACKOFF_SECONDS,
+    DEFAULT_TIMEOUT_SECONDS,
+    body_preview,
+    parse_json_or_raise,
+    request_with_retry as common_request_with_retry,
+)
 from progress_common import progress_iter
 from auth_common import build_json_headers, get_xcures_bearer_token, load_env_file
+from csv_common import read_csv_dict_rows, write_csv_rows
 
 # ----------------------------
 # Script configuration (edit these once)
 # ----------------------------
 
 DEFAULT_BASE_URL = "https://partner.xcures.com"
-DEFAULT_TIMEOUT_SECONDS = 20
+SCRIPT_DEFAULT_TIMEOUT_SECONDS = 20
 
 # Permissions assigned to every created user (array of strings)
 DEFAULT_PERMISSIONS: List[str] = [
@@ -100,7 +106,7 @@ OPTIONAL_CSV_COLUMNS = ["roleCode", "npi", "tin"]
 
 
 def get_bearer_token() -> str:
-    return get_xcures_bearer_token(timeout_seconds=DEFAULT_TIMEOUT_SECONDS)
+    return get_xcures_bearer_token(timeout_seconds=SCRIPT_DEFAULT_TIMEOUT_SECONDS)
 
 
 def auth_headers() -> Dict[str, str]:
@@ -127,13 +133,6 @@ def _log(msg: str) -> None:
             pass
 
 
-def _body_preview(text: str, limit: int = 400) -> str:
-    t = (text or "").strip().replace("\n", " ")
-    if len(t) > limit:
-        return t[:limit] + "...<truncated>"
-    return t
-
-
 def request_with_retry(
     session: requests.Session,
     method: str,
@@ -141,9 +140,8 @@ def request_with_retry(
     *,
     params: Optional[Dict[str, Any]] = None,
     json_body: Optional[Dict[str, Any]] = None,
-    timeout: int = DEFAULT_TIMEOUT_SECONDS,
-    max_retries: int = 5,
-    backoff_seconds: float = 1.0,
+    timeout: int = SCRIPT_DEFAULT_TIMEOUT_SECONDS,
+    backoff_seconds: float = DEFAULT_BACKOFF_SECONDS,
 ) -> requests.Response:
     return common_request_with_retry(
         session,
@@ -153,54 +151,25 @@ def request_with_retry(
         params=params,
         json_body=json_body,
         timeout_seconds=timeout,
-        max_retries=max_retries,
         backoff_seconds=backoff_seconds,
         logger=_log if VERBOSE else None,
     )
 
 
-def parse_json(resp: requests.Response) -> Any:
-    try:
-        return resp.json()
-    except Exception:
-        raise RuntimeError(f"Non-JSON response status={resp.status_code} body={_body_preview(resp.text, 1200)}")
-
-
-# ----------------------------
-# CSV helpers
-# ----------------------------
-
-
-def normalize_header(s: str) -> str:
-    return (s or "").strip()
-
-
 def read_csv_rows(csv_path: str) -> List[Dict[str, str]]:
     try:
-        with open(csv_path, "r", encoding="utf-8-sig", newline="") as f:
-            reader = csv.DictReader(f)
-            if reader.fieldnames is None:
-                raise RuntimeError("CSV has no header row.")
-
-            headers = [normalize_header(h) for h in reader.fieldnames]
-            missing = [c for c in REQUIRED_CSV_COLUMNS if c not in headers]
-            if missing:
-                raise RuntimeError(
-                    "CSV missing required columns: " + ", ".join(missing)
-                    + " (optional: " + ", ".join(OPTIONAL_CSV_COLUMNS) + ")"
-                )
-
-            rows: List[Dict[str, str]] = []
-            for row in reader:
-                cleaned: Dict[str, str] = {}
-                for k, v in row.items():
-                    if k is None:
-                        continue
-                    cleaned[normalize_header(k)] = (v or "").strip()
-                rows.append(cleaned)
-            return rows
+        rows = read_csv_dict_rows(
+            csv_path,
+            required_columns=REQUIRED_CSV_COLUMNS,
+            encoding="utf-8-sig",
+        )
+        return rows
     except Exception as e:
-        raise RuntimeError(f"Error reading CSV: {e}")
+        raise RuntimeError(
+            f"Error reading CSV: {e}\n"
+            f"Required: {', '.join(REQUIRED_CSV_COLUMNS)}; "
+            f"optional: {', '.join(OPTIONAL_CSV_COLUMNS)}"
+        )
 
 
 def require_nonempty(value: str, field: str, row_index: int) -> None:
@@ -249,7 +218,7 @@ def build_user_payload(row: Dict[str, str], *, user_id: str) -> Dict[str, Any]:
 # ----------------------------
 
 
-def create_user(session: requests.Session, base_url: str, payload: Dict[str, Any], *, timeout: int, max_retries: int, backoff: float) -> Dict[str, Any]:
+def create_user(session: requests.Session, base_url: str, payload: Dict[str, Any], *, timeout: int, backoff: float) -> Dict[str, Any]:
     url = f"{base_url}/api/patient-registry/user"
     resp = request_with_retry(
         session,
@@ -257,12 +226,13 @@ def create_user(session: requests.Session, base_url: str, payload: Dict[str, Any
         url,
         json_body=payload,
         timeout=timeout,
-        max_retries=max_retries,
         backoff_seconds=backoff,
     )
-    data = parse_json(resp)
+    data = parse_json_or_raise(resp)
     if not isinstance(data, dict):
-        raise RuntimeError(f"Unexpected create-user response type: {type(data)} body={_body_preview(resp.text, 1200)}")
+        raise RuntimeError(
+            f"Unexpected create-user response type: {type(data)} body={body_preview(resp.text, 1200)}"
+        )
     return data
 
 
@@ -283,11 +253,14 @@ def write_results_csv(results: Sequence[CreateResult], out_dir: str) -> str:
     os.makedirs(out_dir, exist_ok=True)
     ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     out_path = os.path.join(out_dir, f"bulk_create_users_results_{ts}.csv")
-    with open(out_path, "w", encoding="utf-8", newline="") as f:
-        w = csv.writer(f)
-        w.writerow(["id", "email", "status", "http_status", "message"])
-        for r in results:
-            w.writerow([r.id, r.email, r.status, r.http_status or "", r.message])
+    write_csv_rows(
+        out_path,
+        header=["id", "email", "status", "http_status", "message"],
+        rows=[
+            [r.id, r.email, r.status, r.http_status or "", r.message]
+            for r in results
+        ],
+    )
     return out_path
 
 
@@ -307,9 +280,8 @@ def parse_args() -> argparse.Namespace:
 
     parser.add_argument("--base-url", default=DEFAULT_BASE_URL, help="API base URL (default: %(default)s)")
     parser.add_argument("--limit", type=int, default=None, help="Only process first N rows")
-    parser.add_argument("--timeout", type=int, default=DEFAULT_TIMEOUT_SECONDS, help="HTTP timeout seconds (default: %(default)s)")
-    parser.add_argument("--max-retries", type=int, default=5, help="Max retries on 429/5xx (default: %(default)s)")
-    parser.add_argument("--backoff", type=float, default=1.0, help="Backoff base seconds (default: %(default)s)")
+    parser.add_argument("--timeout", type=int, default=SCRIPT_DEFAULT_TIMEOUT_SECONDS, help="HTTP timeout seconds (default: %(default)s)")
+    parser.add_argument("--backoff", type=float, default=DEFAULT_BACKOFF_SECONDS, help="Backoff base seconds (default: %(default)s)")
     parser.add_argument("--out-dir", default=".", help="Directory to write results CSV (default: current dir)")
     parser.add_argument("--verbose", action="store_true", help="Log each API call (does not log secrets)")
     parser.add_argument("--log-file", default=None, help="Append logs to this file path")
@@ -327,7 +299,6 @@ def main() -> int:
     args = parse_args()
     VERBOSE = bool(args.verbose)
     LOG_FILE_PATH = args.log_file
-
     # Validate config
     if not DEFAULT_PERMISSIONS:
         print("Error: DEFAULT_PERMISSIONS must include at least one permission.", file=sys.stderr)
@@ -392,7 +363,6 @@ def main() -> int:
                         base_url,
                         payload,
                         timeout=args.timeout,
-                        max_retries=args.max_retries,
                         backoff=args.backoff,
                     )
                     created += 1

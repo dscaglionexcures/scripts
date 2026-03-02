@@ -3,7 +3,16 @@ from __future__ import annotations
 from typing import Any, Callable, Dict, Iterator, Optional, Sequence
 
 import requests
-from api_common import request_with_retry
+from api_common import (
+    DEFAULT_BACKOFF_SECONDS,
+    DEFAULT_MAX_RETRIES,
+    DEFAULT_MAX_SLEEP_SECONDS,
+    DEFAULT_RETRY_STATUSES,
+    DEFAULT_TIMEOUT_SECONDS,
+    build_url,
+    parse_json_or_raise,
+    request_with_retry,
+)
 from auth_common import build_json_headers, get_xcures_bearer_token
 
 
@@ -19,11 +28,11 @@ class XcuresApiClient:
         base_url: str = "https://partner.xcures.com",
         project_id: Optional[str] = None,
         bearer_token: Optional[str] = None,
-        timeout_seconds: int = 60,
-        max_retries: int = 5,
-        backoff_seconds: float = 1.0,
-        max_sleep_seconds: Optional[float] = 20.0,
-        retry_statuses: Sequence[int] = (429, 500, 502, 503, 504),
+        timeout_seconds: int = DEFAULT_TIMEOUT_SECONDS,
+        max_retries: int = DEFAULT_MAX_RETRIES,
+        backoff_seconds: float = DEFAULT_BACKOFF_SECONDS,
+        max_sleep_seconds: Optional[float] = DEFAULT_MAX_SLEEP_SECONDS,
+        retry_statuses: Sequence[int] = DEFAULT_RETRY_STATUSES,
         logger: Optional[Callable[[str], None]] = None,
     ) -> None:
         self.session = session
@@ -60,7 +69,7 @@ class XcuresApiClient:
         json_body: Optional[Dict[str, Any]] = None,
         timeout_seconds: Optional[int] = None,
     ) -> requests.Response:
-        url = path_or_url if path_or_url.startswith("http") else f"{self.base_url}/{path_or_url.lstrip('/')}"
+        url = build_url(self.base_url, path_or_url)
         timeout = timeout_seconds if timeout_seconds is not None else self.timeout_seconds
 
         for auth_attempt in range(2):
@@ -104,12 +113,7 @@ class XcuresApiClient:
         )
         if resp.status_code == 204 or not (resp.text or "").strip():
             return None
-        try:
-            return resp.json()
-        except Exception:
-            raise RuntimeError(
-                f"Non-JSON response: status={resp.status_code} body={(resp.text or '')[:1200]}"
-            )
+        return parse_json_or_raise(resp)
 
     def iter_paginated(
         self,
