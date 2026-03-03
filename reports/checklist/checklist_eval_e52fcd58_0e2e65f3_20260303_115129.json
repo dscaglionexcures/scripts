@@ -1,0 +1,1813 @@
+{
+  "checklistId": "0e2e65f3-5a46-436c-87b8-86bb9e81c68c",
+  "documentIds": [
+    "a08f5798-f6fc-40f2-a524-4b67116b325a",
+    "1bfff13d-2d82-407f-89f7-d93ab72eed3b",
+    "065d63bf-b783-4bb1-b068-c566842841c4",
+    "2197c219-62ca-4ced-a04f-b44467110392",
+    "96d36d4c-4fa6-4650-918a-d81eaa2f2757",
+    "668639aa-eb84-484d-931d-2da45f8a3962",
+    "cf94ef77-97a7-4bc4-97c5-59ddae67399e",
+    "fd43cc71-2e10-4bfb-a684-e75af9d569da",
+    "87c54875-c5d2-437c-aa69-75b3c1686acd",
+    "04a8fe92-3d77-4db1-a92d-c6ff8122ccd6",
+    "d5f79d71-26c8-4d2f-9621-4acde46aec6a",
+    "16c746c4-c1f6-410a-a5c1-37e12bfebdfb",
+    "e6b53827-a263-4e92-9b50-8075b7f1cd29",
+    "9128014d-a806-4e4f-ad53-7c656aaccaec",
+    "18624362-0709-4583-be65-91d6a47e38d0",
+    "05231e51-85af-45d9-976d-7004fb2f2a68",
+    "32dfaeef-1fa5-4281-9cf2-b8cf7841c00b",
+    "fc2f0dc3-5b90-4c56-b5c5-48057ab471ca",
+    "adacf68d-73ae-4339-9b28-44b51cefec7e",
+    "2e19dcc0-e1e1-43f1-9943-d40ebc6d8f7e",
+    "5e4c5213-970f-47bd-9202-1deff7b0bfef",
+    "9fe7b25b-c287-41ad-9ba8-6b1a3460af9a",
+    "0c3014fd-cd3d-4887-aa1f-a07b9f4a49fa",
+    "8b9f7b34-a085-44d5-ab49-8479af81c5a7",
+    "96ae4a8a-1326-4f3f-886a-4e4112adc037",
+    "dbcffab7-8d21-4fe0-a03d-e987e8c50884",
+    "76122e5e-efd6-42cd-8ca4-0c8d41d20630",
+    "405798ed-bda1-4e5f-998c-dddf743cc88d",
+    "b5fa2b37-ae03-4c8c-a810-ec7ceb9c5ced",
+    "4bc09651-29d1-40a8-b349-2becb5cca88a",
+    "b4454cda-f67d-4d28-ac60-a919d8e7b4c3",
+    "67a21584-1d35-42ac-8a8d-f2693179ddff",
+    "91a32125-66b7-4c3e-b9c4-90ede8ef4718",
+    "a0676a4a-72fa-43bc-b5cf-da8d82c6a1f6",
+    "c4e19830-8d73-4a1e-b383-babb12a8f7e5",
+    "12ba8516-c989-4cf1-b708-85d2986e5bea",
+    "59680ac8-5ae5-4577-b1ac-5e29c925ec77",
+    "8f76de9c-881a-4ee8-bb50-efe25b968cce",
+    "8ad1cd0d-3fa2-4a8e-ac30-1e7b1d866e91",
+    "5b09cdb3-00cf-49c5-b363-a8d8b937be1d",
+    "7c14e373-df4b-4b23-8068-9781bd5d529f",
+    "4a280afc-1de9-4c2b-b685-4bd841a33fac",
+    "32a3bd26-3218-4b77-a2e3-6b1053ff18c7",
+    "835ddfb1-9865-4287-ba83-a7a3776734b7",
+    "08e3fcd3-7f50-48d8-9f2c-74f0aef5b256",
+    "37988310-ece0-4bf1-88b5-674b1bfc8825",
+    "7a3e8695-eae6-4304-bb86-b44641ee966a",
+    "d8719f70-e05a-44f5-b66a-e4768df1ff8e",
+    "bc0fd2e1-0ab9-4cca-993e-55fef1506bd0",
+    "86311ea8-f8da-4bdf-ad46-58434ec75d1d",
+    "86f2249d-38a9-4a82-bf66-8f6474c2811f",
+    "e37735a8-8815-460b-b66d-301d7dd0f982",
+    "a7c5f40c-9154-49de-8889-3ad364867291",
+    "2f9bc7eb-c060-46a5-b885-bcb6cf1e9440",
+    "d4bea2c8-e55f-4748-a70c-9740d4c5b1fd",
+    "10d15fd3-0cec-43ce-b3ab-19757d3b765f",
+    "52cb782e-4dc1-4279-8c19-ace171435e20",
+    "b621fda1-a69a-4600-b80d-8b038819b4fd",
+    "fdfa047a-7d37-46fb-9b4e-3589f53c5bcc",
+    "590fd6eb-7df0-4544-ac7d-0f46ac7c1b52",
+    "463f5bba-096f-400e-bcf3-ab6ab309c330",
+    "37e0443c-251e-4a37-80dd-20b7cc5acc49",
+    "9f25aa4e-b4fc-4858-b46a-b69dbfeefb93",
+    "9d4f64d5-43af-477a-8f8b-4860e117a375",
+    "f45d5fc1-f083-42da-9c4d-b6f057241f6d",
+    "fbc5126a-f611-4fce-9ed6-bab685509703",
+    "5f9db1cc-fb82-4642-b466-28a19bac3f43",
+    "fcf95d62-f2bc-4cf9-b6b1-8eac8c88fc54",
+    "33f3fa8f-4985-4376-8089-83880cf9dcb1",
+    "b4369360-9153-492a-9e60-b08a502f9289"
+  ],
+  "eligibilitySatisfied": true,
+  "items": [
+    {
+      "checklistItem": {
+        "id": "28a307b2-de79-478c-80b9-0208c708ec03",
+        "libraryItemId": "recap_conditions",
+        "name": "RECAP - Conditions and Comorbidities",
+        "sortOrder": 0
+      },
+      "clinicalConcepts": [],
+      "documentIds": [
+        "a08f5798-f6fc-40f2-a524-4b67116b325a",
+        "1bfff13d-2d82-407f-89f7-d93ab72eed3b",
+        "065d63bf-b783-4bb1-b068-c566842841c4"
+      ],
+      "documentSections": [
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-08-26T00:00:00.000Z",
+          "documentId": "a08f5798-f6fc-40f2-a524-4b67116b325a",
+          "documentLocation": "Comprehensive Cancer Center of Nevada",
+          "documentName": "Continuity of Care Document",
+          "section": "11450-4",
+          "sectionTitle": "Problems",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-08-26T15:16:30.000Z",
+          "documentId": "1bfff13d-2d82-407f-89f7-d93ab72eed3b",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Continuity of Care Document",
+          "section": "11450-4",
+          "sectionTitle": "Active Problems",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2024-06-09T19:30:00.000Z",
+          "documentId": "065d63bf-b783-4bb1-b068-c566842841c4",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Office Visit Summary",
+          "section": "10164-2",
+          "sectionTitle": "Progress Notes",
+          "sectionType": "ccda"
+        }
+      ],
+      "matchingRecords": [],
+      "meetsCriteria": true,
+      "result": {
+        "conditions": "Autoimmune hemolytic anemia; Anemia; Essential hypertension; Gastro-esophageal reflux disease with esophagitis; Vitamin D deficiency; Iron overload; Blepharoconjunctivitis of both eyes, unspecified blepharoconjunctivitis type; Neutropenia; Chronic fatigue syndrome",
+        "justification": "The conditions were explicitly documented as active in the problem lists and assessment/plan sections from clinical notes dated between 2019 and 2024, including the Problem List document (ID 51) and the 06/09/2024 clinical note (ID 54)."
+      }
+    },
+    {
+      "checklistItem": {
+        "id": "7e50f035-0d91-4d43-8b4a-478299d9ee2d",
+        "libraryItemId": "recap_medications",
+        "name": "RECAP - Medications",
+        "sortOrder": 1
+      },
+      "clinicalConcepts": [
+        {
+          "clinicalConceptId": "ad63fb38-aabc-50d1-bad3-f9fd6248cf19",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "c445553d-1cae-5f4c-9b25-4045d18004d6",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "47e37262-2612-5d33-8ff7-884d996a92c2",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "b5adee10-e97e-5210-ae91-d983f7785148",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "84809112-92d2-54be-b0fe-57f83b7c1dc5",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "c5c008f2-e5eb-5f54-8114-98c4bd39b2a1",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "ff3b23d3-6967-525b-b19d-dff8958de5a3",
+          "entityType": "medication"
+        }
+      ],
+      "documentIds": [
+        "1bfff13d-2d82-407f-89f7-d93ab72eed3b",
+        "2197c219-62ca-4ced-a04f-b44467110392",
+        "96d36d4c-4fa6-4650-918a-d81eaa2f2757",
+        "a08f5798-f6fc-40f2-a524-4b67116b325a",
+        "668639aa-eb84-484d-931d-2da45f8a3962",
+        "cf94ef77-97a7-4bc4-97c5-59ddae67399e",
+        "fd43cc71-2e10-4bfb-a684-e75af9d569da",
+        "87c54875-c5d2-437c-aa69-75b3c1686acd"
+      ],
+      "documentSections": [
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-08-26T15:16:30.000Z",
+          "documentId": "1bfff13d-2d82-407f-89f7-d93ab72eed3b",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Continuity of Care Document",
+          "section": "10160-0",
+          "sectionTitle": "Medications",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-08-26T00:00:00.000Z",
+          "documentId": "2197c219-62ca-4ced-a04f-b44467110392",
+          "documentLocation": "Comprehensive Cancer Center of Nevada",
+          "documentName": "Continuity of Care Document",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-08-26T00:00:00.000Z",
+          "documentId": "96d36d4c-4fa6-4650-918a-d81eaa2f2757",
+          "documentLocation": "Comprehensive Cancer Center of Nevada",
+          "documentName": "Continuity of Care Document",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-08-26T00:00:00.000Z",
+          "documentId": "a08f5798-f6fc-40f2-a524-4b67116b325a",
+          "documentLocation": "Comprehensive Cancer Center of Nevada",
+          "documentName": "Continuity of Care Document",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-07-28T00:00:00.000Z",
+          "documentId": "668639aa-eb84-484d-931d-2da45f8a3962",
+          "documentLocation": "Comprehensive Cancer Center of Nevada",
+          "documentName": "Continuity of Care Document",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-07-28T00:00:00.000Z",
+          "documentId": "cf94ef77-97a7-4bc4-97c5-59ddae67399e",
+          "documentLocation": "Comprehensive Cancer Center of Nevada",
+          "documentName": "Continuity of Care Document",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-07-28T00:00:00.000Z",
+          "documentId": "fd43cc71-2e10-4bfb-a684-e75af9d569da",
+          "documentLocation": "Comprehensive Cancer Center of Nevada",
+          "documentName": "Continuity of Care Document",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2020-07-15T15:41:00Z",
+          "documentId": "87c54875-c5d2-437c-aa69-75b3c1686acd",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Hospital Encounter Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        }
+      ],
+      "matchingRecords": [],
+      "meetsCriteria": true,
+      "result": {
+        "_items": [
+          {
+            "dose": "25 mg",
+            "formulation": "Oral Tablet",
+            "medication": "quetiapine",
+            "patient_instructions": "Take 25 mg by mouth nightly.",
+            "reason": "Unknown"
+          },
+          {
+            "dose": "10 mg",
+            "formulation": "Oral Tablet",
+            "medication": "amlodipine",
+            "patient_instructions": "Unknown",
+            "reason": "Unknown"
+          },
+          {
+            "dose": "20 mg",
+            "formulation": "Oral Tablet",
+            "medication": "atorvastatin",
+            "patient_instructions": "Unknown",
+            "reason": "Unknown"
+          },
+          {
+            "dose": "50 mcg",
+            "formulation": "Oral Tablet",
+            "medication": "levothyroxine",
+            "patient_instructions": "Unknown",
+            "reason": "Unknown"
+          },
+          {
+            "dose": "1.0 CAPSULE(S)",
+            "formulation": "Oral Delayed Release Capsule",
+            "medication": "omeprazole",
+            "patient_instructions": "PO 1.0 CAPSULE(S), ENTERIC COATED daily",
+            "reason": "Unknown"
+          },
+          {
+            "dose": "1.0 TABLET(S)",
+            "formulation": "Oral Tablet",
+            "medication": "lisinopril",
+            "patient_instructions": "PO 1.0 TABLET(S) daily",
+            "reason": "Unknown"
+          },
+          {
+            "dose": "1.0 TABLET(S)",
+            "formulation": "Oral Tablet",
+            "medication": "folic acid",
+            "patient_instructions": "PO 1.0 TABLET(S) daily",
+            "reason": "Unknown"
+          }
+        ],
+        "justification": "Active medications were identified from the most recent Medication List and Medication Reconciliation documents dated between 2019 and 2022, including quetiapine, amlodipine, atorvastatin, levothyroxine, omeprazole, lisinopril, and folic acid. Instructions and formulations were extracted verbatim from these authoritative sources."
+      }
+    },
+    {
+      "checklistItem": {
+        "id": "7d8c5b0d-3c83-40cf-b6db-0b1587ae44d1",
+        "libraryItemId": "recap_allergies",
+        "name": "RECAP - Allergies",
+        "sortOrder": 2
+      },
+      "clinicalConcepts": [],
+      "documentIds": [
+        "04a8fe92-3d77-4db1-a92d-c6ff8122ccd6",
+        "1bfff13d-2d82-407f-89f7-d93ab72eed3b",
+        "d5f79d71-26c8-4d2f-9621-4acde46aec6a",
+        "16c746c4-c1f6-410a-a5c1-37e12bfebdfb",
+        "e6b53827-a263-4e92-9b50-8075b7f1cd29",
+        "9128014d-a806-4e4f-ad53-7c656aaccaec"
+      ],
+      "documentSections": [
+        {
+          "documentContentType": "application/pdf",
+          "documentDate": "2019-07-06T20:57:14.000Z",
+          "documentId": "04a8fe92-3d77-4db1-a92d-c6ff8122ccd6",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "AVS - Healthcare Facility",
+          "section": "1",
+          "sectionTitle": null,
+          "sectionType": "page"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-08-26T15:16:30.000Z",
+          "documentId": "1bfff13d-2d82-407f-89f7-d93ab72eed3b",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Continuity of Care Document",
+          "section": "48765-2",
+          "sectionTitle": "Allergies",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "application/pdf",
+          "documentDate": "2019-07-24T21:15:25.000Z",
+          "documentId": "d5f79d71-26c8-4d2f-9621-4acde46aec6a",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Summary of Care",
+          "section": "2",
+          "sectionTitle": null,
+          "sectionType": "page"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-07-28T20:59:33.000Z",
+          "documentId": "16c746c4-c1f6-410a-a5c1-37e12bfebdfb",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Emergency Summary",
+          "section": "34109-9",
+          "sectionTitle": "Miscellaneous Notes",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-07-23T18:22:44.000Z",
+          "documentId": "e6b53827-a263-4e92-9b50-8075b7f1cd29",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Hospital Encounter Summary",
+          "section": "34109-9",
+          "sectionTitle": "Miscellaneous Notes",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-10-27T17:51:14.000Z",
+          "documentId": "9128014d-a806-4e4f-ad53-7c656aaccaec",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Hospital Encounter Summary",
+          "section": "11488-4",
+          "sectionTitle": "Consult Notes",
+          "sectionType": "ccda"
+        }
+      ],
+      "matchingRecords": [],
+      "meetsCriteria": true,
+      "result": {
+        "_items": [
+          {
+            "Reaction": "Swelling",
+            "allergen": "Penicillins",
+            "recorded_date": "2018-10-15"
+          }
+        ],
+        "justification": "Active allergy to Penicillins with reaction 'Swelling' is documented explicitly in multiple allergy sections including the Allergy List and Allergy documentation in encounters dated 2018-10-15 and reviewed on 2019-07-05 and 2019-07-23 (Documents 16, 188, 190, 191, 192, 193). No other active allergies are documented."
+      }
+    },
+    {
+      "checklistItem": {
+        "id": "ff67dfd9-4644-4f58-b43f-d4c898e072b3",
+        "libraryItemId": "recap_surgical_history",
+        "name": "RECAP - Surgical History",
+        "sortOrder": 3
+      },
+      "clinicalConcepts": [],
+      "documentIds": [
+        "065d63bf-b783-4bb1-b068-c566842841c4",
+        "87c54875-c5d2-437c-aa69-75b3c1686acd",
+        "e6b53827-a263-4e92-9b50-8075b7f1cd29",
+        "9128014d-a806-4e4f-ad53-7c656aaccaec",
+        "18624362-0709-4583-be65-91d6a47e38d0"
+      ],
+      "documentSections": [
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2024-06-09T19:30:00.000Z",
+          "documentId": "065d63bf-b783-4bb1-b068-c566842841c4",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Office Visit Summary",
+          "section": "10164-2",
+          "sectionTitle": "Progress Notes",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2020-07-15T15:41:00.000Z",
+          "documentId": "87c54875-c5d2-437c-aa69-75b3c1686acd",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Hospital Encounter Summary",
+          "section": "34109-9",
+          "sectionTitle": "Miscellaneous Notes",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-07-23T18:22:44.000Z",
+          "documentId": "e6b53827-a263-4e92-9b50-8075b7f1cd29",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Hospital Encounter Summary",
+          "section": "11488-4",
+          "sectionTitle": "Consult Notes",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-10-27T17:51:14.000Z",
+          "documentId": "9128014d-a806-4e4f-ad53-7c656aaccaec",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Hospital Encounter Summary",
+          "section": "11488-4",
+          "sectionTitle": "Consult Notes",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-07-17T19:23:45.000Z",
+          "documentId": "18624362-0709-4583-be65-91d6a47e38d0",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Hospital Encounter Summary",
+          "section": "34117-2",
+          "sectionTitle": "H&P Notes",
+          "sectionType": "ccda"
+        }
+      ],
+      "matchingRecords": [],
+      "meetsCriteria": true,
+      "result": {
+        "_items": [
+          {
+            "anatomic_location": "Unknown",
+            "notes": "Unknown",
+            "procedure_date": "Unknown",
+            "reason": "Unknown",
+            "surgical_procedure": "Hernia repair"
+          },
+          {
+            "anatomic_location": "Uterus",
+            "notes": "Unknown",
+            "procedure_date": "Unknown",
+            "reason": "Unknown",
+            "surgical_procedure": "Hysterectomy"
+          },
+          {
+            "anatomic_location": "Right shoulder",
+            "notes": "Unknown",
+            "procedure_date": "Unknown",
+            "reason": "Unknown",
+            "surgical_procedure": "Shoulder surgery, arthroscopy"
+          },
+          {
+            "anatomic_location": "Spleen",
+            "notes": "Procedure completed without complication",
+            "procedure_date": "2014",
+            "reason": "Autoimmune hemolytic anemia",
+            "surgical_procedure": "Splenectomy, total"
+          },
+          {
+            "anatomic_location": "Right chest",
+            "notes": "Procedure completed successfully without complication",
+            "procedure_date": "2020-07-15",
+            "reason": "Completion of chemotherapy",
+            "surgical_procedure": "Port removal"
+          }
+        ],
+        "justification": "Surgical history was extracted from multiple clinical notes including the 2024 outpatient note (Document 53) listing completed procedures without dates, the 2019 oncology and hematology notes (Documents 127, 131, 132) confirming splenectomy in 2014 for autoimmune hemolytic anemia, and the 2020 interventional radiology post-procedure note (Document 57) documenting port removal on 2020-07-15. Hernia repair, hysterectomy, and shoulder surgery are documented as completed but without explicit dates."
+      }
+    },
+    {
+      "checklistItem": {
+        "id": "7ee87fbe-7c71-43be-9cfa-82cb80f81f7c",
+        "libraryItemId": "recap_family_history",
+        "name": "RECAP - Family History",
+        "sortOrder": 4
+      },
+      "clinicalConcepts": [],
+      "documentIds": [
+        "05231e51-85af-45d9-976d-7004fb2f2a68",
+        "32dfaeef-1fa5-4281-9cf2-b8cf7841c00b",
+        "fc2f0dc3-5b90-4c56-b5c5-48057ab471ca",
+        "9128014d-a806-4e4f-ad53-7c656aaccaec"
+      ],
+      "documentSections": [
+        {
+          "documentContentType": "image/tiff",
+          "documentDate": "2020-07-08T17:00:00.000Z",
+          "documentId": "05231e51-85af-45d9-976d-7004fb2f2a68",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "DATED 6.22.20",
+          "section": "1",
+          "sectionTitle": null,
+          "sectionType": "page"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-07-05T18:55:50.000Z",
+          "documentId": "32dfaeef-1fa5-4281-9cf2-b8cf7841c00b",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Hospital Encounter Summary",
+          "section": "11488-4",
+          "sectionTitle": "Consult Notes",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-06-08T16:38:09.000Z",
+          "documentId": "fc2f0dc3-5b90-4c56-b5c5-48057ab471ca",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Hospital Encounter Summary",
+          "section": "34117-2",
+          "sectionTitle": "H&P Notes",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-10-27T17:51:14.000Z",
+          "documentId": "9128014d-a806-4e4f-ad53-7c656aaccaec",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Hospital Encounter Summary",
+          "section": "11488-4",
+          "sectionTitle": "Consult Notes",
+          "sectionType": "ccda"
+        }
+      ],
+      "matchingRecords": [],
+      "meetsCriteria": true,
+      "result": {
+        "Justification": "Multiple clinical documents including Progress Notes from 2020-06-22, Consult Notes from 2019-07-06 and 2019-10-29, and Internal Medicine History and Physical from 2019-06-08 explicitly document family history information. The only positive family history conditions documented are hypertension, heart disease, and high cholesterol in the patient's father, and breast and throat cancer (family members unspecified). Other notes state 'family history unknown' or negative family history. No other family history conditions or affected family members are documented.",
+        "_items": []
+      }
+    },
+    {
+      "checklistItem": {
+        "id": "3b9ff6ee-be77-45c2-9d19-328fd0e380db",
+        "libraryItemId": "recap_diagnostic_procedures",
+        "name": "RECAP - Imaging and Diagnostic Procedures",
+        "sortOrder": 5
+      },
+      "clinicalConcepts": [],
+      "documentIds": [
+        "065d63bf-b783-4bb1-b068-c566842841c4"
+      ],
+      "documentSections": [
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2024-06-09T19:30:00.000Z",
+          "documentId": "065d63bf-b783-4bb1-b068-c566842841c4",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Office Visit Summary",
+          "section": "10164-2",
+          "sectionTitle": "Progress Notes",
+          "sectionType": "ccda"
+        }
+      ],
+      "matchingRecords": [],
+      "meetsCriteria": true,
+      "result": {
+        "_items": [],
+        "justification": "No diagnostic or imaging procedures with documented abnormal or clinically decisive negative results within the last 12 months were found in the provided documents. The records primarily contain diagnoses, clinical notes, and consent forms without any performed and resulted imaging or diagnostic studies."
+      }
+    },
+    {
+      "checklistItem": {
+        "id": "0474568d-755a-4892-b137-b3927fc1e4c6",
+        "libraryItemId": "recap_hospitalizations",
+        "name": "RECAP - Recent Hospitalizations",
+        "sortOrder": 6
+      },
+      "clinicalConcepts": [],
+      "documentIds": [
+        "adacf68d-73ae-4339-9b28-44b51cefec7e",
+        "2e19dcc0-e1e1-43f1-9943-d40ebc6d8f7e",
+        "5e4c5213-970f-47bd-9202-1deff7b0bfef",
+        "9fe7b25b-c287-41ad-9ba8-6b1a3460af9a",
+        "065d63bf-b783-4bb1-b068-c566842841c4",
+        "a08f5798-f6fc-40f2-a524-4b67116b325a"
+      ],
+      "documentSections": [
+        {
+          "documentContentType": "application/pdf",
+          "documentDate": "2024-06-09T20:38:43.000Z",
+          "documentId": "adacf68d-73ae-4339-9b28-44b51cefec7e",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Office Visit",
+          "section": "1",
+          "sectionTitle": null,
+          "sectionType": "page"
+        },
+        {
+          "documentContentType": "application/pdf",
+          "documentDate": "2024-06-09T20:33:01.000Z",
+          "documentId": "2e19dcc0-e1e1-43f1-9943-d40ebc6d8f7e",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Patient's Signature Page",
+          "section": "1",
+          "sectionTitle": null,
+          "sectionType": "page"
+        },
+        {
+          "documentContentType": "application/pdf",
+          "documentDate": "2024-06-09T20:19:06.000Z",
+          "documentId": "5e4c5213-970f-47bd-9202-1deff7b0bfef",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Office Visit",
+          "section": "1",
+          "sectionTitle": null,
+          "sectionType": "page"
+        },
+        {
+          "documentContentType": "application/pdf",
+          "documentDate": "2024-06-09T20:33:01.000Z",
+          "documentId": "9fe7b25b-c287-41ad-9ba8-6b1a3460af9a",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "After Visit Summary",
+          "section": "3",
+          "sectionTitle": null,
+          "sectionType": "page"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2024-06-09T19:30:00.000Z",
+          "documentId": "065d63bf-b783-4bb1-b068-c566842841c4",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Office Visit Summary",
+          "section": "69730-0",
+          "sectionTitle": "Patient Instructions",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-08-26T00:00:00.000Z",
+          "documentId": "a08f5798-f6fc-40f2-a524-4b67116b325a",
+          "documentLocation": "Comprehensive Cancer Center of Nevada",
+          "documentName": "Continuity of Care Document",
+          "section": "11450-4",
+          "sectionTitle": "Problems",
+          "sectionType": "ccda"
+        }
+      ],
+      "matchingRecords": [],
+      "meetsCriteria": true,
+      "result": {
+        "_items": [],
+        "justification": "No inpatient hospitalizations were identified in the provided documents. The records include diagnoses, discharge instructions, and consent forms but lack any admission notes, discharge summaries, or metadata indicating an inpatient stay within the last two years."
+      }
+    },
+    {
+      "checklistItem": {
+        "id": "ac16a18f-c90d-4889-9c3b-d8e649e3ee61",
+        "libraryItemId": "recap_medical_risks",
+        "name": "RECAP - Medical Risks",
+        "sortOrder": 7
+      },
+      "clinicalConcepts": [],
+      "documentIds": [
+        "0c3014fd-cd3d-4887-aa1f-a07b9f4a49fa",
+        "9128014d-a806-4e4f-ad53-7c656aaccaec",
+        "8b9f7b34-a085-44d5-ab49-8479af81c5a7",
+        "96ae4a8a-1326-4f3f-886a-4e4112adc037",
+        "dbcffab7-8d21-4fe0-a03d-e987e8c50884",
+        "fc2f0dc3-5b90-4c56-b5c5-48057ab471ca",
+        "76122e5e-efd6-42cd-8ca4-0c8d41d20630"
+      ],
+      "documentSections": [
+        {
+          "documentContentType": "image/tiff",
+          "documentDate": "2019-06-25T17:41:41.000Z",
+          "documentId": "0c3014fd-cd3d-4887-aa1f-a07b9f4a49fa",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Hospital Encounter",
+          "section": "1",
+          "sectionTitle": null,
+          "sectionType": "page"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-10-27T17:51:14.000Z",
+          "documentId": "9128014d-a806-4e4f-ad53-7c656aaccaec",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Hospital Encounter Summary",
+          "section": "34111-5",
+          "sectionTitle": "ED Notes",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-11-22T21:13:28.000Z",
+          "documentId": "8b9f7b34-a085-44d5-ab49-8479af81c5a7",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Hospital Encounter Summary",
+          "section": "34109-9",
+          "sectionTitle": "Miscellaneous Notes",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "image/tiff",
+          "documentDate": "2019-10-31T20:21:07.000Z",
+          "documentId": "96ae4a8a-1326-4f3f-886a-4e4112adc037",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Hospital Encounter",
+          "section": "1",
+          "sectionTitle": null,
+          "sectionType": "page"
+        },
+        {
+          "documentContentType": "image/tiff",
+          "documentDate": "2019-10-27T00:00:00.000Z",
+          "documentId": "dbcffab7-8d21-4fe0-a03d-e987e8c50884",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "MRI SCREENING FORM",
+          "section": "1",
+          "sectionTitle": null,
+          "sectionType": "page"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-06-08T16:38:09.000Z",
+          "documentId": "fc2f0dc3-5b90-4c56-b5c5-48057ab471ca",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Hospital Encounter Summary",
+          "section": "34109-9",
+          "sectionTitle": "Miscellaneous Notes",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-12-02T00:00:00.000Z",
+          "documentId": "76122e5e-efd6-42cd-8ca4-0c8d41d20630",
+          "documentLocation": "The Oncology Institute of Hope and Innovation",
+          "documentName": "Continuity of Care Document",
+          "section": "48765-2",
+          "sectionTitle": "Allergies and Adverse Reactions",
+          "sectionType": "ccda"
+        }
+      ],
+      "matchingRecords": [],
+      "meetsCriteria": true,
+      "result": {
+        "justification": "The patient is an 80-year-old female with documented confusion and fatigue with reported increased difficulty with balance and use of a walker at home (ED note 10/27/2019, RN notes 11/23-11/24/2019). She had a recent syncope episode without fall but with risk of fall (ED note 11/22/2019, RN notes 11/23/2019). She is on aspirin 324 mg (medication list 10/27/2019) which increases bleeding risk. Labs show hypokalemia (potassium 2.3 on 11/22/2019 and 3.2 on 10/27/2019) and acute kidney injury (creatinine elevated to 1.64 on 10/27/2019 and worsening on 11/22/2019). She is on prednisone (up to 60 mg daily) and Bactrim DS for PCP prophylaxis, indicating immunosuppression (medications and ED notes). Family reports forgetfulness and vivid dreams causing confusion (ED note 10/27/2019). These factors combined increase risks for falls, bleeding, infection, and medication adherence challenges. No history of contrast reaction or implanted devices was reported (MRI screening form). These risks are important for ongoing management including fall precautions, monitoring electrolytes and renal function, infection prevention, and careful medication review.",
+        "medical_risks": "Fall propensity, cognitive impairment/confusion, bleeding risk from aspirin use, hypokalemia, acute kidney injury, immunosuppression from prednisone and Bactrim use, syncope risk"
+      }
+    },
+    {
+      "checklistItem": {
+        "id": "e120c565-a721-46ca-8ec0-ee95a4ed4463",
+        "libraryItemId": "recap_social_history",
+        "name": "RECAP - Social History",
+        "sortOrder": 8
+      },
+      "clinicalConcepts": [
+        {
+          "clinicalConceptId": "c768f558-09a3-582a-8015-0e8500e840cf",
+          "entityType": "social_history"
+        },
+        {
+          "clinicalConceptId": "373d0283-85b5-5710-9f73-c7a50e3a0955",
+          "entityType": "social_history"
+        },
+        {
+          "clinicalConceptId": "3c36b956-fbab-53f2-977f-c400b2a9cd1e",
+          "entityType": "social_history"
+        },
+        {
+          "clinicalConceptId": "0e510206-7443-563f-81a4-cc5cb747dc3c",
+          "entityType": "social_history"
+        },
+        {
+          "clinicalConceptId": "37425e33-2ed5-5718-b6be-a189bcc1a321",
+          "entityType": "social_history"
+        }
+      ],
+      "documentIds": [
+        "065d63bf-b783-4bb1-b068-c566842841c4",
+        "405798ed-bda1-4e5f-998c-dddf743cc88d",
+        "b5fa2b37-ae03-4c8c-a810-ec7ceb9c5ced",
+        "1bfff13d-2d82-407f-89f7-d93ab72eed3b",
+        "4bc09651-29d1-40a8-b349-2becb5cca88a",
+        "b4454cda-f67d-4d28-ac60-a919d8e7b4c3",
+        "67a21584-1d35-42ac-8a8d-f2693179ddff",
+        "91a32125-66b7-4c3e-b9c4-90ede8ef4718",
+        "87c54875-c5d2-437c-aa69-75b3c1686acd",
+        "a0676a4a-72fa-43bc-b5cf-da8d82c6a1f6",
+        "c4e19830-8d73-4a1e-b383-babb12a8f7e5",
+        "12ba8516-c989-4cf1-b708-85d2986e5bea",
+        "59680ac8-5ae5-4577-b1ac-5e29c925ec77",
+        "8f76de9c-881a-4ee8-bb50-efe25b968cce",
+        "8ad1cd0d-3fa2-4a8e-ac30-1e7b1d866e91",
+        "8b9f7b34-a085-44d5-ab49-8479af81c5a7",
+        "5b09cdb3-00cf-49c5-b363-a8d8b937be1d",
+        "7c14e373-df4b-4b23-8068-9781bd5d529f",
+        "4a280afc-1de9-4c2b-b685-4bd841a33fac",
+        "9128014d-a806-4e4f-ad53-7c656aaccaec",
+        "32a3bd26-3218-4b77-a2e3-6b1053ff18c7",
+        "835ddfb1-9865-4287-ba83-a7a3776734b7",
+        "08e3fcd3-7f50-48d8-9f2c-74f0aef5b256",
+        "37988310-ece0-4bf1-88b5-674b1bfc8825",
+        "7a3e8695-eae6-4304-bb86-b44641ee966a",
+        "16c746c4-c1f6-410a-a5c1-37e12bfebdfb",
+        "e6b53827-a263-4e92-9b50-8075b7f1cd29",
+        "d8719f70-e05a-44f5-b66a-e4768df1ff8e",
+        "bc0fd2e1-0ab9-4cca-993e-55fef1506bd0",
+        "18624362-0709-4583-be65-91d6a47e38d0",
+        "86311ea8-f8da-4bdf-ad46-58434ec75d1d",
+        "86f2249d-38a9-4a82-bf66-8f6474c2811f",
+        "32dfaeef-1fa5-4281-9cf2-b8cf7841c00b",
+        "e37735a8-8815-460b-b66d-301d7dd0f982",
+        "a7c5f40c-9154-49de-8889-3ad364867291",
+        "2f9bc7eb-c060-46a5-b885-bcb6cf1e9440",
+        "d4bea2c8-e55f-4748-a70c-9740d4c5b1fd",
+        "10d15fd3-0cec-43ce-b3ab-19757d3b765f",
+        "52cb782e-4dc1-4279-8c19-ace171435e20",
+        "b621fda1-a69a-4600-b80d-8b038819b4fd",
+        "fc2f0dc3-5b90-4c56-b5c5-48057ab471ca",
+        "fdfa047a-7d37-46fb-9b4e-3589f53c5bcc",
+        "590fd6eb-7df0-4544-ac7d-0f46ac7c1b52",
+        "463f5bba-096f-400e-bcf3-ab6ab309c330",
+        "37e0443c-251e-4a37-80dd-20b7cc5acc49",
+        "9f25aa4e-b4fc-4858-b46a-b69dbfeefb93",
+        "9d4f64d5-43af-477a-8f8b-4860e117a375",
+        "f45d5fc1-f083-42da-9c4d-b6f057241f6d"
+      ],
+      "documentSections": [
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2024-06-09T19:30:00.000Z",
+          "documentId": "065d63bf-b783-4bb1-b068-c566842841c4",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Office Visit Summary",
+          "section": "10164-2",
+          "sectionTitle": "Progress Notes",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2022-06-30T17:00:00.000Z",
+          "documentId": "405798ed-bda1-4e5f-998c-dddf743cc88d",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Telemedicine Summary",
+          "section": "10164-2",
+          "sectionTitle": "Progress Notes",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-08-10T00:00:00.000Z",
+          "documentId": "b5fa2b37-ae03-4c8c-a810-ec7ceb9c5ced",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Travel Summary",
+          "section": "29762-2",
+          "sectionTitle": "Social History",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-08-26T15:16:30Z",
+          "documentId": "1bfff13d-2d82-407f-89f7-d93ab72eed3b",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Continuity of Care Document",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2024-06-09T00:00:00Z",
+          "documentId": "4bc09651-29d1-40a8-b349-2becb5cca88a",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Travel Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2022-06-30T00:00:00Z",
+          "documentId": "b4454cda-f67d-4d28-ac60-a919d8e7b4c3",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Amwell  Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2022-03-10T16:45:00Z",
+          "documentId": "67a21584-1d35-42ac-8a8d-f2693179ddff",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Office Visit Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2022-03-10T00:00:00Z",
+          "documentId": "91a32125-66b7-4c3e-b9c4-90ede8ef4718",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Travel Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2020-07-15T15:41:00Z",
+          "documentId": "87c54875-c5d2-437c-aa69-75b3c1686acd",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Hospital Encounter Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2020-07-15T00:00:00Z",
+          "documentId": "a0676a4a-72fa-43bc-b5cf-da8d82c6a1f6",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Travel Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2020-07-15T00:00:00Z",
+          "documentId": "c4e19830-8d73-4a1e-b383-babb12a8f7e5",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Orders Only Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2020-07-14T17:30:00Z",
+          "documentId": "12ba8516-c989-4cf1-b708-85d2986e5bea",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Office Visit Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2020-07-14T00:00:00Z",
+          "documentId": "59680ac8-5ae5-4577-b1ac-5e29c925ec77",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Travel Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2020-07-13T00:00:00Z",
+          "documentId": "8f76de9c-881a-4ee8-bb50-efe25b968cce",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Orders Only Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-11-27T00:00:00Z",
+          "documentId": "8ad1cd0d-3fa2-4a8e-ac30-1e7b1d866e91",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Documentation Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-11-22T21:13:28Z",
+          "documentId": "8b9f7b34-a085-44d5-ab49-8479af81c5a7",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Hospital Encounter Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-11-22T00:00:00Z",
+          "documentId": "5b09cdb3-00cf-49c5-b363-a8d8b937be1d",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Travel Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-11-20T00:00:00Z",
+          "documentId": "7c14e373-df4b-4b23-8068-9781bd5d529f",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Orders Only Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-11-18T00:00:00Z",
+          "documentId": "4a280afc-1de9-4c2b-b685-4bd841a33fac",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Telephone Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-10-27T17:51:14Z",
+          "documentId": "9128014d-a806-4e4f-ad53-7c656aaccaec",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Hospital Encounter Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-10-27T00:00:00Z",
+          "documentId": "32a3bd26-3218-4b77-a2e3-6b1053ff18c7",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Travel Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-09-11T20:20:00Z",
+          "documentId": "835ddfb1-9865-4287-ba83-a7a3776734b7",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Office Visit Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-08-10T19:15:47Z",
+          "documentId": "08e3fcd3-7f50-48d8-9f2c-74f0aef5b256",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Emergency Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-08-08T00:00:00Z",
+          "documentId": "37988310-ece0-4bf1-88b5-674b1bfc8825",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Telephone Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-08-03T19:16:03Z",
+          "documentId": "7a3e8695-eae6-4304-bb86-b44641ee966a",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Emergency Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-07-28T20:59:33Z",
+          "documentId": "16c746c4-c1f6-410a-a5c1-37e12bfebdfb",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Emergency Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-07-23T18:22:44Z",
+          "documentId": "e6b53827-a263-4e92-9b50-8075b7f1cd29",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Hospital Encounter Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-07-23T00:00:00Z",
+          "documentId": "d8719f70-e05a-44f5-b66a-e4768df1ff8e",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Travel Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-07-18T00:00:00Z",
+          "documentId": "bc0fd2e1-0ab9-4cca-993e-55fef1506bd0",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Travel Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-07-17T19:23:45Z",
+          "documentId": "18624362-0709-4583-be65-91d6a47e38d0",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Hospital Encounter Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-07-17T00:00:00Z",
+          "documentId": "86311ea8-f8da-4bdf-ad46-58434ec75d1d",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Travel Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-07-08T00:00:00Z",
+          "documentId": "86f2249d-38a9-4a82-bf66-8f6474c2811f",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Telephone Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-07-05T18:55:50Z",
+          "documentId": "32dfaeef-1fa5-4281-9cf2-b8cf7841c00b",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Hospital Encounter Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-07-05T00:00:00Z",
+          "documentId": "e37735a8-8815-460b-b66d-301d7dd0f982",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Travel Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-07-03T00:00:00Z",
+          "documentId": "a7c5f40c-9154-49de-8889-3ad364867291",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Telephone Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-06-27T00:00:00Z",
+          "documentId": "2f9bc7eb-c060-46a5-b885-bcb6cf1e9440",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Telephone Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-06-24T00:00:00Z",
+          "documentId": "d4bea2c8-e55f-4748-a70c-9740d4c5b1fd",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Telephone Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-06-23T00:00:00Z",
+          "documentId": "10d15fd3-0cec-43ce-b3ab-19757d3b765f",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Orders Only Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-06-23T00:00:00Z",
+          "documentId": "52cb782e-4dc1-4279-8c19-ace171435e20",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Telephone Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-06-21T00:00:00Z",
+          "documentId": "b621fda1-a69a-4600-b80d-8b038819b4fd",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Orders Only Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-06-08T16:38:09Z",
+          "documentId": "fc2f0dc3-5b90-4c56-b5c5-48057ab471ca",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Hospital Encounter Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-06-08T15:15:00Z",
+          "documentId": "fdfa047a-7d37-46fb-9b4e-3589f53c5bcc",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Office Visit Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-06-08T00:00:00Z",
+          "documentId": "590fd6eb-7df0-4544-ac7d-0f46ac7c1b52",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Travel Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-06-07T00:00:00Z",
+          "documentId": "463f5bba-096f-400e-bcf3-ab6ab309c330",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Telephone Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-04-08T18:20:00Z",
+          "documentId": "37e0443c-251e-4a37-80dd-20b7cc5acc49",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Office Visit Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-01-25T00:00:00Z",
+          "documentId": "9f25aa4e-b4fc-4858-b46a-b69dbfeefb93",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Orders Only Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-01-24T00:00:00Z",
+          "documentId": "9d4f64d5-43af-477a-8f8b-4860e117a375",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Telephone Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2018-10-15T15:30:00Z",
+          "documentId": "f45d5fc1-f083-42da-9c4d-b6f057241f6d",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Office Visit Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        }
+      ],
+      "matchingRecords": [],
+      "meetsCriteria": true,
+      "result": {
+        "alcohol_quantification": "0 standard drinks per week",
+        "alcohol_use_status": "Current non-drinker of alcohol",
+        "diet": "Unknown",
+        "ethnicity": "Not Hispanic or Latino",
+        "exercise": "Unknown",
+        "justification": "Social history extracted from structured social history entries dated 2024-06-09 and relevant clinical notes between 2016-2024, including documented never smoker status and current non-drinker of alcohol. Recreational drug use is explicitly denied. No documentation found for diet or exercise details.",
+        "race": "White",
+        "recreational_drug_quantification": "None documented",
+        "recreational_drug_type": "None documented",
+        "recreational_drug_use_status": "No",
+        "sex_at_birth": "Female",
+        "tobacco_quantification": "Never smoked, no pack-year history",
+        "tobacco_type": "Cigarettes (implied by 'never smoked tobacco'), no smokeless tobacco",
+        "tobacco_use_status": "Never smoked tobacco"
+      }
+    },
+    {
+      "checklistItem": {
+        "id": "85b01053-7920-48f0-ba3e-ab7adfc51e17",
+        "libraryItemId": "recap_sdoh",
+        "name": "RECAP - SDOH",
+        "sortOrder": 9
+      },
+      "clinicalConcepts": [],
+      "documentIds": [
+        "fbc5126a-f611-4fce-9ed6-bab685509703",
+        "5f9db1cc-fb82-4642-b466-28a19bac3f43",
+        "16c746c4-c1f6-410a-a5c1-37e12bfebdfb",
+        "fc2f0dc3-5b90-4c56-b5c5-48057ab471ca",
+        "8b9f7b34-a085-44d5-ab49-8479af81c5a7",
+        "9128014d-a806-4e4f-ad53-7c656aaccaec"
+      ],
+      "documentSections": [
+        {
+          "documentContentType": "image/tiff",
+          "documentDate": "2019-11-25T23:43:25.000Z",
+          "documentId": "fbc5126a-f611-4fce-9ed6-bab685509703",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Affectionate Hospice Care",
+          "section": "3",
+          "sectionTitle": null,
+          "sectionType": "page"
+        },
+        {
+          "documentContentType": "application/pdf",
+          "documentDate": "2022-03-10T17:00:02.000Z",
+          "documentId": "5f9db1cc-fb82-4642-b466-28a19bac3f43",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Office Visit",
+          "section": "1",
+          "sectionTitle": null,
+          "sectionType": "page"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-07-28T20:59:33.000Z",
+          "documentId": "16c746c4-c1f6-410a-a5c1-37e12bfebdfb",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Emergency Summary",
+          "section": "34109-9",
+          "sectionTitle": "Miscellaneous Notes",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-06-08T16:38:09.000Z",
+          "documentId": "fc2f0dc3-5b90-4c56-b5c5-48057ab471ca",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Hospital Encounter Summary",
+          "section": "11488-4",
+          "sectionTitle": "Consult Notes",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-11-22T21:13:28.000Z",
+          "documentId": "8b9f7b34-a085-44d5-ab49-8479af81c5a7",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Hospital Encounter Summary",
+          "section": "10164-2",
+          "sectionTitle": "Progress Notes",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-10-27T17:51:14.000Z",
+          "documentId": "9128014d-a806-4e4f-ad53-7c656aaccaec",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Hospital Encounter Summary",
+          "section": "11488-4",
+          "sectionTitle": "Consult Notes",
+          "sectionType": "ccda"
+        }
+      ],
+      "matchingRecords": [],
+      "meetsCriteria": true,
+      "result": {
+        "education_level": "Unknown",
+        "employment_status": "Unknown",
+        "financial_insecurity": "None",
+        "food_insecurity": "None",
+        "functional_barriers": "Needs assistance with activities of daily living (ADL) per daughter; limited by generalized weakness and impaired balance; uses front-wheeled walker; decreased endurance and strength",
+        "health_literacy": "Unknown",
+        "housing_insecurity": "Unknown",
+        "insurance_status": "Medicare A and B and Clark Co Self Funded",
+        "justification": "Marital status is documented as married in multiple notes including ED and oncology consults (06/2019, 07/2019). Living situation is described as living with family and husband in PT and social work notes (11/2019). Functional barriers are detailed in physical therapy notes (11/2019) describing need for assistance with ADLs, use of walker, and impaired balance and endurance. Financial insecurity and food insecurity are explicitly documented as none in social history from ED notes (07/2019) and nutrition assessment (11/2019). Insurance status is documented as Medicare A and B and Clark Co Self Funded in social work notes (11/2019). Mental health concerns including depression and anxiety are noted in consultant and social history reviews but no formal screening scores are present. Education level and employment status are not documented. Transportation and housing insecurity are not documented. Health literacy and utility insecurity are not documented.",
+        "living_situation": "Lives With Family",
+        "martial_status": "Married",
+        "mental_health": "Depression documented in review of systems; anxiety and confusion noted in clinical notes; no standardized screening scores documented",
+        "transportation_access": "Unknown",
+        "utility_insecurity": "Unknown"
+      }
+    },
+    {
+      "checklistItem": {
+        "id": "abcf4b29-c6f2-4b23-ae35-fa3f6a222db4",
+        "libraryItemId": "recap_behavioral_health",
+        "name": "RECAP - Behavioral Health Visits",
+        "sortOrder": 10
+      },
+      "clinicalConcepts": [],
+      "documentIds": [],
+      "documentSections": [],
+      "matchingRecords": [],
+      "meetsCriteria": true,
+      "result": {
+        "_items": []
+      }
+    },
+    {
+      "checklistItem": {
+        "id": "eccf6ec2-b91d-4571-972b-5f364fea0c7f",
+        "libraryItemId": "recap_vision",
+        "name": "RECAP - Vision Visits",
+        "sortOrder": 11
+      },
+      "clinicalConcepts": [],
+      "documentIds": [
+        "fcf95d62-f2bc-4cf9-b6b1-8eac8c88fc54",
+        "33f3fa8f-4985-4376-8089-83880cf9dcb1",
+        "065d63bf-b783-4bb1-b068-c566842841c4"
+      ],
+      "documentSections": [
+        {
+          "documentContentType": "application/pdf",
+          "documentDate": "2019-05-07T22:35:05.000Z",
+          "documentId": "fcf95d62-f2bc-4cf9-b6b1-8eac8c88fc54",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "NEW EYES 05/03/19",
+          "section": "2",
+          "sectionTitle": null,
+          "sectionType": "page"
+        },
+        {
+          "documentContentType": "application/pdf",
+          "documentDate": "2019-04-25T22:53:00.000Z",
+          "documentId": "33f3fa8f-4985-4376-8089-83880cf9dcb1",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "NEW EYES 4/24/19",
+          "section": "2",
+          "sectionTitle": null,
+          "sectionType": "page"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2024-06-09T19:30:00.000Z",
+          "documentId": "065d63bf-b783-4bb1-b068-c566842841c4",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Office Visit Summary",
+          "section": "10164-2",
+          "sectionTitle": "Progress Notes",
+          "sectionType": "ccda"
+        }
+      ],
+      "matchingRecords": [],
+      "meetsCriteria": true,
+      "result": {
+        "_items": [
+          {
+            "Justification": "Document 74 is an ophthalmology note dated 2019-04-22 describing detailed lens findings, cataract types, dry eye syndrome, and surgical planning including YAG capsulotomy and cataract surgery with intraocular lens, indicating a preoperative ophthalmic evaluation.",
+            "notes": "Lens exam showed 1+ PCO, 2+ NS, 1+ cortical cataract, and 1+ PSC; angles open; dry eye syndrome noted; patient planned for cataract surgery with intraocular lens implantation and YAG capsulotomy for PCO.",
+            "vision_visit": "Ophthalmology exam pre-cataract surgery",
+            "visit_date": "2019-04-22"
+          },
+          {
+            "Justification": "Document 20 is a post-operative ophthalmology note dated 2019-05-03 describing day 1 post cataract surgery OS, normal tear film, optic nerve assessment, glaucoma suspect status, and intraocular lens presence, confirming a post-op follow-up visit.",
+            "notes": "Post-op day 1 cataract surgery left eye with expected healing; normal tear film; cup-to-disc ratio 40; flat periphery; open angle glaucoma suspect right eye; presence of intraocular lens in both eyes.",
+            "vision_visit": "Post-operative cataract surgery follow-up",
+            "visit_date": "2019-05-03"
+          },
+          {
+            "Justification": "Document 77 is an ophthalmology/optometry encounter dated 2024-06-09 describing bilateral eye redness, conjunctival injection, no discharge, normal pupils and fundus, diagnosis of blepharoconjunctivitis, and treatment prescribed, indicating an acute eye problem evaluation.",
+            "notes": "Bilateral conjunctival injection with redness and itchiness; no discharge; pupils equal and reactive; funduscopic exam normal without hemorrhage; diagnosed with blepharoconjunctivitis and treated with olopatadine and polymyxin B sulf-trimethoprim eye drops.",
+            "vision_visit": "Evaluation for bilateral blepharoconjunctivitis",
+            "visit_date": "2024-06-09"
+          }
+        ]
+      }
+    },
+    {
+      "checklistItem": {
+        "id": "7599f5d3-f141-4d5b-aed2-0b1b72c6ae15",
+        "libraryItemId": "recap_dental",
+        "name": "RECAP - Dental Visits",
+        "sortOrder": 12
+      },
+      "clinicalConcepts": [],
+      "documentIds": [],
+      "documentSections": [],
+      "matchingRecords": [],
+      "meetsCriteria": true,
+      "result": {
+        "_items": []
+      }
+    },
+    {
+      "checklistItem": {
+        "id": "216ec092-5a02-4750-a38b-f63f0015af5c",
+        "libraryItemId": "recap_other",
+        "name": "RECAP - Other Pertinent Information",
+        "sortOrder": 13
+      },
+      "clinicalConcepts": [],
+      "documentIds": [
+        "fc2f0dc3-5b90-4c56-b5c5-48057ab471ca",
+        "e6b53827-a263-4e92-9b50-8075b7f1cd29",
+        "32dfaeef-1fa5-4281-9cf2-b8cf7841c00b",
+        "9128014d-a806-4e4f-ad53-7c656aaccaec",
+        "8b9f7b34-a085-44d5-ab49-8479af81c5a7",
+        "18624362-0709-4583-be65-91d6a47e38d0",
+        "37e0443c-251e-4a37-80dd-20b7cc5acc49",
+        "67a21584-1d35-42ac-8a8d-f2693179ddff",
+        "87c54875-c5d2-437c-aa69-75b3c1686acd"
+      ],
+      "documentSections": [
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-06-08T16:38:09.000Z",
+          "documentId": "fc2f0dc3-5b90-4c56-b5c5-48057ab471ca",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Hospital Encounter Summary",
+          "section": "34109-9",
+          "sectionTitle": "Miscellaneous Notes",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-07-23T18:22:44.000Z",
+          "documentId": "e6b53827-a263-4e92-9b50-8075b7f1cd29",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Hospital Encounter Summary",
+          "section": "11488-4",
+          "sectionTitle": "Consult Notes",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-07-05T18:55:50.000Z",
+          "documentId": "32dfaeef-1fa5-4281-9cf2-b8cf7841c00b",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Hospital Encounter Summary",
+          "section": "34109-9",
+          "sectionTitle": "Miscellaneous Notes",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-10-27T17:51:14.000Z",
+          "documentId": "9128014d-a806-4e4f-ad53-7c656aaccaec",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Hospital Encounter Summary",
+          "section": "11488-4",
+          "sectionTitle": "Consult Notes",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-11-22T21:13:28.000Z",
+          "documentId": "8b9f7b34-a085-44d5-ab49-8479af81c5a7",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Hospital Encounter Summary",
+          "section": "10164-2",
+          "sectionTitle": "Progress Notes",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-07-17T19:23:45.000Z",
+          "documentId": "18624362-0709-4583-be65-91d6a47e38d0",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Hospital Encounter Summary",
+          "section": "34109-9",
+          "sectionTitle": "Miscellaneous Notes",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-04-08T18:20:00.000Z",
+          "documentId": "37e0443c-251e-4a37-80dd-20b7cc5acc49",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Office Visit Summary",
+          "section": "34109-9",
+          "sectionTitle": "Miscellaneous Notes",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2022-03-10T16:45:00.000Z",
+          "documentId": "67a21584-1d35-42ac-8a8d-f2693179ddff",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Office Visit Summary",
+          "section": "10164-2",
+          "sectionTitle": "Progress Notes",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2020-07-15T15:41:00.000Z",
+          "documentId": "87c54875-c5d2-437c-aa69-75b3c1686acd",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Hospital Encounter Summary",
+          "section": "34109-9",
+          "sectionTitle": "Miscellaneous Notes",
+          "sectionType": "ccda"
+        }
+      ],
+      "matchingRecords": [],
+      "meetsCriteria": true,
+      "result": {
+        "justification": "Information was extracted from multiple clinical notes including ED attestation (06/08/2019), hematology consults (07/23/2019, 10/28/2019), nursing plans of care (2019), physical therapy assessment (11/24/2019), nutrition assessment (11/24/2019), and procedural notes (07/15/2020).",
+        "other_pertinent_information": "The patient is an 80-year-old female with a longstanding history of chronic autoimmune hemolytic anemia diagnosed in 2012, status post splenectomy, who remains transfusion-dependent despite treatment with steroids, rituximab, and azathioprine. She has developed complications including iron overload requiring chelation therapy, iatrogenic Cushing's syndrome from steroid use, and worsening dementia possibly related to iron overload or Alzheimer's disease. The patient has undergone multiple hospital admissions for severe anemia requiring frequent red blood cell transfusions complicated by warm autoantibodies making blood matching difficult. She has a history of hypertension, hyperlipidemia, GERD, hysterectomy, hernia repair, and right shoulder surgery, and has a port for frequent blood draws which was removed in 2020. Recent evaluations include physical therapy for impaired mobility and balance, nutrition assessment for inadequate intake and weight loss, and echocardiogram showing normal ejection fraction. She lives at home with her husband and has family support, including a daughter who is a nurse and assists with care. Recent preventive screenings include a colonoscopy in 2013 and mammogram status is not explicitly documented."
+      }
+    },
+    {
+      "checklistItem": {
+        "id": "bd7ac05a-309e-462c-b34e-474f2104536e",
+        "libraryItemId": "recap_immunizations",
+        "name": "RECAP - Immunizations",
+        "sortOrder": 14
+      },
+      "clinicalConcepts": [],
+      "documentIds": [
+        "1bfff13d-2d82-407f-89f7-d93ab72eed3b",
+        "f45d5fc1-f083-42da-9c4d-b6f057241f6d",
+        "d5f79d71-26c8-4d2f-9621-4acde46aec6a",
+        "b4369360-9153-492a-9e60-b08a502f9289"
+      ],
+      "documentSections": [
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-08-26T15:16:30.000Z",
+          "documentId": "1bfff13d-2d82-407f-89f7-d93ab72eed3b",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Continuity of Care Document",
+          "section": "18776-5",
+          "sectionTitle": "Plan of Treatment",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2018-10-15T15:30:00.000Z",
+          "documentId": "f45d5fc1-f083-42da-9c4d-b6f057241f6d",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Office Visit Summary",
+          "section": "10164-2",
+          "sectionTitle": "Progress Notes",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "application/pdf",
+          "documentDate": "2019-07-24T21:15:25.000Z",
+          "documentId": "d5f79d71-26c8-4d2f-9621-4acde46aec6a",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Summary of Care",
+          "section": "8",
+          "sectionTitle": null,
+          "sectionType": "page"
+        },
+        {
+          "documentContentType": "application/pdf",
+          "documentDate": "2019-10-31T00:53:21.000Z",
+          "documentId": "b4369360-9153-492a-9e60-b08a502f9289",
+          "documentLocation": "University Medical Center of Southern Nevada",
+          "documentName": "Summary of Care",
+          "section": "21",
+          "sectionTitle": null,
+          "sectionType": "page"
+        }
+      ],
+      "matchingRecords": [],
+      "meetsCriteria": true,
+      "result": {
+        "_items": [
+          {
+            "immunization": "Tdap",
+            "immunization_date": "2018-10-15"
+          },
+          {
+            "immunization": "Hep A, 2 Dose",
+            "immunization_date": "1998-05-15"
+          },
+          {
+            "immunization": "Hepatitis A",
+            "immunization_date": "2006-09-08"
+          },
+          {
+            "immunization": "Influenza Split",
+            "immunization_date": "2003-10-23"
+          },
+          {
+            "immunization": "Influenza Split",
+            "immunization_date": "2005-10-30"
+          },
+          {
+            "immunization": "Influenza Split",
+            "immunization_date": "2010-09-13"
+          },
+          {
+            "immunization": "Influenza Split High Dose",
+            "immunization_date": "2012-09-27"
+          },
+          {
+            "immunization": "Influenza Split High Dose",
+            "immunization_date": "2015-12-11"
+          },
+          {
+            "immunization": "Influenza Split High Dose",
+            "immunization_date": "2016-10-20"
+          },
+          {
+            "immunization": "Influenza Split High Dose",
+            "immunization_date": "2018-10-10"
+          },
+          {
+            "immunization": "Influenza TIV (IM)",
+            "immunization_date": "2013-09-23"
+          },
+          {
+            "immunization": "Influenza TIV (IM)",
+            "immunization_date": "2014-09-18"
+          },
+          {
+            "immunization": "influenza, trivalent, adjuvanted",
+            "immunization_date": "2017-10-16"
+          },
+          {
+            "immunization": "Pneumococcal Polysaccharide",
+            "immunization_date": "2003-10-23"
+          },
+          {
+            "immunization": "Zoster",
+            "immunization_date": "2012-06-19"
+          }
+        ],
+        "justification": "Immunizations were extracted from the Immunization Record tables documented in laboratory and clinical summary documents dated 2019 and 2018, explicitly listing administered vaccines with dates. The Tdap vaccine was confirmed administered on 2018-10-15 from a primary care note. Multiple influenza vaccines, Hepatitis A, Pneumococcal, and Zoster vaccines were documented with administration dates, not as due or declined."
+      }
+    }
+  ],
+  "subjectId": "e52fcd58-4f87-4576-8d96-9c1051627a08"
+}
