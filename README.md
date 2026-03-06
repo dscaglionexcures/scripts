@@ -19,7 +19,7 @@ A collection of Python utilities for xCures Patient Registry operations, reporti
 ## Script Summary
 
 | Script | Type | API | Summary |
-|---|---|---|---|
+|-|---|---|---|
 | `api_smoke_test.py` | Script | Public API | Runs end-to-end smoke tests against the Public API (create subject/document, fetch/update subject, verify behavior) to validate API connectivity and credentials. |
 | `backup_user_permissions.py` | Script | Internal API | Exports user permissions and project membership data for a tenant to CSV (including role, created/last-login dates, resolved project names) with progress reporting. |
 | `bulk_create_users_from_csv.py` | Script | Internal API | Bulk-creates portal users from a CSV |
