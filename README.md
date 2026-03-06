@@ -16,7 +16,7 @@ A collection of utilities for xCures Patient Registry operations, reporting, and
    - `XCURES_PROJECT_ID`
    - `BASE_URL` or `XCURES_BASE_URL` (optional; defaults to `https://partner.xcures.com`)
 
-## Script Summary
+## Script Summaries
 
 #### API Smoke Test 
 `api_smoke_test.py`<br>
@@ -59,9 +59,9 @@ Interactive project duplication utility that reads source project settings, norm
 Evaluates a checklist for a subject through the API and generates a polished, sectioned PDF report, optionally saving raw JSON output too.
 
 ---
-#### CCDA Generator 
+#### Custom CCDA Generator 
 `generate_ccda_pdf.py`<br>
-**API:** Public API  
+**API:** N/A
 Builds a sample Medication Dispense CCD-A XML, renders a human-readable PDF, and embeds the XML into the PDF as an attachment.
 
 ---

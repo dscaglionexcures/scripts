@@ -2,3 +2,5 @@
 .env
 biometric.pdf
 users.csv
+.vscode/
+.venv_sdk
