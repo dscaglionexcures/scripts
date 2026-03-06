@@ -95,19 +95,20 @@ Built for MedSync - bulk project assignment workflow with config-driven target p
 Downloads an XML document from the API, applies `cda2.xsl` transformation, and produces a PDF (auto-fetching `cda_l10n.xml` when needed).
 
 ---
-#### `api_common.py`
+#### `api_common.py`<br>
 Shared HTTP utilities: URL building, retry/backoff request wrapper, JSON validation/parsing, and standardized HTTP error formatting.
 
 ---
-#### `auth_common.py`
+#### `auth_common.py`<br>
 Shared auth/env helpers: `.env` loading, required env validation, bearer/client-credentials token retrieval with in-memory token caching, and JSON header construction.
 
 ---
-#### `csv_common.py`
+#### `csv_common.py`<br>
 CSV read/write helpers with header normalization, required-column checks, and safe output creation.
 
 ---
-#### `Progress Bar Module (progress_common.py)`
+#### Progress Bar Module 
+`(progress_common.py)`<br>
 Progress bar abstraction (`tqdm` when available, text fallback otherwise) for both iterator and manual progress use.
 
 ---
