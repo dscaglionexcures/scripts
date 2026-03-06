@@ -92,7 +92,7 @@
             <xd:p>Determines the font family for the whole document unless overruled somewhere</xd:p>
         </xd:desc>
     </xd:doc>
-    <xsl:param name="font-family" select="'Verdana, Tahoma, sans-serif'"/>
+    <xsl:param name="font-family" select="'&quot;Open Sans&quot;, sans-serif'"/>
     
     <xd:doc>
         <xd:desc>
@@ -341,8 +341,24 @@
                 </title>
                 <xsl:comment> General CSS </xsl:comment>
                 <style type="text/css" media="all">
+                    @font-face {
+                        font-family: 'Open Sans';
+                        font-style: normal;
+                        font-weight: 400;
+                        font-display: swap;
+                        src: url('https://fonts.gstatic.com/s/opensans/v44/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0C4n.ttf') format('truetype');
+                    }
+                    @font-face {
+                        font-family: 'Open Sans';
+                        font-style: normal;
+                        font-weight: 700;
+                        font-display: swap;
+                        src: url('https://fonts.gstatic.com/s/opensans/v44/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsg-1y4n.ttf') format('truetype');
+                    }
                     body {
                         background-color: white;
+                        font-family: <xsl:value-of select="$font-family"/>;
+                        font-weight: 400;
                     }
                     .container { 
                         background-color: white;
@@ -406,6 +422,8 @@
                     }
                     h1, h2, h3 {
                         color: #0254BE;
+                        font-family: <xsl:value-of select="$font-family"/>;
+                        font-weight: 700;
                     }
                     ul, li {
                         margin: 0;
@@ -464,6 +482,8 @@
                         padding: 12px;
                         font-size: 12px;
                         background-color: #FFFFFF !important;
+                        font-family: <xsl:value-of select="$font-family"/>;
+                        font-weight: 400;
                     }
                     .table_simple{
                         width: auto;

@@ -17,6 +17,7 @@ from auth_common import get_xcures_bearer_token, load_env_file
 DEFAULT_L10N_URL = (
     "https://raw.githubusercontent.com/HL7/cda-core-xsl/master/cda_l10n.xml"
 )
+FORCED_OUTPUT_DIR = Path("/Users/dScaglione/downloads/code/downloads")
 
 
 class PipelineError(RuntimeError):
@@ -79,8 +80,8 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--output-dir",
-        default="downloads",
-        help="Output directory for XML/HTML/PDF. Default: %(default)s",
+        default=str(FORCED_OUTPUT_DIR),
+        help="Ignored. Outputs are always written to /Users/dScaglione/downloads/code/downloads.",
     )
     parser.add_argument(
         "--renderer",
@@ -337,6 +338,8 @@ def render_with_playwright(*, html_path: Path, pdf_path: Path) -> None:
         "--yes",
         "playwright",
         "pdf",
+        "--wait-for-timeout",
+        "2000",
         html_path.resolve().as_uri(),
         str(pdf_path),
     ]
@@ -425,7 +428,7 @@ def main() -> int:
         print(f"error: xsl file not found: {xsl_path}", file=sys.stderr)
         return 2
 
-    output_dir = Path(args.output_dir).expanduser().resolve()
+    output_dir = FORCED_OUTPUT_DIR.expanduser().resolve()
     output_dir.mkdir(parents=True, exist_ok=True)
 
     endpoint_url = build_document_url(args.endpoint_template, document_id)

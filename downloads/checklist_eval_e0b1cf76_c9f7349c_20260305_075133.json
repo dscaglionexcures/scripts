@@ -1,0 +1,1473 @@
+{
+  "checklistId": "c9f7349c-dbbd-443a-8ee8-3dafb2f8a034",
+  "documentIds": [
+    "68955d62-fd63-460b-ad7f-5d467db4c39a",
+    "f4e8df53-69d2-46b0-bbd2-831dde2a7a56",
+    "e818ed73-045f-4dfb-b7e8-a5c315710958",
+    "37f093c3-3978-4672-ab41-bc280821577d",
+    "f8a541c3-0740-4049-8c0e-c5b9abe29fab",
+    "abba6a8f-1fa3-420f-b9ea-3e0175f11d68",
+    "6a63317c-35ed-45fb-96e3-833ca582ef53",
+    "09e98a70-92e0-4df8-a773-007bdd2ca963",
+    "d0b8ae58-f392-474c-aaa4-606a00890697",
+    "344f3995-6f90-42c5-98cb-94ff8b631530",
+    "3e1f548a-f0b0-463f-b304-83a51900e375",
+    "f753f2be-2ae1-4f7c-9b7a-3ee7cd074c92",
+    "8034d163-92d9-41de-a03d-1a721d194297",
+    "282b4bc6-d78e-4068-a607-eb6af6f86d8e",
+    "ee25b2d9-1ef7-4fcd-8607-ad0e5b8f995c",
+    "9d164748-76ca-463a-8130-35e33d7f848c",
+    "e56607e9-7173-427e-9055-0a3275ba579d",
+    "270c2420-f769-445b-b87f-a9fbaff3617d",
+    "2d7a46ce-a235-4161-bc61-cff53b2d0f3a"
+  ],
+  "eligibilitySatisfied": true,
+  "items": [
+    {
+      "checklistItem": {
+        "id": "ef22132c-23df-4f31-aa1e-388e7b950e08",
+        "libraryItemId": "recap_conditions",
+        "name": "RECAP - Conditions and Comorbidities",
+        "sortOrder": 0
+      },
+      "clinicalConcepts": [
+        {
+          "clinicalConceptId": "9be4d9f7-48d9-5fe1-909d-77d65dfd63c0",
+          "entityType": "condition"
+        },
+        {
+          "clinicalConceptId": "4982849e-22eb-53a1-87ca-0e7cb6178605",
+          "entityType": "condition"
+        },
+        {
+          "clinicalConceptId": "381519e6-405e-56c7-8cf7-8b925be11047",
+          "entityType": "condition"
+        },
+        {
+          "clinicalConceptId": "1ea50336-6d28-541f-98e3-cd2b8de27fc2",
+          "entityType": "condition"
+        },
+        {
+          "clinicalConceptId": "603ac03d-c6a9-5500-b48e-f6405dc87d18",
+          "entityType": "condition"
+        },
+        {
+          "clinicalConceptId": "39fccecc-d547-554e-b15c-28b802cfc65c",
+          "entityType": "condition"
+        },
+        {
+          "clinicalConceptId": "1278c926-cde4-58b9-a7e4-68b125d849af",
+          "entityType": "condition"
+        },
+        {
+          "clinicalConceptId": "944c2601-2f1e-51f3-95a0-a27b59c75bf8",
+          "entityType": "condition"
+        },
+        {
+          "clinicalConceptId": "b074b092-d1a6-53c2-b8c7-62acfec73e12",
+          "entityType": "condition"
+        }
+      ],
+      "documentIds": [
+        "68955d62-fd63-460b-ad7f-5d467db4c39a",
+        "f4e8df53-69d2-46b0-bbd2-831dde2a7a56",
+        "e818ed73-045f-4dfb-b7e8-a5c315710958",
+        "37f093c3-3978-4672-ab41-bc280821577d",
+        "f8a541c3-0740-4049-8c0e-c5b9abe29fab",
+        "abba6a8f-1fa3-420f-b9ea-3e0175f11d68",
+        "6a63317c-35ed-45fb-96e3-833ca582ef53",
+        "09e98a70-92e0-4df8-a773-007bdd2ca963",
+        "d0b8ae58-f392-474c-aaa4-606a00890697",
+        "344f3995-6f90-42c5-98cb-94ff8b631530"
+      ],
+      "documentSections": [
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-11-05T06:07:50.000Z",
+          "documentId": "68955d62-fd63-460b-ad7f-5d467db4c39a",
+          "documentLocation": "Jackson Heart Clinic PA",
+          "documentName": "Continuity of Care Document (C-CDA R2.1) (Encounter date: 2025-10-22 11:00:00)",
+          "section": "46240-8",
+          "sectionTitle": "Encounters",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-10-21T02:22:18.000Z",
+          "documentId": "f4e8df53-69d2-46b0-bbd2-831dde2a7a56",
+          "documentLocation": "Jackson Heart Clinic PA",
+          "documentName": "Continuity of Care Document (C-CDA R2.1) (Encounter date: 2025-07-16 10:45:00)",
+          "section": "46240-8",
+          "sectionTitle": "Encounters",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-10-21T02:22:12.000Z",
+          "documentId": "e818ed73-045f-4dfb-b7e8-a5c315710958",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Continuity of Care Document",
+          "section": "11450-4",
+          "sectionTitle": "Active Problems",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-11-05T06:07:50Z",
+          "documentId": "37f093c3-3978-4672-ab41-bc280821577d",
+          "documentLocation": "Jackson Heart Clinic PA",
+          "documentName": "Continuity of Care Document (C-CDA R2.1) (Encounter date: 2025-10-22 11:00:00)",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-10-21T02:22:18Z",
+          "documentId": "f8a541c3-0740-4049-8c0e-c5b9abe29fab",
+          "documentLocation": "Jackson Heart Clinic PA",
+          "documentName": "Continuity of Care Document (C-CDA R2.1) (Encounter date: 2025-07-16 10:45:00)",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "image/tiff",
+          "documentDate": "2019-10-29T14:36:51.000Z",
+          "documentId": "abba6a8f-1fa3-420f-b9ea-3e0175f11d68",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Hospital Encounter",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "page"
+        },
+        {
+          "documentContentType": "image/tiff",
+          "documentDate": "2019-09-17T18:15:59.000Z",
+          "documentId": "6a63317c-35ed-45fb-96e3-833ca582ef53",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Hospital Encounter",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "page"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-10-21T02:22:14Z",
+          "documentId": "09e98a70-92e0-4df8-a773-007bdd2ca963",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Continuity of Care Document",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-10-30T19:05:00Z",
+          "documentId": "d0b8ae58-f392-474c-aaa4-606a00890697",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Surgery Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-10-30T13:19:00Z",
+          "documentId": "344f3995-6f90-42c5-98cb-94ff8b631530",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Hospital Encounter Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        }
+      ],
+      "matchingRecords": [],
+      "meetsCriteria": true,
+      "result": {
+        "conditions": "Essential hypertension; Gastroesophageal reflux disease without esophagitis; Chronic kidney disease; Renal cell carcinoma",
+        "justification": "The conditions were explicitly documented as active in problem lists and visit diagnoses from Jackson Heart Clinic notes dated 2025-07-16 and 2025-10-22, and the diagnosis of renal cell carcinoma was documented with onset 2019-10-30 in problem lists."
+      }
+    },
+    {
+      "checklistItem": {
+        "id": "bbedc81f-edda-4b6b-b778-5c98cb53e732",
+        "libraryItemId": "recap_medications",
+        "name": "RECAP - Medications",
+        "sortOrder": 1
+      },
+      "clinicalConcepts": [
+        {
+          "clinicalConceptId": "e894825d-74bd-544d-8eca-321c52126096",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "a5e990bc-2a95-5831-b14b-d69c71bcf1a8",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "589c5c58-3f84-5059-8995-9978008988ed",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "1738225d-701f-5c43-8e51-37f906f06e6c",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "70aac33a-31ed-5961-86c9-9b4f9b94f70b",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "f4cb8bf1-6a3f-5771-8a0a-6a323b904bfc",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "a569286a-cdb9-5be0-bfe7-e5a6829c012e",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "20d831fe-c75f-5e51-a950-6e761db2a7eb",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "51614f43-6de7-5371-a1e2-857b1377ecf7",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "a31385a3-d657-599b-9938-b5367c03fe3e",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "552c0530-4a9d-56cb-bc71-ed8b0c88cbee",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "b19f7b3a-6f4d-5619-81c0-9ffa0714aa5f",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "0cd774f9-2817-5540-a6d6-281c1c753a6d",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "e85b22a7-9c26-5afb-a692-eec3d0b083ca",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "b74d2b8e-72c7-5b10-8627-7c617c82b38e",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "7b693e7f-cf86-5b6a-b9da-1d2f3c23075a",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "93bc1593-b797-576a-b9d8-a1842c077ebb",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "5f435004-5c92-5307-8032-a81728ec8fb8",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "d2ee1439-6209-533d-9696-4344a22ec636",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "d8809ef6-55c5-5375-a00a-0c5d0656856d",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "cf0f3aec-ce01-5bdc-a28b-58308f47b102",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "fab66bff-8b65-59a1-a96e-425e4fe642e7",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "c5230e0a-1ddf-5431-9555-9eef75ca357c",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "bc40bb65-b4e0-5d40-b62e-cf1518ef11a9",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "9335bc31-090d-5d69-89b9-a8e5723ee894",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "5947527d-8cba-5ef3-ac31-a4d830b76b84",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "10ca052e-0d78-5197-ab28-410c8468411e",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "458d1406-3412-571d-ba40-a54bbb792766",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "13f01a91-8288-5dea-bb39-2820e06e160e",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "292ea19f-64ec-5974-8d88-8e7d5b806f01",
+          "entityType": "medication"
+        }
+      ],
+      "documentIds": [
+        "09e98a70-92e0-4df8-a773-007bdd2ca963",
+        "37f093c3-3978-4672-ab41-bc280821577d",
+        "68955d62-fd63-460b-ad7f-5d467db4c39a",
+        "f4e8df53-69d2-46b0-bbd2-831dde2a7a56",
+        "f8a541c3-0740-4049-8c0e-c5b9abe29fab",
+        "d0b8ae58-f392-474c-aaa4-606a00890697",
+        "344f3995-6f90-42c5-98cb-94ff8b631530"
+      ],
+      "documentSections": [
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-10-21T02:22:14.000Z",
+          "documentId": "09e98a70-92e0-4df8-a773-007bdd2ca963",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Continuity of Care Document",
+          "section": "10160-0",
+          "sectionTitle": "Medications",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-11-05T06:07:50Z",
+          "documentId": "37f093c3-3978-4672-ab41-bc280821577d",
+          "documentLocation": "Jackson Heart Clinic PA",
+          "documentName": "Continuity of Care Document (C-CDA R2.1) (Encounter date: 2025-10-22 11:00:00)",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-11-05T06:07:50Z",
+          "documentId": "68955d62-fd63-460b-ad7f-5d467db4c39a",
+          "documentLocation": "Jackson Heart Clinic PA",
+          "documentName": "Continuity of Care Document (C-CDA R2.1) (Encounter date: 2025-10-22 11:00:00)",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-10-21T02:22:18Z",
+          "documentId": "f4e8df53-69d2-46b0-bbd2-831dde2a7a56",
+          "documentLocation": "Jackson Heart Clinic PA",
+          "documentName": "Continuity of Care Document (C-CDA R2.1) (Encounter date: 2025-07-16 10:45:00)",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-10-21T02:22:18Z",
+          "documentId": "f8a541c3-0740-4049-8c0e-c5b9abe29fab",
+          "documentLocation": "Jackson Heart Clinic PA",
+          "documentName": "Continuity of Care Document (C-CDA R2.1) (Encounter date: 2025-07-16 10:45:00)",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-10-30T19:05:00Z",
+          "documentId": "d0b8ae58-f392-474c-aaa4-606a00890697",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Surgery Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-10-30T13:19:00Z",
+          "documentId": "344f3995-6f90-42c5-98cb-94ff8b631530",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Hospital Encounter Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        }
+      ],
+      "matchingRecords": [],
+      "meetsCriteria": true,
+      "result": {
+        "_items": [
+          {
+            "dose": "20 MG",
+            "formulation": "Oral Tablet",
+            "medication": "atorvastatin",
+            "patient_instructions": "Take 20 mg by mouth one (1) time a day"
+          },
+          {
+            "dose": "20 MG",
+            "formulation": "Oral Tablet",
+            "medication": "famotidine",
+            "patient_instructions": "take 1 tablet by oral route every day"
+          },
+          {
+            "dose": "160 MG",
+            "formulation": "Oral Tablet",
+            "medication": "fenofibrate",
+            "patient_instructions": "take 1 tablet by oral route every day"
+          },
+          {
+            "dose": "325 MG",
+            "formulation": "Oral Tablet",
+            "medication": "ferrous sulfate",
+            "patient_instructions": "take 1 tablet by oral route every day"
+          },
+          {
+            "dose": "1 MG",
+            "formulation": "Oral Tablet",
+            "medication": "folic acid",
+            "patient_instructions": "take 1 tablet by oral route every day"
+          },
+          {
+            "dose": "40 MG",
+            "formulation": "Oral Tablet",
+            "medication": "furosemide",
+            "patient_instructions": "Take 40 mg by mouth 2 (two) times a day"
+          },
+          {
+            "dose": "145 MCG",
+            "formulation": "Oral Capsule",
+            "medication": "Linzess",
+            "patient_instructions": "take 1 capsule by oral route every day on an empty stomach at least 30 minutes before 1st meal of the day"
+          },
+          {
+            "dose": "40 MG",
+            "formulation": "Delayed Release Oral Tablet",
+            "medication": "pantoprazole",
+            "patient_instructions": "take 1 tablet by oral route every day"
+          },
+          {
+            "dose": "10 MEQ",
+            "formulation": "Extended Release Oral Tablet",
+            "medication": "potassium chloride ER",
+            "patient_instructions": "take 1 tablet by oral route 3 times every day with food"
+          },
+          {
+            "dose": "10 MG",
+            "formulation": "Oral Tablet",
+            "medication": "amlodipine",
+            "patient_instructions": "take 1 tablet by oral route every day"
+          },
+          {
+            "dose": "100 MG",
+            "formulation": "Oral Tablet",
+            "medication": "hydralazine",
+            "patient_instructions": "take 1 tablet by oral route 3 times every day with food"
+          },
+          {
+            "dose": "3.125 MG",
+            "formulation": "Oral Tablet",
+            "medication": "Coreg",
+            "patient_instructions": "take 1 tablet by oral route 2 times every day with food"
+          },
+          {
+            "dose": "10 MG",
+            "formulation": "Oral Capsule",
+            "medication": "doxepin",
+            "patient_instructions": "Take 10 mg by mouth 3 (three) times a day"
+          },
+          {
+            "dose": "10 MG",
+            "formulation": "Oral Tablet",
+            "medication": "montelukast",
+            "patient_instructions": "Take 10 mg by mouth nightly"
+          },
+          {
+            "dose": "90 MG",
+            "formulation": "Extended Release Oral Tablet",
+            "medication": "nifedipine",
+            "patient_instructions": "Take 90 mg by mouth one (1) time a day"
+          },
+          {
+            "dose": "20 MEQ",
+            "formulation": "Extended Release Oral Tablet",
+            "medication": "potassium chloride",
+            "patient_instructions": "Take 20 mEq by mouth one (1) time a day"
+          },
+          {
+            "dose": "25 MG",
+            "formulation": "Oral Tablet",
+            "medication": "metoprolol tartrate",
+            "patient_instructions": "Take 25 mg by mouth 2 (two) times a day"
+          },
+          {
+            "dose": "500 MG",
+            "formulation": "Oral Tablet",
+            "medication": "metformin hydrochloride",
+            "patient_instructions": "Take 500 mg by mouth 2 (two) times a day with meals"
+          },
+          {
+            "dose": "20 MG",
+            "formulation": "Delayed Release Oral Capsule",
+            "medication": "omeprazole",
+            "patient_instructions": "Take 20 mg by mouth one (1) time a day"
+          },
+          {
+            "dose": "7.5-325 mg",
+            "formulation": "Oral Tablet",
+            "medication": "HYDROcodone-acetaminophen",
+            "patient_instructions": "Take one tablet by mouth every 6 (six) hours as needed for pain"
+          }
+        ],
+        "justification": "Active outpatient medications were extracted from the most recent medication lists and medication reconciliation documents dated 2025-07-16 and 2025-10-22, as well as the active medication table from 2019-11-05. Discontinued or no longer active medications were excluded based on explicit stop dates or status. All included medications have explicit provider-documented instructions and are currently active."
+      }
+    },
+    {
+      "checklistItem": {
+        "id": "ec4ae54e-2154-4fd5-85b0-fa8df8cdb034",
+        "libraryItemId": "recap_allergies",
+        "name": "RECAP - Allergies",
+        "sortOrder": 2
+      },
+      "clinicalConcepts": [],
+      "documentIds": [
+        "09e98a70-92e0-4df8-a773-007bdd2ca963",
+        "68955d62-fd63-460b-ad7f-5d467db4c39a",
+        "d0b8ae58-f392-474c-aaa4-606a00890697"
+      ],
+      "documentSections": [
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-10-21T02:22:14.000Z",
+          "documentId": "09e98a70-92e0-4df8-a773-007bdd2ca963",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Continuity of Care Document",
+          "section": "48765-2",
+          "sectionTitle": "Allergies",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-11-05T06:07:50.000Z",
+          "documentId": "68955d62-fd63-460b-ad7f-5d467db4c39a",
+          "documentLocation": "Jackson Heart Clinic PA",
+          "documentName": "Continuity of Care Document (C-CDA R2.1) (Encounter date: 2025-10-22 11:00:00)",
+          "section": "48765-2",
+          "sectionTitle": "Allergies, Adverse Reactions, Alerts",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-10-30T19:05:00.000Z",
+          "documentId": "d0b8ae58-f392-474c-aaa4-606a00890697",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Surgery Summary",
+          "section": "8648-8",
+          "sectionTitle": "Discharge Summaries",
+          "sectionType": "ccda"
+        }
+      ],
+      "matchingRecords": [],
+      "meetsCriteria": true,
+      "result": {
+        "_items": [
+          {
+            "Reaction": "",
+            "allergen": "No Known Allergies",
+            "recorded_date": "Unknown"
+          }
+        ],
+        "justification": "The patient's allergy status is explicitly documented as 'No Known Allergies' in the allergy section and discharge summary by Patrick Parker Daily, MD dated 2019-11-05 and other allergy documentation indicating no active allergies."
+      }
+    },
+    {
+      "checklistItem": {
+        "id": "45e5f9ba-2d24-4f62-aaee-bd295ee4a1fa",
+        "libraryItemId": "recap_surgical_history",
+        "name": "RECAP - Surgical History",
+        "sortOrder": 3
+      },
+      "clinicalConcepts": [],
+      "documentIds": [
+        "abba6a8f-1fa3-420f-b9ea-3e0175f11d68",
+        "6a63317c-35ed-45fb-96e3-833ca582ef53",
+        "3e1f548a-f0b0-463f-b304-83a51900e375",
+        "f753f2be-2ae1-4f7c-9b7a-3ee7cd074c92",
+        "8034d163-92d9-41de-a03d-1a721d194297",
+        "344f3995-6f90-42c5-98cb-94ff8b631530"
+      ],
+      "documentSections": [
+        {
+          "documentContentType": "image/tiff",
+          "documentDate": "2019-10-29T14:36:51.000Z",
+          "documentId": "abba6a8f-1fa3-420f-b9ea-3e0175f11d68",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Hospital Encounter",
+          "section": "2",
+          "sectionTitle": null,
+          "sectionType": "page"
+        },
+        {
+          "documentContentType": "image/tiff",
+          "documentDate": "2019-09-17T18:15:59.000Z",
+          "documentId": "6a63317c-35ed-45fb-96e3-833ca582ef53",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Hospital Encounter",
+          "section": "2",
+          "sectionTitle": null,
+          "sectionType": "page"
+        },
+        {
+          "documentContentType": "image/tiff",
+          "documentDate": "2019-11-06T00:00:14.000Z",
+          "documentId": "3e1f548a-f0b0-463f-b304-83a51900e375",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Hospital Encounter",
+          "section": "1",
+          "sectionTitle": null,
+          "sectionType": "page"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-10-30T19:29:00.000Z",
+          "documentId": "f753f2be-2ae1-4f7c-9b7a-3ee7cd074c92",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Anesthesia Event Summary",
+          "section": "59774-0",
+          "sectionTitle": "Anesthesia Record",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "application/pdf",
+          "documentDate": "2019-10-30T20:33:00.000Z",
+          "documentId": "8034d163-92d9-41de-a03d-1a721d194297",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Surgical Pathology Exam MBMC",
+          "section": "1",
+          "sectionTitle": null,
+          "sectionType": "page"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-10-30T13:19:00.000Z",
+          "documentId": "344f3995-6f90-42c5-98cb-94ff8b631530",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Hospital Encounter Summary",
+          "section": "8648-8",
+          "sectionTitle": "Discharge Summaries",
+          "sectionType": "ccda"
+        }
+      ],
+      "matchingRecords": [],
+      "meetsCriteria": true,
+      "result": {
+        "_items": [
+          {
+            "anatomic_location": "Uterus, Cervix",
+            "justification": "Physical exam documentation from 2019-09-17 and 2019-09-17 notes indicate status post hysterectomy; no explicit procedure date provided.",
+            "notes": "Procedure completion documented; patient noted as status post hysterectomy on 2019-09-17 exam.",
+            "procedure_date": "Unknown",
+            "reason": "Unknown",
+            "surgical_procedure": "Hysterectomy"
+          },
+          {
+            "anatomic_location": "Right kidney",
+            "justification": "Surgery consent, anesthesia record, pathology report, and discharge summary from 2019-10-30 to 2019-11-05 document right laparoscopic nephrectomy for renal mass with pathology confirming oncocytoma.",
+            "notes": "Procedure completed without complication; pathology confirmed oncocytoma with no malignancy.",
+            "procedure_date": "2019-10-30",
+            "reason": "Renal mass / Oncocytoma",
+            "surgical_procedure": "Right hand assisted laparoscopic nephrectomy"
+          }
+        ],
+        "justification": "Surgical history extracted from physical exam notes (2019-09-17) indicating hysterectomy status, and detailed operative, anesthesia, pathology, and discharge documents from 2019-10-30 to 2019-11-05 confirming right hand assisted laparoscopic nephrectomy for renal oncocytoma."
+      }
+    },
+    {
+      "checklistItem": {
+        "id": "f09aa202-e7fe-4c23-bd15-108e7e87bc1f",
+        "libraryItemId": "recap_family_history",
+        "name": "RECAP - Family History",
+        "sortOrder": 4
+      },
+      "clinicalConcepts": [],
+      "documentIds": [
+        "abba6a8f-1fa3-420f-b9ea-3e0175f11d68",
+        "6a63317c-35ed-45fb-96e3-833ca582ef53"
+      ],
+      "documentSections": [
+        {
+          "documentContentType": "image/tiff",
+          "documentDate": "2019-10-29T14:36:51.000Z",
+          "documentId": "abba6a8f-1fa3-420f-b9ea-3e0175f11d68",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Hospital Encounter",
+          "section": "1",
+          "sectionTitle": null,
+          "sectionType": "page"
+        },
+        {
+          "documentContentType": "image/tiff",
+          "documentDate": "2019-09-17T18:15:59.000Z",
+          "documentId": "6a63317c-35ed-45fb-96e3-833ca582ef53",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Hospital Encounter",
+          "section": "1",
+          "sectionTitle": null,
+          "sectionType": "page"
+        }
+      ],
+      "matchingRecords": [],
+      "meetsCriteria": true,
+      "result": {
+        "Justification": "Multiple clinical documents including History and Physical from 2019-10-29 and Office Visit Report from 2019-09-17 explicitly state 'Family History Unknown' or do not document any positive family history conditions for this patient.",
+        "_items": []
+      }
+    },
+    {
+      "checklistItem": {
+        "id": "dbc8006d-eb0e-4126-aab0-a4b0ad35d1b8",
+        "libraryItemId": "recap_diagnostic_procedures",
+        "name": "RECAP - Imaging and Diagnostic Procedures",
+        "sortOrder": 5
+      },
+      "clinicalConcepts": [
+        {
+          "clinicalConceptId": "4f0f1a01-4290-5faa-beb8-619611f31457",
+          "entityType": "condition"
+        },
+        {
+          "clinicalConceptId": "9be4d9f7-48d9-5fe1-909d-77d65dfd63c0",
+          "entityType": "condition"
+        },
+        {
+          "clinicalConceptId": "4982849e-22eb-53a1-87ca-0e7cb6178605",
+          "entityType": "condition"
+        },
+        {
+          "clinicalConceptId": "381519e6-405e-56c7-8cf7-8b925be11047",
+          "entityType": "condition"
+        },
+        {
+          "clinicalConceptId": "030dc631-e40f-57b0-844c-c9edfc0ba6ce",
+          "entityType": "condition"
+        },
+        {
+          "clinicalConceptId": "1ea50336-6d28-541f-98e3-cd2b8de27fc2",
+          "entityType": "condition"
+        },
+        {
+          "clinicalConceptId": "603ac03d-c6a9-5500-b48e-f6405dc87d18",
+          "entityType": "condition"
+        },
+        {
+          "clinicalConceptId": "39fccecc-d547-554e-b15c-28b802cfc65c",
+          "entityType": "condition"
+        },
+        {
+          "clinicalConceptId": "1278c926-cde4-58b9-a7e4-68b125d849af",
+          "entityType": "condition"
+        },
+        {
+          "clinicalConceptId": "b6032173-bdf4-5d22-b6e1-2689e554bf02",
+          "entityType": "condition"
+        },
+        {
+          "clinicalConceptId": "1b12fd8e-1068-59bf-be08-fe1d071013f1",
+          "entityType": "condition"
+        },
+        {
+          "clinicalConceptId": "5cab91b4-e0d3-5953-8d5c-0bbe3f0c8790",
+          "entityType": "condition"
+        },
+        {
+          "clinicalConceptId": "fbfd5923-de30-5d73-83d4-0d67b9eaa908",
+          "entityType": "condition"
+        },
+        {
+          "clinicalConceptId": "d4f8ffff-d23b-53b4-887d-8b5bbd1757f4",
+          "entityType": "condition"
+        },
+        {
+          "clinicalConceptId": "944c2601-2f1e-51f3-95a0-a27b59c75bf8",
+          "entityType": "condition"
+        },
+        {
+          "clinicalConceptId": "ed289bb6-279f-5c42-ba5c-3fe867c09029",
+          "entityType": "condition"
+        },
+        {
+          "clinicalConceptId": "b074b092-d1a6-53c2-b8c7-62acfec73e12",
+          "entityType": "condition"
+        }
+      ],
+      "documentIds": [
+        "282b4bc6-d78e-4068-a607-eb6af6f86d8e",
+        "09e98a70-92e0-4df8-a773-007bdd2ca963",
+        "37f093c3-3978-4672-ab41-bc280821577d",
+        "68955d62-fd63-460b-ad7f-5d467db4c39a",
+        "f4e8df53-69d2-46b0-bbd2-831dde2a7a56",
+        "f8a541c3-0740-4049-8c0e-c5b9abe29fab",
+        "abba6a8f-1fa3-420f-b9ea-3e0175f11d68",
+        "6a63317c-35ed-45fb-96e3-833ca582ef53",
+        "f753f2be-2ae1-4f7c-9b7a-3ee7cd074c92",
+        "d0b8ae58-f392-474c-aaa4-606a00890697",
+        "344f3995-6f90-42c5-98cb-94ff8b631530",
+        "e818ed73-045f-4dfb-b7e8-a5c315710958"
+      ],
+      "documentSections": [
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-11-05T06:07:50.000Z",
+          "documentId": "282b4bc6-d78e-4068-a607-eb6af6f86d8e",
+          "documentLocation": "Greenwood Leflore Clinic Network",
+          "documentName": "Continuity of Care Document (C-CDA R2.1) (Encounter date: 2019-08-26 10:00:00)",
+          "section": "30954-2",
+          "sectionTitle": "Results",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-10-21T02:22:14.000Z",
+          "documentId": "09e98a70-92e0-4df8-a773-007bdd2ca963",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Continuity of Care Document",
+          "section": "8716-3",
+          "sectionTitle": "Last Filed Vital Signs",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-11-05T06:07:50Z",
+          "documentId": "37f093c3-3978-4672-ab41-bc280821577d",
+          "documentLocation": "Jackson Heart Clinic PA",
+          "documentName": "Continuity of Care Document (C-CDA R2.1) (Encounter date: 2025-10-22 11:00:00)",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-11-05T06:07:50Z",
+          "documentId": "68955d62-fd63-460b-ad7f-5d467db4c39a",
+          "documentLocation": "Jackson Heart Clinic PA",
+          "documentName": "Continuity of Care Document (C-CDA R2.1) (Encounter date: 2025-10-22 11:00:00)",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-10-21T02:22:18Z",
+          "documentId": "f4e8df53-69d2-46b0-bbd2-831dde2a7a56",
+          "documentLocation": "Jackson Heart Clinic PA",
+          "documentName": "Continuity of Care Document (C-CDA R2.1) (Encounter date: 2025-07-16 10:45:00)",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-10-21T02:22:18Z",
+          "documentId": "f8a541c3-0740-4049-8c0e-c5b9abe29fab",
+          "documentLocation": "Jackson Heart Clinic PA",
+          "documentName": "Continuity of Care Document (C-CDA R2.1) (Encounter date: 2025-07-16 10:45:00)",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "image/tiff",
+          "documentDate": "2019-10-29T14:36:51.000Z",
+          "documentId": "abba6a8f-1fa3-420f-b9ea-3e0175f11d68",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Hospital Encounter",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "page"
+        },
+        {
+          "documentContentType": "image/tiff",
+          "documentDate": "2019-09-17T18:15:59.000Z",
+          "documentId": "6a63317c-35ed-45fb-96e3-833ca582ef53",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Hospital Encounter",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "page"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-10-30T19:29:00Z",
+          "documentId": "f753f2be-2ae1-4f7c-9b7a-3ee7cd074c92",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Anesthesia Event Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-10-30T19:05:00Z",
+          "documentId": "d0b8ae58-f392-474c-aaa4-606a00890697",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Surgery Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-10-30T13:19:00Z",
+          "documentId": "344f3995-6f90-42c5-98cb-94ff8b631530",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Hospital Encounter Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-10-21T02:22:12Z",
+          "documentId": "e818ed73-045f-4dfb-b7e8-a5c315710958",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Continuity of Care Document",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        }
+      ],
+      "matchingRecords": [],
+      "meetsCriteria": true,
+      "result": {
+        "_items": [],
+        "justification": "No diagnostic or imaging procedures with documented abnormal or clinically decisive negative results performed within the last 12 months were found in the provided documents. The documents primarily contain diagnoses and clinical conditions without any detailed diagnostic procedure reports or imaging findings."
+      }
+    },
+    {
+      "checklistItem": {
+        "id": "f0078357-3447-4f50-af66-32916f4328d9",
+        "libraryItemId": "recap_hospitalizations",
+        "name": "RECAP - Recent Hospitalizations",
+        "sortOrder": 6
+      },
+      "clinicalConcepts": [],
+      "documentIds": [],
+      "documentSections": [],
+      "matchingRecords": [],
+      "meetsCriteria": true,
+      "result": {
+        "_items": [],
+        "justification": "No inpatient hospitalizations were identified in the provided documents. The records primarily contain diagnoses and demographic information without any admission or discharge summaries, inpatient encounter metadata, or explicit statements of hospitalization."
+      }
+    },
+    {
+      "checklistItem": {
+        "id": "7751242d-a3c9-4bb5-9d7c-c3fffd298b05",
+        "libraryItemId": "recap_medical_risks",
+        "name": "RECAP - Medical Risks",
+        "sortOrder": 7
+      },
+      "clinicalConcepts": [
+        {
+          "clinicalConceptId": "1738225d-701f-5c43-8e51-37f906f06e6c",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "51614f43-6de7-5371-a1e2-857b1377ecf7",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "20ab12fc-6690-5ca5-a13e-b5a1e3546a1b",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "94f6b1f9-c866-5729-9160-700fd5143256",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "0906d08d-7e0f-5a51-bfe9-62ac2de2218a",
+          "entityType": "medication"
+        },
+        {
+          "clinicalConceptId": "40a96ea9-ab64-5b1d-8709-1746a58cd63b",
+          "entityType": "medication"
+        }
+      ],
+      "documentIds": [
+        "37f093c3-3978-4672-ab41-bc280821577d",
+        "344f3995-6f90-42c5-98cb-94ff8b631530"
+      ],
+      "documentSections": [
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-11-05T06:07:50.000Z",
+          "documentId": "37f093c3-3978-4672-ab41-bc280821577d",
+          "documentLocation": "Jackson Heart Clinic PA",
+          "documentName": "Continuity of Care Document (C-CDA R2.1) (Encounter date: 2025-10-22 11:00:00)",
+          "section": "10190-7",
+          "sectionTitle": "Mental Status",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-10-30T13:19:00.000Z",
+          "documentId": "344f3995-6f90-42c5-98cb-94ff8b631530",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Hospital Encounter Summary",
+          "section": "34109-9",
+          "sectionTitle": "Miscellaneous Notes",
+          "sectionType": "ccda"
+        }
+      ],
+      "matchingRecords": [],
+      "meetsCriteria": true,
+      "result": {
+        "justification": "The patient uses a walker and rolling equipment at home per social work note (10/31/2019), indicating fall risk. No anticoagulants are documented during hospitalization, but the patient is on multiple medications including furosemide and carvedilol which can contribute to hypotension and fall risk (medication lists from 2025). The inpatient notes from 10/30 to 11/04/2019 document oxygen use at 2 L/min on 10/30 and 10/31 but none on 11/01 and 11/04, indicating transient respiratory vulnerability. The patient was alert and oriented with family support, reducing cognitive safety concerns. No documented history of major bleeding or anticoagulant use was found. These risks are relevant for ongoing management to prevent falls, monitor respiratory status, and avoid bleeding complications.",
+        "medical_risks": "fall propensity, medication-related bleeding risk, respiratory vulnerability"
+      }
+    },
+    {
+      "checklistItem": {
+        "id": "fa2a1e61-0428-420f-873d-28a025b570c6",
+        "libraryItemId": "recap_social_history",
+        "name": "RECAP - Social History",
+        "sortOrder": 8
+      },
+      "clinicalConcepts": [
+        {
+          "clinicalConceptId": "4d3bab25-a524-55ce-8cd1-661e59e1b556",
+          "entityType": "social_history"
+        },
+        {
+          "clinicalConceptId": "10cb1d68-2726-532b-8211-b44deeb0bc08",
+          "entityType": "social_history"
+        },
+        {
+          "clinicalConceptId": "2aba3156-e023-571b-904e-18314898be9b",
+          "entityType": "social_history"
+        },
+        {
+          "clinicalConceptId": "a0e562d5-2448-53f3-9fcf-32c49fb305ae",
+          "entityType": "social_history"
+        },
+        {
+          "clinicalConceptId": "6ce1ded9-fb11-53dc-94b8-29800f4063a1",
+          "entityType": "social_history"
+        },
+        {
+          "clinicalConceptId": "420b96c8-1703-506b-ac47-d2be0aa95308",
+          "entityType": "social_history"
+        },
+        {
+          "clinicalConceptId": "f7df5e7c-eac3-546e-8760-71567438254d",
+          "entityType": "social_history"
+        },
+        {
+          "clinicalConceptId": "59c04924-b405-50db-98e1-84f0d686f64e",
+          "entityType": "social_history"
+        },
+        {
+          "clinicalConceptId": "965af671-7aaf-55d7-a9af-abeea2661a0f",
+          "entityType": "social_history"
+        }
+      ],
+      "documentIds": [
+        "09e98a70-92e0-4df8-a773-007bdd2ca963",
+        "ee25b2d9-1ef7-4fcd-8607-ad0e5b8f995c",
+        "6a63317c-35ed-45fb-96e3-833ca582ef53",
+        "68955d62-fd63-460b-ad7f-5d467db4c39a",
+        "f8a541c3-0740-4049-8c0e-c5b9abe29fab",
+        "f753f2be-2ae1-4f7c-9b7a-3ee7cd074c92",
+        "d0b8ae58-f392-474c-aaa4-606a00890697",
+        "344f3995-6f90-42c5-98cb-94ff8b631530",
+        "9d164748-76ca-463a-8130-35e33d7f848c",
+        "37f093c3-3978-4672-ab41-bc280821577d",
+        "f4e8df53-69d2-46b0-bbd2-831dde2a7a56",
+        "282b4bc6-d78e-4068-a607-eb6af6f86d8e",
+        "e56607e9-7173-427e-9055-0a3275ba579d",
+        "270c2420-f769-445b-b87f-a9fbaff3617d",
+        "2d7a46ce-a235-4161-bc61-cff53b2d0f3a"
+      ],
+      "documentSections": [
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-10-21T02:22:14.000Z",
+          "documentId": "09e98a70-92e0-4df8-a773-007bdd2ca963",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Continuity of Care Document",
+          "section": "29762-2",
+          "sectionTitle": "Social History",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-10-30T00:00:00.000Z",
+          "documentId": "ee25b2d9-1ef7-4fcd-8607-ad0e5b8f995c",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Travel Summary",
+          "section": "29762-2",
+          "sectionTitle": "Social History",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "image/tiff",
+          "documentDate": "2019-09-17T18:15:59.000Z",
+          "documentId": "6a63317c-35ed-45fb-96e3-833ca582ef53",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Hospital Encounter",
+          "section": "2",
+          "sectionType": "page"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-11-05T06:07:50.000Z",
+          "documentId": "68955d62-fd63-460b-ad7f-5d467db4c39a",
+          "documentLocation": "Jackson Heart Clinic PA",
+          "documentName": "Continuity of Care Document (C-CDA R2.1) (Encounter date: 2025-10-22 11:00:00)",
+          "section": "29762-2",
+          "sectionTitle": "Social History",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-10-21T02:22:18.000Z",
+          "documentId": "f8a541c3-0740-4049-8c0e-c5b9abe29fab",
+          "documentLocation": "Jackson Heart Clinic PA",
+          "documentName": "Continuity of Care Document (C-CDA R2.1) (Encounter date: 2025-07-16 10:45:00)",
+          "section": "29762-2",
+          "sectionTitle": "Social History",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-10-30T19:29:00Z",
+          "documentId": "f753f2be-2ae1-4f7c-9b7a-3ee7cd074c92",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Anesthesia Event Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-10-30T19:05:00Z",
+          "documentId": "d0b8ae58-f392-474c-aaa4-606a00890697",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Surgery Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-10-30T13:19:00Z",
+          "documentId": "344f3995-6f90-42c5-98cb-94ff8b631530",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Hospital Encounter Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-10-29T00:00:00Z",
+          "documentId": "9d164748-76ca-463a-8130-35e33d7f848c",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Travel Summary",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-11-05T06:07:50Z",
+          "documentId": "37f093c3-3978-4672-ab41-bc280821577d",
+          "documentLocation": "Jackson Heart Clinic PA",
+          "documentName": "Continuity of Care Document (C-CDA R2.1) (Encounter date: 2025-10-22 11:00:00)",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-10-21T02:22:18Z",
+          "documentId": "f4e8df53-69d2-46b0-bbd2-831dde2a7a56",
+          "documentLocation": "Jackson Heart Clinic PA",
+          "documentName": "Continuity of Care Document (C-CDA R2.1) (Encounter date: 2025-07-16 10:45:00)",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-11-05T06:07:50Z",
+          "documentId": "282b4bc6-d78e-4068-a607-eb6af6f86d8e",
+          "documentLocation": "Greenwood Leflore Clinic Network",
+          "documentName": "Continuity of Care Document (C-CDA R2.1) (Encounter date: 2019-08-26 10:00:00)",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-11-05T06:07:50Z",
+          "documentId": "e56607e9-7173-427e-9055-0a3275ba579d",
+          "documentLocation": "Greenwood Leflore Clinic Network",
+          "documentName": "Continuity of Care Document (C-CDA R2.1) (Encounter date: 2019-08-26 10:00:00)",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-10-21T02:22:18Z",
+          "documentId": "270c2420-f769-445b-b87f-a9fbaff3617d",
+          "documentLocation": "Greenwood Leflore Clinic Network",
+          "documentName": "Continuity of Care Document (C-CDA R2.1) (Encounter date: 2019-08-26 10:00:00)",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-10-21T02:22:18Z",
+          "documentId": "2d7a46ce-a235-4161-bc61-cff53b2d0f3a",
+          "documentLocation": "Greenwood Leflore Clinic Network",
+          "documentName": "Continuity of Care Document (C-CDA R2.1) (Encounter date: 2019-08-26 10:00:00)",
+          "section": "",
+          "sectionTitle": "",
+          "sectionType": "ccda"
+        }
+      ],
+      "matchingRecords": [],
+      "meetsCriteria": true,
+      "result": {
+        "alcohol_quantification": "No consumption reported",
+        "alcohol_use_status": "Denies use",
+        "diet": "Unknown",
+        "ethnicity": "Not Hispanic or Latino",
+        "exercise": "Unknown",
+        "justification": "The social history elements were extracted primarily from structured demographic fields and social history documentation in office visit and outpatient records dated between 2019 and 2025. Sex at birth, race, and ethnicity were explicitly noted in multiple demographic and social history documents. Tobacco status as a current user of chewing tobacco is consistent across multiple entries; no detailed quantification was documented. Alcohol use is consistently reported as none; recreational drug use is denied. No information on diet or exercise was found.",
+        "race": "Black or African American",
+        "recreational_drug_quantification": "Unknown",
+        "recreational_drug_type": "Unknown",
+        "recreational_drug_use_status": "Denies use",
+        "sex_at_birth": "Female",
+        "tobacco_quantification": "No details available",
+        "tobacco_type": "Chewing tobacco",
+        "tobacco_use_status": "Current user"
+      }
+    },
+    {
+      "checklistItem": {
+        "id": "2e1e62b5-1092-44c7-8c9f-7be05492c6a2",
+        "libraryItemId": "recap_sdoh",
+        "name": "RECAP - SDOH",
+        "sortOrder": 9
+      },
+      "clinicalConcepts": [],
+      "documentIds": [
+        "344f3995-6f90-42c5-98cb-94ff8b631530"
+      ],
+      "documentSections": [
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-10-30T13:19:00.000Z",
+          "documentId": "344f3995-6f90-42c5-98cb-94ff8b631530",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Hospital Encounter Summary",
+          "section": "34109-9",
+          "sectionTitle": "Miscellaneous Notes",
+          "sectionType": "ccda"
+        }
+      ],
+      "matchingRecords": [],
+      "meetsCriteria": true,
+      "result": {
+        "education_level": "Unknown",
+        "employment_status": "Unknown",
+        "financial_insecurity": "Unknown",
+        "food_insecurity": "Unknown",
+        "functional_barriers": "Equipment used at home: walker, rolling",
+        "health_literacy": "Unknown",
+        "housing_insecurity": "Unknown",
+        "insurance_status": "Medicaid waiver services for household chores",
+        "justification": "Social work and case management notes from 10/31/2019 and 11/04/2019 provide detailed SDOH information including marital status as married, living situation with spouse and adult children in a house, use of walker equipment at home, transportation access via car and family/friend, and Medicaid waiver services indicating insurance coverage. No explicit documentation was found for education level, employment status, health literacy, financial, housing, food, utility insecurity, or mental health screening scores.",
+        "living_situation": "Lives With: spouse; Sources of Support: spouse, adult child(ren); Living Arrangements: house",
+        "martial_status": "Married",
+        "mental_health": "Unknown",
+        "transportation_access": "Transportation Available: car, family or friend will provide",
+        "utility_insecurity": "Unknown"
+      }
+    },
+    {
+      "checklistItem": {
+        "id": "acbb80cd-8e6e-4a11-b8de-f04fdded8e19",
+        "libraryItemId": "recap_behavioral_health",
+        "name": "RECAP - Behavioral Health Visits",
+        "sortOrder": 10
+      },
+      "clinicalConcepts": [],
+      "documentIds": [],
+      "documentSections": [],
+      "matchingRecords": [],
+      "meetsCriteria": true,
+      "result": {
+        "_items": []
+      }
+    },
+    {
+      "checklistItem": {
+        "id": "e45f9687-78ce-48a6-9ba4-07cbf9acf290",
+        "libraryItemId": "recap_vision",
+        "name": "RECAP - Vision Visits",
+        "sortOrder": 11
+      },
+      "clinicalConcepts": [],
+      "documentIds": [],
+      "documentSections": [],
+      "matchingRecords": [],
+      "meetsCriteria": true,
+      "result": {
+        "Justification": "The provided documents contain no information related to any vision-related visits, ophthalmology or optometry exams, or eye care evaluations for the patient. There are no notes, imaging reports, or exam summaries referencing visual acuity, retinal status, diabetic eye disease, or glaucoma screening.",
+        "_items": []
+      }
+    },
+    {
+      "checklistItem": {
+        "id": "090c8d5b-365d-48d9-ab23-643abf7d46ce",
+        "libraryItemId": "recap_dental",
+        "name": "RECAP - Dental Visits",
+        "sortOrder": 12
+      },
+      "clinicalConcepts": [],
+      "documentIds": [],
+      "documentSections": [],
+      "matchingRecords": [],
+      "meetsCriteria": true,
+      "result": {
+        "_items": []
+      }
+    },
+    {
+      "checklistItem": {
+        "id": "3fd89f70-d6ff-4d78-8a90-48b1d876c899",
+        "libraryItemId": "recap_other",
+        "name": "RECAP - Other Pertinent Information",
+        "sortOrder": 13
+      },
+      "clinicalConcepts": [],
+      "documentIds": [
+        "6a63317c-35ed-45fb-96e3-833ca582ef53",
+        "abba6a8f-1fa3-420f-b9ea-3e0175f11d68",
+        "3e1f548a-f0b0-463f-b304-83a51900e375",
+        "344f3995-6f90-42c5-98cb-94ff8b631530",
+        "f753f2be-2ae1-4f7c-9b7a-3ee7cd074c92"
+      ],
+      "documentSections": [
+        {
+          "documentContentType": "image/tiff",
+          "documentDate": "2019-09-17T18:15:59.000Z",
+          "documentId": "6a63317c-35ed-45fb-96e3-833ca582ef53",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Hospital Encounter",
+          "section": "1",
+          "sectionTitle": null,
+          "sectionType": "page"
+        },
+        {
+          "documentContentType": "image/tiff",
+          "documentDate": "2019-10-29T14:36:51.000Z",
+          "documentId": "abba6a8f-1fa3-420f-b9ea-3e0175f11d68",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Hospital Encounter",
+          "section": "2",
+          "sectionTitle": null,
+          "sectionType": "page"
+        },
+        {
+          "documentContentType": "image/tiff",
+          "documentDate": "2019-11-06T00:00:14.000Z",
+          "documentId": "3e1f548a-f0b0-463f-b304-83a51900e375",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Hospital Encounter",
+          "section": "4",
+          "sectionTitle": null,
+          "sectionType": "page"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-10-30T13:19:00.000Z",
+          "documentId": "344f3995-6f90-42c5-98cb-94ff8b631530",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Hospital Encounter Summary",
+          "section": "34109-9",
+          "sectionTitle": "Miscellaneous Notes",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2019-10-30T19:29:00.000Z",
+          "documentId": "f753f2be-2ae1-4f7c-9b7a-3ee7cd074c92",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Anesthesia Event Summary",
+          "section": "11504-8",
+          "sectionTitle": "OR Notes",
+          "sectionType": "ccda"
+        }
+      ],
+      "matchingRecords": [],
+      "meetsCriteria": true,
+      "result": {
+        "other_pertinent_information": "The patient is a 72-year-old female with a history of right renal mass diagnosed in 2019, confirmed as renal cell carcinoma, for which she underwent a right hand-assisted laparoscopic radical nephrectomy on 10/30/2019 without complications. She has a history of essential hypertension, type 2 diabetes mellitus, hyperlipidemia, gastroesophageal reflux disease without esophagitis, and familial hypercholesterolemia. She is status post hysterectomy and cesarean section with one vaginal delivery. Socially, she is married, lives with her spouse, has adult children, uses a cane for ambulation, and has arranged for home health services post-hospital discharge. No recent echocardiogram, mammogram, Pap smear, or colonoscopy were documented."
+      }
+    },
+    {
+      "checklistItem": {
+        "id": "8afae94d-3156-4b06-ba20-d4897d2f3a53",
+        "libraryItemId": "recap_immunizations",
+        "name": "RECAP - Immunizations",
+        "sortOrder": 14
+      },
+      "clinicalConcepts": [],
+      "documentIds": [
+        "f4e8df53-69d2-46b0-bbd2-831dde2a7a56",
+        "6a63317c-35ed-45fb-96e3-833ca582ef53"
+      ],
+      "documentSections": [
+        {
+          "documentContentType": "text/xml",
+          "documentDate": "2025-10-21T02:22:18.000Z",
+          "documentId": "f4e8df53-69d2-46b0-bbd2-831dde2a7a56",
+          "documentLocation": "Jackson Heart Clinic PA",
+          "documentName": "Continuity of Care Document (C-CDA R2.1) (Encounter date: 2025-07-16 10:45:00)",
+          "section": "11369-6",
+          "sectionTitle": "Immunizations",
+          "sectionType": "ccda"
+        },
+        {
+          "documentContentType": "image/tiff",
+          "documentDate": "2019-09-17T18:15:59.000Z",
+          "documentId": "6a63317c-35ed-45fb-96e3-833ca582ef53",
+          "documentLocation": "Baptist Memorial Health Care Corporation",
+          "documentName": "Hospital Encounter",
+          "section": "1",
+          "sectionTitle": null,
+          "sectionType": "page"
+        }
+      ],
+      "matchingRecords": [],
+      "meetsCriteria": true,
+      "result": {
+        "_items": [],
+        "justification": "No administered immunizations were documented in the available records. The Immunization Record table (document 16) states 'No Information' and the office visit report from 2019 (document 26) explicitly notes 'IMMUNIZATIONS: None'. No other documents indicate any vaccines were given."
+      }
+    }
+  ],
+  "subjectId": "e0b1cf76-993a-4826-8749-18b2bac716d0"
+}
