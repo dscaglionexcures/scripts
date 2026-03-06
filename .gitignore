@@ -8,3 +8,4 @@ biometric.pdf
 logs/
 downloads/
 backups/
+__pycache__/
