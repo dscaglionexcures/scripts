@@ -4,3 +4,7 @@ biometric.pdf
 users.csv
 .vscode/
 .venv_sdk
+biometric.pdf
+logs/
+downloads/
+backups/
