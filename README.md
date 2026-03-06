@@ -1,6 +1,6 @@
-# xCures Script Toolkit
+# xCures Customer Success Script Toolkit
 
-A collection of Python utilities for xCures Patient Registry operations, reporting, and document/PDF workflows.
+A collection of utilities for xCures Patient Registry operations, reporting, and document/PDF workflows to help CS automate common client requests and needs.
 
 ## Quick Start
 
@@ -19,7 +19,7 @@ A collection of Python utilities for xCures Patient Registry operations, reporti
 ## Script Summary
 
 | Script | Type | API | Summary |
-|-|---|---|---|
+|-|-|-|-|
 | `api_smoke_test.py` | Script | Public API | Runs end-to-end smoke tests against the Public API (create subject/document, fetch/update subject, verify behavior) to validate API connectivity and credentials. |
 | `backup_user_permissions.py` | Script | Internal API | Exports user permissions and project membership data for a tenant to CSV (including role, created/last-login dates, resolved project names) with progress reporting. |
 | `bulk_create_users_from_csv.py` | Script | Internal API | Bulk-creates portal users from a CSV |
@@ -33,11 +33,11 @@ A collection of Python utilities for xCures Patient Registry operations, reporti
 | `update_user_permissions.py` | Script | Internal API | Bulk adds the `Summary_Checklist` permission across tenant users by reading each user, patching permissions when missing, and writing updates with progress/summary output. |
 | `update_users_new_projects.py` | Script | Internal API | Hardened bulk project assignment workflow with config-driven target projects, mandatory pre-write backup in apply mode, and JSONL audit logging. |
 | `xml_to_pdf.py` | Script | Public API | Downloads an XML document from the API, applies `cda2.xsl` transformation, and produces a PDF (auto-fetching `cda_l10n.xml` when needed). |
-| `api_common.py` | Helper module | Shared HTTP utilities: URL building, retry/backoff request wrapper, JSON validation/parsing, and standardized HTTP error formatting. |
-| `auth_common.py` | Helper module | Shared auth/env helpers: `.env` loading, required env validation, bearer/client-credentials token retrieval with in-memory token caching, and JSON header construction. |
-| `csv_common.py` | Helper module | CSV read/write helpers with header normalization, required-column checks, and safe output creation. |
-| `progress_common.py` | Helper module | Progress bar abstraction (`tqdm` when available, text fallback otherwise) for both iterator and manual progress use. |
-| `xcures_client.py` | Helper module | Reusable xCures API client with retries, automatic auth header handling, optional token refresh on 401, and pagination helpers. |
+| `api_common.py` | Helper module || Shared HTTP utilities: URL building, retry/backoff request wrapper, JSON validation/parsing, and standardized HTTP error formatting. |
+| `auth_common.py` | Helper module || Shared auth/env helpers: `.env` loading, required env validation, bearer/client-credentials token retrieval with in-memory token caching, and JSON header construction. |
+| `csv_common.py` | Helper module || CSV read/write helpers with header normalization, required-column checks, and safe output creation. |
+| `progress_common.py` | Helper module || Progress bar abstraction (`tqdm` when available, text fallback otherwise) for both iterator and manual progress use. |
+| `xcures_client.py` | Helper module || Reusable xCures API client with retries, automatic auth header handling, optional token refresh on 401, and pagination helpers. |
 
 ## Non-Script Assets
 
