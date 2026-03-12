@@ -9,3 +9,5 @@ logs/
 downloads/
 backups/
 __pycache__/
+web_ui/node_modules/
+web_ui/dist/

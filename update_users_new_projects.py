@@ -116,7 +116,7 @@ def get_bearer_token() -> str:
     if not token:
         raise RuntimeError(
             "XCURES_BEARER_TOKEN is not set. "
-            "Run: export XCURES_BEARER_TOKEN='your_token_here'"
+            "Add it to .env next to this script, or export it in your shell."
         )
     return token
 
@@ -362,7 +362,11 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Safely bulk-add project IDs to all users in a tenant.",
     )
-    parser.add_argument("--env", default=None, help="Path to .env file to preload")
+    parser.add_argument(
+        "--env",
+        default=None,
+        help="Path to .env file to preload (default: .env next to this script if present)",
+    )
     parser.add_argument(
         "--config",
         default=str(DEFAULT_CONFIG_PATH),
@@ -401,8 +405,12 @@ def main() -> int:
 
     mode_name = "apply" if args.apply else "dry-run"
 
+    default_env_path = Path(__file__).resolve().parent / ".env"
     if args.env:
         env_path = Path(args.env).expanduser().resolve()
+        loaded = parse_env_file(env_path)
+    elif default_env_path.exists():
+        env_path = default_env_path
         loaded = parse_env_file(env_path)
     else:
         env_path = None

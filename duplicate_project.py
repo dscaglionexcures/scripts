@@ -24,7 +24,7 @@ No CLI arguments.
 Auth:
 - XCURES_CLIENT_ID / XCURES_CLIENT_SECRET environment variables required
 Optional:
-- XCURES_BASE_URL override (defaults to https://partner.xcures.com)
+- BASE_URL (or XCURES_BASE_URL) override (defaults to https://partner.xcures.com)
 
 Progress indicator included (tqdm if available, else fallback).
 """
@@ -346,7 +346,11 @@ def main() -> int:
         print(f"Auth error: {e}", file=sys.stderr)
         return 2
 
-    base_url = os.environ.get("XCURES_BASE_URL", DEFAULT_BASE_URL).rstrip("/")
+    base_url = (
+        os.environ.get("BASE_URL")
+        or os.environ.get("XCURES_BASE_URL")
+        or DEFAULT_BASE_URL
+    ).rstrip("/")
 
     source_project_id = prompt("Enter source projectId")
     if not source_project_id:

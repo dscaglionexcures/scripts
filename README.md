@@ -14,7 +14,102 @@ A collection of utilities for xCures Patient Registry operations, reporting, and
    - `XCURES_CLIENT_SECRET`
    - `XCURES_BEARER_TOKEN`
    - `XCURES_PROJECT_ID`
-   - `BASE_URL` or `XCURES_BASE_URL` (optional; defaults to `https://partner.xcures.com`)
+   - `BASE_URL` (optional; defaults to `https://partner.xcures.com`)
+
+## Local Script Runner UI (FastAPI + React)
+
+The repo now includes a lightweight local web app for running scripts, managing env vars, and viewing live logs.
+
+### 1) Install UI dependencies
+
+```bash
+python3 -m pip install -r requirements-ui.txt
+npm --prefix web_ui install
+```
+
+### 2) Build React frontend for production serving
+
+```bash
+npm --prefix web_ui run build
+```
+
+### 3) Start backend + UI
+
+```bash
+python3 run_ui.py
+```
+
+Open: `http://127.0.0.1:8765`
+
+### Optional: React learning/dev mode
+
+Run FastAPI in one terminal:
+
+```bash
+python3 run_ui.py
+```
+
+Run React dev server in another terminal:
+
+```bash
+npm --prefix web_ui run dev
+```
+
+Open `http://127.0.0.1:5173` during development.
+
+### Always-on with launchd (no admin required)
+
+Use the helper script:
+
+```bash
+./scripts/manage_launchd.sh install
+./scripts/manage_launchd.sh status
+```
+
+Common commands:
+
+```bash
+./scripts/manage_launchd.sh start
+./scripts/manage_launchd.sh stop
+./scripts/manage_launchd.sh restart
+./scripts/manage_launchd.sh uninstall
+```
+
+Logs:
+- `logs/launchd.script_runner.out.log`
+- `logs/launchd.script_runner.err.log`
+
+### Multiple Client Profiles in `.env`
+
+You can define multiple named client profiles and manage them directly in the UI
+(create, edit, delete, activate). Profiles are persisted in `.env`.
+
+Example:
+
+```bash
+XCURES_PROFILE__DEMO__NAME="Demo Environment"
+XCURES_PROFILE__DEMO__CLIENT_ID="demo-client-id"
+XCURES_PROFILE__DEMO__CLIENT_SECRET="demo-client-secret"
+XCURES_PROFILE__DEMO__PROJECT_ID="demo-project-id"
+XCURES_PROFILE__DEMO__BASE_URL="https://partner.xcures.com"
+
+XCURES_PROFILE__PROD__NAME="Production"
+XCURES_PROFILE__PROD__CLIENT_ID="prod-client-id"
+XCURES_PROFILE__PROD__CLIENT_SECRET="prod-client-secret"
+XCURES_PROFILE__PROD__PROJECT_ID="prod-project-id"
+XCURES_PROFILE__PROD__BASE_URL="https://partner.xcures.com"
+
+ACTIVE_XCURES_PROFILE="DEMO"
+```
+
+When an active profile is selected, profile values are mapped to standard script env vars at runtime:
+- `XCURES_CLIENT_ID`
+- `XCURES_CLIENT_SECRET`
+- `XCURES_PROJECT_ID` (if provided)
+- `BASE_URL` (and mirrored to `XCURES_BASE_URL` for legacy compatibility)
+
+Bearer token usage is managed per script run on the Scripts page for Internal API scripts.
+The Environment page no longer exposes `XCURES_BEARER_TOKEN`.
 
 ## Script Summaries
 
