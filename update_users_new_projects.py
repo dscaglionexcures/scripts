@@ -233,6 +233,13 @@ def require_float(name: str, value: Any, default: float) -> float:
     raise RuntimeError(f"Invalid float for {name}: {value}")
 
 
+def first_non_none(*values: Any) -> Any:
+    for value in values:
+        if value is not None:
+            return value
+    return None
+
+
 def get_all_users(
     session: requests.Session,
     base_url: str,
@@ -435,17 +442,25 @@ def main() -> int:
         print("Error: no target project IDs provided via --project-id or config.target_project_ids", file=sys.stderr)
         return 2
 
-    page_size = args.page_size if args.page_size is not None else require_int(
-        "user_page_size", config.get("user_page_size"), DEFAULT_PAGE_SIZE
+    page_size = require_int(
+        "user_page_size",
+        first_non_none(args.page_size, os.environ.get("user_page_size"), config.get("user_page_size")),
+        DEFAULT_PAGE_SIZE,
     )
-    timeout_seconds = args.timeout if args.timeout is not None else require_int(
-        "request_timeout_seconds", config.get("request_timeout_seconds"), DEFAULT_TIMEOUT_SECONDS
+    timeout_seconds = require_int(
+        "request_timeout_seconds",
+        first_non_none(args.timeout, os.environ.get("request_timeout_seconds"), config.get("request_timeout_seconds")),
+        DEFAULT_TIMEOUT_SECONDS,
     )
-    max_retries = args.max_retries if args.max_retries is not None else require_int(
-        "max_retries", config.get("max_retries"), DEFAULT_MAX_RETRIES
+    max_retries = require_int(
+        "max_retries",
+        first_non_none(args.max_retries, os.environ.get("max_retries"), config.get("max_retries")),
+        DEFAULT_MAX_RETRIES,
     )
-    backoff_seconds = args.backoff if args.backoff is not None else require_float(
-        "backoff_seconds", config.get("backoff_seconds"), DEFAULT_BACKOFF_SECONDS
+    backoff_seconds = require_float(
+        "backoff_seconds",
+        first_non_none(args.backoff, os.environ.get("backoff_seconds"), config.get("backoff_seconds")),
+        DEFAULT_BACKOFF_SECONDS,
     )
 
     if args.limit is not None and args.limit < 0:

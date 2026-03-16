@@ -122,6 +122,10 @@ class SendStdinRequest(BaseModel):
     text: str
 
 
+class ListProjectsRequest(BaseModel):
+    bearer_token: Optional[str] = None
+
+
 class SetActiveProfileRequest(BaseModel):
     profile_id: str = ""
 

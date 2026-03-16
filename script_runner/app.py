@@ -6,16 +6,19 @@ from pathlib import Path
 from typing import AsyncIterator, Dict, List
 from urllib.parse import quote
 
-from fastapi import FastAPI, HTTPException, Query, Request
+import requests
+from fastapi import Body, FastAPI, File, HTTPException, Query, Request, UploadFile
 from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 
+from auth_common import fetch_client_credentials_token
 from .env_store import EnvStore
 from .job_manager import JobManager
 from .models import (
     CreateProfileRequest,
     CreateJobRequest,
     CreateJobResponse,
+    ListProjectsRequest,
     SendStdinRequest,
     SetActiveProfileRequest,
     UpdateProfileRequest,
@@ -26,8 +29,10 @@ from .script_registry import ENV_CATALOG, ROOT_DIR, SCRIPT_DEFINITIONS, SCRIPT_I
 
 APP_HOST = "127.0.0.1"
 APP_PORT = 8765
+PARTNER_BASE_URL = "https://partner.xcures.com"
 FRONTEND_DIST = ROOT_DIR / "web_ui" / "dist"
 HISTORY_PATH = ROOT_DIR / "logs" / "script_runner_job_history.json"
+UPLOADS_DIR = ROOT_DIR / "uploads" / "ui"
 
 env_store = EnvStore(ROOT_DIR / ".env")
 job_manager = JobManager(
@@ -95,6 +100,88 @@ async def get_profile(profile_id: str) -> dict:
         raise HTTPException(status_code=404, detail=f"Profile not found: {profile_id}")
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc))
+
+
+@app.post("/api/internal/projects")
+async def list_internal_projects(request: ListProjectsRequest) -> dict:
+    runtime_env = env_store.get_runtime_env()
+    token = (request.bearer_token or runtime_env.get("XCURES_BEARER_TOKEN", "")).strip()
+
+    timeout_raw = runtime_env.get("request_timeout_seconds", "60")
+    try:
+        timeout_seconds = int(str(timeout_raw).strip() or "60")
+    except Exception:
+        timeout_seconds = 60
+
+    if not token:
+        client_id = runtime_env.get("XCURES_CLIENT_ID", "").strip()
+        client_secret = runtime_env.get("XCURES_CLIENT_SECRET", "").strip()
+        if not client_id or not client_secret:
+            raise HTTPException(
+                status_code=422,
+                detail=(
+                    "Unable to load tenant projects. Provide Bearer token, or configure "
+                    "XCURES_CLIENT_ID and XCURES_CLIENT_SECRET in the active profile."
+                ),
+            )
+
+        auth_base_url = runtime_env.get("BASE_URL", PARTNER_BASE_URL).strip().rstrip("/") or PARTNER_BASE_URL
+        auth_url = runtime_env.get("AUTH_URL", f"{auth_base_url}/oauth/token").strip()
+
+        try:
+            with requests.Session() as auth_session:
+                token = fetch_client_credentials_token(
+                    auth_session,
+                    auth_url=auth_url,
+                    client_id=client_id,
+                    client_secret=client_secret,
+                    timeout_seconds=timeout_seconds,
+                )
+        except Exception as exc:
+            raise HTTPException(status_code=502, detail=f"Failed to obtain access token: {exc}")
+
+    headers = {
+        "accept": "application/json",
+        "Authorization": f"Bearer {token}",
+    }
+    project_id_header = runtime_env.get("XCURES_PROJECT_ID", "").strip()
+    if project_id_header:
+        headers["ProjectId"] = project_id_header
+
+    url = f"{PARTNER_BASE_URL}/api/patient-registry/project"
+
+    def _fetch() -> requests.Response:
+        return requests.get(url, headers=headers, timeout=timeout_seconds)
+
+    try:
+        response = await asyncio.to_thread(_fetch)
+    except requests.RequestException as exc:
+        raise HTTPException(status_code=502, detail=f"Failed to load projects: {exc}")
+
+    if response.status_code < 200 or response.status_code >= 300:
+        detail = response.text.strip() or f"HTTP {response.status_code}"
+        raise HTTPException(status_code=response.status_code, detail=f"Project list request failed: {detail}")
+
+    try:
+        payload = response.json()
+    except ValueError:
+        raise HTTPException(status_code=502, detail="Project list response was not valid JSON.")
+
+    if not isinstance(payload, list):
+        raise HTTPException(status_code=502, detail=f"Unexpected project list response type: {type(payload).__name__}")
+
+    items = []
+    for raw in payload:
+        if not isinstance(raw, dict):
+            continue
+        project_id = str(raw.get("id") or "").strip()
+        if not project_id:
+            continue
+        name = str(raw.get("name") or "").strip() or project_id
+        items.append({"id": project_id, "name": name})
+
+    items.sort(key=lambda item: item["name"].lower())
+    return {"items": items, "count": len(items)}
 
 
 @app.post("/api/profiles")
@@ -244,6 +331,69 @@ async def get_artifact(path: str = Query(...)) -> FileResponse:
     except FileNotFoundError:
         raise HTTPException(status_code=404, detail="Artifact not found")
     return FileResponse(path=target, filename=target.name)
+
+
+@app.post("/api/uploads/csv")
+async def upload_csv(file: UploadFile = File(...)) -> dict:
+    filename = (file.filename or "upload.csv").strip()
+    suffix = Path(filename).suffix.lower()
+    if suffix != ".csv":
+        raise HTTPException(status_code=400, detail="Only .csv files are allowed.")
+
+    UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
+    safe_name = Path(filename).name.replace(" ", "_")
+    target = UPLOADS_DIR / safe_name
+    if target.exists():
+        stem = Path(safe_name).stem
+        ext = Path(safe_name).suffix
+        idx = 2
+        while True:
+            candidate = UPLOADS_DIR / f"{stem}_{idx}{ext}"
+            if not candidate.exists():
+                target = candidate
+                break
+            idx += 1
+
+    data = await file.read()
+    if not data:
+        raise HTTPException(status_code=400, detail="Uploaded file is empty.")
+    target.write_bytes(data)
+    rel_path = str(target.relative_to(ROOT_DIR))
+    return {"path": rel_path}
+
+
+@app.post("/api/uploads/file")
+async def upload_file(file: UploadFile = File(...)) -> dict:
+    filename = (file.filename or "upload.bin").strip()
+    safe_name = Path(filename).name.replace(" ", "_")
+    UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
+    target = UPLOADS_DIR / safe_name
+    if target.exists():
+        stem = target.stem
+        ext = target.suffix
+        idx = 2
+        while True:
+            candidate = UPLOADS_DIR / f"{stem}_{idx}{ext}"
+            if not candidate.exists():
+                target = candidate
+                break
+            idx += 1
+
+    data = await file.read()
+    if not data:
+        raise HTTPException(status_code=400, detail="Uploaded file is empty.")
+    target.write_bytes(data)
+    return {"path": str(target.relative_to(ROOT_DIR))}
+
+
+@app.post("/api/uploads/folder")
+async def create_upload_folder(folder_name: str = Body(..., embed=True)) -> dict:
+    clean = folder_name.strip().replace("/", "_").replace("\\", "_")
+    if not clean:
+        raise HTTPException(status_code=400, detail="Folder name is required.")
+    target = UPLOADS_DIR / clean
+    target.mkdir(parents=True, exist_ok=True)
+    return {"path": str(target.relative_to(ROOT_DIR))}
 
 
 def _to_sse(event_id: int, event_name: str, data: dict) -> str:

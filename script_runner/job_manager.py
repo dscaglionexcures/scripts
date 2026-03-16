@@ -4,7 +4,9 @@ import asyncio
 import contextlib
 import json
 import os
+import re
 import shlex
+import sys
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
@@ -194,7 +196,11 @@ class JobManager:
         )
         self.jobs[job_id] = record
         self._event_counters[job_id] = 0
-        self._append_event(job_id, "status", f"Queued: python3 {script.file_path} {' '.join(args)}")
+        self._append_event(
+            job_id,
+            "status",
+            f"Queued: {sys.executable} {script.file_path} {' '.join(args)}",
+        )
         await self._queue.put(job_id)
         self._persist_history()
         return record
@@ -284,7 +290,7 @@ class JobManager:
     async def _run_job(self, job_id: str) -> None:
         job = self.jobs[job_id]
         script = self.scripts_by_id[job.script_id]
-        command = ["python3", script.file_path, *job.args]
+        command = [sys.executable, "-u", script.file_path, *job.args]
         start_dt = utc_now()
         start_ts = start_dt.timestamp()
         job.status = "running"
@@ -339,14 +345,25 @@ class JobManager:
     ) -> None:
         if stream is None:
             return
+        buffer = ""
+        split_pattern = re.compile(r"[\r\n]")
         while True:
-            line = await stream.readline()
-            if not line:
+            chunk = await stream.read(1024)
+            if not chunk:
                 break
-            text = line.decode("utf-8", errors="replace").rstrip("\r\n")
-            if text == "":
-                continue
-            self._append_event(job_id, stream_type, text)
+            buffer += chunk.decode("utf-8", errors="replace")
+            while True:
+                match = split_pattern.search(buffer)
+                if not match:
+                    break
+                text = buffer[: match.start()].strip()
+                buffer = buffer[match.end() :]
+                if text:
+                    self._append_event(job_id, stream_type, text)
+
+        remainder = buffer.strip()
+        if remainder:
+            self._append_event(job_id, stream_type, remainder)
 
     def _append_event(self, job_id: str, event_type: str, message: str) -> None:
         job = self.jobs[job_id]

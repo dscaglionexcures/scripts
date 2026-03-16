@@ -14,6 +14,7 @@ Writes:
 - RESULTS_CSV_PATH: realtime results with loaded + documentTotalCount
 """
 
+import argparse
 import csv
 import math
 import os
@@ -50,9 +51,10 @@ PROJECT_ID = (
 ).strip()
 CLIENT_ID = (os.getenv("XCURES_CLIENT_ID") or "").strip()
 CLIENT_SECRET = (os.getenv("XCURES_CLIENT_SECRET") or "").strip()
-
-SUBJECTS_CSV_PATH = "/Users/dScaglione/downloads/all_subject_ids.csv"
-RESULTS_CSV_PATH = "/Users/dScaglione/downloads/subject_clinical_concepts_and_doc_counts.csv"
+OUTPUT_DIR = (Path(__file__).resolve().parent / "downloads")
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+SUBJECTS_CSV_PATH = str(OUTPUT_DIR / "all_subject_ids.csv")
+RESULTS_CSV_PATH = str(OUTPUT_DIR / "subject_clinical_concepts_and_doc_counts.csv")
 
 REQUEST_TIMEOUT_SECONDS = 30
 MAX_WORKERS = 10
@@ -120,8 +122,20 @@ def fetch_token(session: requests.Session) -> str:
     )
 
 
-def build_headers(token: str) -> Dict[str, str]:
-    return build_json_headers(bearer_token=token, project_id=PROJECT_ID)
+def build_headers(token: str, project_id: str) -> Dict[str, str]:
+    return build_json_headers(bearer_token=token, project_id=project_id)
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Collect clinical concepts status and document counts for all subjects."
+    )
+    parser.add_argument(
+        "--project-id",
+        default="",
+        help="Optional project ID override. Defaults to XCURES_PROJECT_ID from environment/profile.",
+    )
+    return parser.parse_args()
 
 
 def _extract_total_count(payload: Any) -> Optional[int]:
@@ -196,6 +210,12 @@ def fetch_all_subject_ids_with_progress(
                     url, headers=headers, params=params, timeout=REQUEST_TIMEOUT_SECONDS
                 )
                 if resp.status_code != 200:
+                    if resp.status_code == 403:
+                        raise RuntimeError(
+                            "Search Subjects returned HTTP 403. "
+                            "The selected projectId is visible in Internal API but not accessible "
+                            "to the current Public API client credentials/profile."
+                        )
                     raise RuntimeError(
                         f"Search Subjects failed on page {page_number} "
                         f"(HTTP {resp.status_code}): {resp.text}"
@@ -326,10 +346,16 @@ def process_subject(
 
 
 def main() -> int:
+    args = parse_args()
+    project_id = (args.project_id or PROJECT_ID).strip()
+    if not project_id:
+        raise RuntimeError("Missing project ID. Set XCURES_PROJECT_ID or provide --project-id.")
+
     print("Authenticating...")
     session = build_session()
     token = fetch_token(session)
-    headers = build_headers(token)
+    headers = build_headers(token, project_id)
+    print(f"Using projectId={project_id}")
 
     print("Phase 1/2: Fetching subject IDs (paginated)...")
     subject_ids = fetch_all_subject_ids_with_progress(session, headers, SUBJECTS_CSV_PATH)
@@ -343,13 +369,9 @@ def main() -> int:
         writer = csv.DictWriter(
             out_file,
             fieldnames=[
-                "subjectId",
-                "loaded",
-                "loadedHttpStatus",
-                "loadedError",
-                "documentTotalCount",
-                "documentHttpStatus",
-                "documentError",
+                "Subject",
+                "# of Documents",
+                "Clinical Concepts Loaded",
             ],
         )
         writer.writeheader()
@@ -364,19 +386,20 @@ def main() -> int:
             with progress_bar(total=len(futures), desc="Processing subjects", unit="subject") as pbar:
                 for future in as_completed(futures):
                     result = future.result()
+                    doc_count_value = (
+                        result.document_total_count
+                        if result.document_total_count is not None
+                        else ""
+                    )
+                    if isinstance(doc_count_value, int) and doc_count_value == 0:
+                        loaded_value = "NO DOCUMENTS"
+                    else:
+                        loaded_value = result.loaded if result.loaded is not None else ""
 
                     row = {
-                        "subjectId": result.subject_id,
-                        "loaded": result.loaded if result.loaded is not None else "",
-                        "loadedHttpStatus": result.loaded_http_status or "",
-                        "loadedError": result.loaded_error or "",
-                        "documentTotalCount": (
-                            result.document_total_count
-                            if result.document_total_count is not None
-                            else ""
-                        ),
-                        "documentHttpStatus": result.document_http_status or "",
-                        "documentError": result.document_error or "",
+                        "Subject": result.subject_id,
+                        "# of Documents": doc_count_value,
+                        "Clinical Concepts Loaded": loaded_value,
                     }
 
                     with write_lock:

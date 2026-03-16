@@ -3,11 +3,13 @@
 biometric.pdf
 users.csv
 .vscode/
-.venv_sdk
-biometric.pdf
+.venv*/
+.pytest_cache/
+*.py[cod]
+__pycache__/
 logs/
 downloads/
 backups/
-__pycache__/
+uploads/
 web_ui/node_modules/
 web_ui/dist/
