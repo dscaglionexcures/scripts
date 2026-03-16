@@ -26,20 +26,20 @@ from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
 import requests
-from api_common import (
+from xcures_toolkit.api_common import (
     DEFAULT_BACKOFF_SECONDS,
     DEFAULT_MAX_SLEEP_SECONDS,
     DEFAULT_TIMEOUT_SECONDS,
 )
-from progress_common import progress_iter
-from auth_common import get_xcures_bearer_token, load_env_file
-from xcures_client import XcuresApiClient
+from xcures_toolkit.progress_common import progress_iter
+from xcures_toolkit.auth_common import get_xcures_bearer_token, load_env_file
+from xcures_toolkit.xcures_client import XcuresApiClient
 
 
 DEFAULT_BASE_URL = "https://partner.xcures.com"
 PERMISSION_TO_ADD = "Summary_Checklist"
 
-load_env_file(Path(__file__).resolve().parent / ".env")
+load_env_file(Path(__file__).resolve().parent.parent / ".env")
 
 
 def get_all_users(

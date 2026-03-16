@@ -28,16 +28,16 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 import requests
-from api_common import DEFAULT_BACKOFF_SECONDS, DEFAULT_TIMEOUT_SECONDS
-from progress_common import progress_iter
-from auth_common import load_env_file
-from xcures_client import XcuresApiClient
+from xcures_toolkit.api_common import DEFAULT_BACKOFF_SECONDS, DEFAULT_TIMEOUT_SECONDS
+from xcures_toolkit.progress_common import progress_iter
+from xcures_toolkit.auth_common import load_env_file
+from xcures_toolkit.xcures_client import XcuresApiClient
 
 
 DEFAULT_BASE_URL = "https://partner.xcures.com"
 EXCLUDE_DOMAIN = "xcures.com"
 
-load_env_file(Path(__file__).resolve().parent / ".env")
+load_env_file(Path(__file__).resolve().parent.parent / ".env")
 
 
 # ----------------------------

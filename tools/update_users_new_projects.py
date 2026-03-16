@@ -36,7 +36,7 @@ except Exception:
 
 
 DEFAULT_BASE_URL = "https://partner.xcures.com"
-DEFAULT_CONFIG_PATH = Path(__file__).resolve().parent / "configs" / "update_users_new_projects.json"
+DEFAULT_CONFIG_PATH = Path(__file__).resolve().parent.parent / "configs" / "update_users_new_projects.json"
 DEFAULT_TIMEOUT_SECONDS = 60
 DEFAULT_MAX_RETRIES = 5
 DEFAULT_BACKOFF_SECONDS = 1.0
@@ -412,7 +412,7 @@ def main() -> int:
 
     mode_name = "apply" if args.apply else "dry-run"
 
-    default_env_path = Path(__file__).resolve().parent / ".env"
+    default_env_path = Path(__file__).resolve().parent.parent / ".env"
     if args.env:
         env_path = Path(args.env).expanduser().resolve()
         loaded = parse_env_file(env_path)

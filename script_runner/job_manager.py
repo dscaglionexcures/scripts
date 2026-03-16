@@ -303,6 +303,12 @@ class JobManager:
         process_env = os.environ.copy()
         process_env.update(env_values)
         process_env.update(job.env_overrides or {})
+        existing_pythonpath = process_env.get("PYTHONPATH", "").strip()
+        root_pythonpath = str(self.root_dir)
+        if existing_pythonpath:
+            process_env["PYTHONPATH"] = os.pathsep.join([root_pythonpath, existing_pythonpath])
+        else:
+            process_env["PYTHONPATH"] = root_pythonpath
         process = await asyncio.create_subprocess_exec(
             *command,
             cwd=str(self.root_dir),

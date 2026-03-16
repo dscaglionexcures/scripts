@@ -19,13 +19,13 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 import requests
-from api_common import DEFAULT_BACKOFF_SECONDS, DEFAULT_TIMEOUT_SECONDS
-from progress_common import progress_iter
-from auth_common import get_xcures_bearer_token, load_env_file
-from xcures_client import XcuresApiClient
-from csv_common import write_csv_dict_rows
+from xcures_toolkit.api_common import DEFAULT_BACKOFF_SECONDS, DEFAULT_TIMEOUT_SECONDS
+from xcures_toolkit.progress_common import progress_iter
+from xcures_toolkit.auth_common import get_xcures_bearer_token, load_env_file
+from xcures_toolkit.xcures_client import XcuresApiClient
+from xcures_toolkit.csv_common import write_csv_dict_rows
 
-load_env_file(Path(__file__).resolve().parent / ".env")
+load_env_file(Path(__file__).resolve().parent.parent / ".env")
 BASE_URL = "https://partner.xcures.com"
 
 
@@ -196,7 +196,7 @@ def write_csv(path: Path, rows: List[Dict[str, Any]]) -> None:
 # ------------------------------------------------
 
 def main() -> int:
-    load_env_file(Path(__file__).resolve().parent / ".env")
+    load_env_file(Path(__file__).resolve().parent.parent / ".env")
 
     base_url = os.environ.get("BASE_URL", BASE_URL).strip().rstrip("/") or BASE_URL
     project_id = os.environ.get("XCURES_PROJECT_ID", "").strip() or None

@@ -47,7 +47,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 import requests
-from auth_common import load_env_file
+from xcures_toolkit.auth_common import load_env_file
 
 try:
     from tqdm import tqdm  # type: ignore
@@ -60,7 +60,7 @@ except Exception:
 
 DEFAULT_BASE_URL = "https://partner.xcures.com"
 DEFAULT_TIMEOUT_SECONDS = 20
-DEFAULT_INPUT_CSV = str(Path(__file__).resolve().parent / "users.csv")
+DEFAULT_INPUT_CSV = str(Path(__file__).resolve().parent.parent / "users.csv")
 
 # Permissions assigned to every created user (array of strings)
 DEFAULT_PERMISSIONS: List[str] = [
@@ -90,7 +90,7 @@ DEFAULT_IDENTITY_PROVIDER = "auth0"
 DEFAULT_TYPE = "patient_registry_user"
 DEFAULT_BLOCKED = False
 
-load_env_file(Path(__file__).resolve().parent / ".env")
+load_env_file(Path(__file__).resolve().parent.parent / ".env")
 
 # ----------------------------
 # CSV schema

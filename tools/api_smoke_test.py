@@ -19,8 +19,8 @@ from pathlib import Path
 from typing import Any, Dict, Optional
 
 import requests
-from api_common import request_json_with_retry_and_headers
-from auth_common import (
+from xcures_toolkit.api_common import request_json_with_retry_and_headers
+from xcures_toolkit.auth_common import (
     build_json_headers,
     fetch_client_credentials_token,
     load_env_file,
@@ -44,7 +44,7 @@ class ApiError(RuntimeError):
 # -------------------------
 
 def load_dotenv_if_present() -> None:
-    env_path = Path(__file__).resolve().parent / ".env"
+    env_path = Path(__file__).resolve().parent.parent / ".env"
     load_env_file(env_path)
 
 
@@ -137,7 +137,7 @@ def create_subject(token: str) -> str:
 def upload_pdf_signed_s3(token: str, subject_id: str) -> str:
     print("\nRunning Test: Upload biometric.pdf via Signed S3")
 
-    pdf_path = Path(__file__).resolve().parent / "biometric.pdf"
+    pdf_path = Path(__file__).resolve().parent.parent / "biometric.pdf"
     if not pdf_path.exists():
         raise RuntimeError("biometric.pdf not found")
 

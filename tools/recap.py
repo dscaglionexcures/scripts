@@ -38,14 +38,14 @@ from reportlab.platypus import (
     TableStyle,
 )
 
-from api_common import require_json_list, require_json_object
-from auth_common import get_xcures_bearer_token, load_env_file
-from xcures_client import XcuresApiClient
+from xcures_toolkit.api_common import require_json_list, require_json_object
+from xcures_toolkit.auth_common import get_xcures_bearer_token, load_env_file
+from xcures_toolkit.xcures_client import XcuresApiClient
 
 
 DEFAULT_BASE_URL = "https://partner.xcures.com"
-SCRIPT_DIR = Path(__file__).resolve().parent
-DEFAULT_OUTPUT_DIR = SCRIPT_DIR / "downloads"
+REPO_ROOT = Path(__file__).resolve().parent.parent
+DEFAULT_OUTPUT_DIR = REPO_ROOT / "downloads"
 EVALUATE_ENDPOINT_TEMPLATE = "/api/v1/patient-registry/checklist/{checklist_id}/evaluate"
 TEMPLATE_ORG_NAME = "Vitality Consultants, LLC"
 TEMPLATE_ORG_ADDRESS = "3540 Toringdon Way Ste 200, Charlotte, NC 28277-4650"
@@ -1081,7 +1081,7 @@ def build_output_paths(
 
 
 def main() -> int:
-    load_env_file(SCRIPT_DIR / ".env")
+    load_env_file(REPO_ROOT / ".env")
     args = parse_args()
 
     output_dir = DEFAULT_OUTPUT_DIR.expanduser().resolve()

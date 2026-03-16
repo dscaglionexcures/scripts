@@ -3,13 +3,13 @@ import time
 from pathlib import Path
 
 import requests
-from api_common import DEFAULT_MAX_RETRIES
-from progress_common import progress_bar
+from xcures_toolkit.api_common import DEFAULT_MAX_RETRIES
+from xcures_toolkit.progress_common import progress_bar
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 from requests.exceptions import ConnectionError, Timeout
-from xcures_client import XcuresApiClient
-from auth_common import (
+from xcures_toolkit.xcures_client import XcuresApiClient
+from xcures_toolkit.auth_common import (
     load_env_file,
     require_env,
 )
@@ -18,7 +18,7 @@ from auth_common import (
 # ----------------------------
 # Load Config
 # ----------------------------
-load_env_file(Path(__file__).resolve().parent / ".env")
+load_env_file(Path(__file__).resolve().parent.parent / ".env")
 
 # Prefer internal API base-url env var used across scripts; keep BASE_URL fallback.
 BASE_URL = os.getenv(

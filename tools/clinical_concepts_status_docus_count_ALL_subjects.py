@@ -25,11 +25,11 @@ from typing import Any, Dict, List, Optional, Tuple
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import requests
-from api_common import DEFAULT_MAX_RETRIES
-from progress_common import progress_bar
+from xcures_toolkit.api_common import DEFAULT_MAX_RETRIES
+from xcures_toolkit.progress_common import progress_bar
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
-from auth_common import (
+from xcures_toolkit.auth_common import (
     build_json_headers,
     fetch_client_credentials_token,
     load_env_file,
@@ -42,7 +42,7 @@ from auth_common import (
 
 BASE_URL = "https://partner.xcures.com"
 
-load_env_file(Path(__file__).resolve().parent / ".env")
+load_env_file(Path(__file__).resolve().parent.parent / ".env")
 
 BASE_URL = os.getenv("BASE_URL", BASE_URL).strip()
 PROJECT_ID = (
@@ -51,7 +51,7 @@ PROJECT_ID = (
 ).strip()
 CLIENT_ID = (os.getenv("XCURES_CLIENT_ID") or "").strip()
 CLIENT_SECRET = (os.getenv("XCURES_CLIENT_SECRET") or "").strip()
-OUTPUT_DIR = (Path(__file__).resolve().parent / "downloads")
+OUTPUT_DIR = (Path(__file__).resolve().parent.parent / "downloads")
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 SUBJECTS_CSV_PATH = str(OUTPUT_DIR / "all_subject_ids.csv")
 RESULTS_CSV_PATH = str(OUTPUT_DIR / "subject_clinical_concepts_and_doc_counts.csv")

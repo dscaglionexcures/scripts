@@ -16,6 +16,12 @@ A collection of utilities for xCures Patient Registry operations, reporting, and
    - `XCURES_PROJECT_ID`
    - `BASE_URL` (optional; defaults to `https://partner.xcures.com`)
 
+## Repo Layout
+
+- `tools/`: executable script entrypoints and script implementations.
+- `xcures_toolkit/`: shared reusable modules (`api_common`, auth, CSV, progress, API client).
+- Root-level script/module names are compatibility shims so existing commands still work.
+
 ## Local Script Runner UI (FastAPI + React)
 
 The repo now includes a lightweight local web app for running scripts, managing env vars, and viewing live logs.
@@ -114,110 +120,110 @@ The Environment page no longer exposes `XCURES_BEARER_TOKEN`.
 ## Script Summaries
 
 #### API Smoke Test 
-`api_smoke_test.py`<br>
+`tools/api_smoke_test.py`<br>
 **API:** Public API  
 Runs end-to-end smoke tests against the Public API (create subject/document, fetch/update subject, verify behavior) to validate API connectivity and credentials.
 
 ---
 #### Backup User Permissions 
-`backup_user_permissions.py`<br>
+`tools/backup_user_permissions.py`<br>
 **API:** Internal API  
 Exports user permissions and project membership data for a tenant to CSV (including role, created/last-login dates, resolved project names) with progress reporting.
 
 ---
 #### Bulk Create Users 
-`bulk_create_users_from_csv.py`<br>
+`tools/bulk_create_users_from_csv.py`<br>
 **API:** Internal API  
 Bulk-creates portal users from a CSV.
 
 ---
-#### `clinical_concepts_status_docus_count_ALL_subjects.py`<br>
+#### `tools/clinical_concepts_status_docus_count_ALL_subjects.py`<br>
 **API:** Public API  
 Collects all subjects for a project, then computes each subject’s clinical-concepts status and document count, writing subject and result CSV outputs.
 
 ---
 #### Download all Documents in a Project 
-`download_all_documents.py`<br>
+`tools/download_all_documents.py`<br>
 **API:** Public API  
 Iterates subjects/documents and downloads all available documents locally, with retry handling, progress display, and manual bearer-token rotation prompts.
 
 ---
 #### Duplicate Project 
-`duplicate_project.py`<br>
+`tools/duplicate_project.py`<br>
 **API:** Internal API  
 Interactive project duplication utility that reads source project settings, normalizes payload defaults, prompts for the new name, previews changes, and creates a new project.
 
 ---
 #### Export Checklist to PDF 
-`evaluate_checklist_to_pdf.py`<br>
+`tools/evaluate_checklist_to_pdf.py`<br>
 **API:** Public API  
 Evaluates a checklist for a subject through the API and generates a polished, sectioned PDF report, optionally saving raw JSON output too.
 
 ---
 #### Custom CCDA Generator 
-`generate_ccda_pdf.py`<br>
+`tools/generate_ccda_pdf.py`<br>
 **API:** N/A
 Builds a sample Medication Dispense CCD-A XML, renders a human-readable PDF, and embeds the XML into the PDF as an attachment.
 
 ---
 #### MedSync RECAP to PDF 
-`recap.py`<br>
+`tools/recap.py`<br>
 **API:** Public API  
 Customized checklist-to-report generator for MedSync's RECAP checklist.
 
 ---
 #### Update Users Email Domain 
-`update_user_email_domains.py`<br>
+`tools/update_user_email_domains.py`<br>
 **API:** Internal API  
 Bulk updates user email domains (excluding `@xcures.com`) with safe default dry-run behavior, optional apply mode, filtering, limits, and logs.
 
 ---
 #### Update User Permissions 
-`update_user_permissions.py`<br>
+`tools/update_user_permissions.py`<br>
 **API:** Internal API  
 Bulk adds the `Summary_Checklist` permission across tenant users by reading each user, patching permissions when missing, and writing updates with progress/summary output.
 
 ---
 #### Update Users w/ New Projects 
-`update_users_new_projects.py`<br>
+`tools/update_users_new_projects.py`<br>
 **API:** Internal API  
 Built for MedSync - bulk project assignment workflow with config-driven target projects, mandatory pre-write backup in apply mode, and JSONL audit logging.
 
 ---
 #### Download PDF Version of Documents 
-`xml_to_pdf.py`<br>
+`tools/xml_to_pdf.py`<br>
 **API:** Public API  
 Downloads an XML document from the API, applies `cda2.xsl` transformation, and produces a PDF (auto-fetching `cda_l10n.xml` when needed).
 
 ---
 #### Common API Utilities Module
-`api_common.py`<br>
+`xcures_toolkit/api_common.py`<br>
 Shared HTTP utilities: URL building, retry/backoff request wrapper, JSON validation/parsing, and standardized HTTP error formatting.
 
 ---
 #### Common Authentication Module
-`auth_common.py`<br>
+`xcures_toolkit/auth_common.py`<br>
 Shared auth/env helpers: `.env` loading, required env validation, bearer/client-credentials token retrieval with in-memory token caching, and JSON header construction.
 
 ---
 #### CSV Handler Module
-`csv_common.py`<br>
+`xcures_toolkit/csv_common.py`<br>
 CSV read/write helpers with header normalization, required-column checks, and safe output creation.
 
 ---
 #### Progress Bar Module 
-`(progress_common.py)`<br>
+`xcures_toolkit/progress_common.py`<br>
 Progress bar abstraction (`tqdm` when available, text fallback otherwise) for both iterator and manual progress use.
 
 ---
 #### API Client Module
-`xcures_client.py`<br>
+`xcures_toolkit/xcures_client.py`<br>
 Reusable xCures API client with retries, automatic auth header handling, optional token refresh on 401, and pagination helpers.
 
 ---
 ## Non-Script Assets
 
-- `cda2.xsl`: XSL stylesheet used by `xml_to_pdf.py`.
+- `cda2.xsl`: XSL stylesheet used by `tools/xml_to_pdf.py`.
 - `cda_l10n.xml`: Localization vocabulary used during C-CDA transform.
 - `checklist_example.json`: Example checklist payload/sample data.
 - `configs/`: Script configuration files (for example project-assignment runs).

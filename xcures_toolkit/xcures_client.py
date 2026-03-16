@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Any, Callable, Dict, Iterator, Optional, Sequence
 
 import requests
-from api_common import (
+from .api_common import (
     DEFAULT_BACKOFF_SECONDS,
     DEFAULT_MAX_RETRIES,
     DEFAULT_MAX_SLEEP_SECONDS,
@@ -13,7 +13,7 @@ from api_common import (
     parse_json_or_raise,
     request_with_retry,
 )
-from auth_common import build_json_headers, get_xcures_bearer_token
+from .auth_common import build_json_headers, get_xcures_bearer_token
 
 
 def _is_401_error_message(message: str) -> bool:

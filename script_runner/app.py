@@ -11,7 +11,7 @@ from fastapi import Body, FastAPI, File, HTTPException, Query, Request, UploadFi
 from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 
-from auth_common import fetch_client_credentials_token
+from xcures_toolkit.auth_common import fetch_client_credentials_token
 from .env_store import EnvStore
 from .job_manager import JobManager
 from .models import (

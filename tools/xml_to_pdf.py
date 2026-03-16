@@ -11,14 +11,14 @@ from pathlib import Path
 from typing import Any
 
 import requests
-from auth_common import get_xcures_bearer_token, load_env_file
+from xcures_toolkit.auth_common import get_xcures_bearer_token, load_env_file
 
 
 DEFAULT_L10N_URL = (
     "https://raw.githubusercontent.com/HL7/cda-core-xsl/master/cda_l10n.xml"
 )
-SCRIPT_DIR = Path(__file__).resolve().parent
-FORCED_OUTPUT_DIR = SCRIPT_DIR / "downloads"
+REPO_ROOT = Path(__file__).resolve().parent.parent
+FORCED_OUTPUT_DIR = REPO_ROOT / "downloads"
 
 
 class PipelineError(RuntimeError):
@@ -64,7 +64,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--xsl-path",
-        default=str(Path(__file__).resolve().parent / "cda2.xsl"),
+        default=str(Path(__file__).resolve().parent.parent / "cda2.xsl"),
         help="Path to CDA XSL file. Default: %(default)s",
     )
     parser.add_argument(
@@ -83,7 +83,7 @@ def parse_args() -> argparse.Namespace:
         "--output-dir",
         default=str(FORCED_OUTPUT_DIR),
         help=(
-            "Ignored. Outputs are always written to the script-local downloads folder: "
+            "Ignored. Outputs are always written to the repo-local downloads folder: "
             f"{FORCED_OUTPUT_DIR}."
         ),
     )
@@ -415,8 +415,7 @@ def resolve_document_id(cli_document_id: str | None, *, non_interactive: bool) -
 
 
 def main() -> int:
-    script_dir = Path(__file__).resolve().parent
-    load_env_file(script_dir / ".env")
+    load_env_file(REPO_ROOT / ".env")
     args = parse_args()
 
     try:
