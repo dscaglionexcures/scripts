@@ -45,7 +45,7 @@ from xcures_client import XcuresApiClient
 
 DEFAULT_BASE_URL = "https://partner.xcures.com"
 SCRIPT_DIR = Path(__file__).resolve().parent
-DEFAULT_OUTPUT_DIR = Path("/Users/dScaglione/downloads/code/downloads")
+DEFAULT_OUTPUT_DIR = SCRIPT_DIR / "downloads"
 EVALUATE_ENDPOINT_TEMPLATE = "/api/v1/patient-registry/checklist/{checklist_id}/evaluate"
 TEMPLATE_ORG_NAME = "Vitality Consultants, LLC"
 TEMPLATE_ORG_ADDRESS = "3540 Toringdon Way Ste 200, Charlotte, NC 28277-4650"

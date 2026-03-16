@@ -17,7 +17,8 @@ from auth_common import get_xcures_bearer_token, load_env_file
 DEFAULT_L10N_URL = (
     "https://raw.githubusercontent.com/HL7/cda-core-xsl/master/cda_l10n.xml"
 )
-FORCED_OUTPUT_DIR = Path("/Users/dScaglione/downloads/code/downloads")
+SCRIPT_DIR = Path(__file__).resolve().parent
+FORCED_OUTPUT_DIR = SCRIPT_DIR / "downloads"
 
 
 class PipelineError(RuntimeError):
@@ -81,7 +82,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output-dir",
         default=str(FORCED_OUTPUT_DIR),
-        help="Ignored. Outputs are always written to /Users/dScaglione/downloads/code/downloads.",
+        help=(
+            "Ignored. Outputs are always written to the script-local downloads folder: "
+            f"{FORCED_OUTPUT_DIR}."
+        ),
     )
     parser.add_argument(
         "--renderer",
