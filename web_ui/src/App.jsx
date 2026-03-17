@@ -8,6 +8,7 @@ import {
   faCircleXmark,
   faClone,
   faFile,
+  faFileCircleCheck,
   faFileArrowDown,
   faFilePdf,
   faHospitalUser,
@@ -23,8 +24,10 @@ import logo from "./xcures.svg";
 const TABS = [
   { id: "internal-scripts", label: "Internal API Operations" },
   { id: "public-scripts", label: "Public API Operations" },
+  { id: "local-scripts", label: "Local Operations" },
   { id: "jobs", label: "jobs" },
-  { id: "environment", label: "environment" }
+  { id: "environment", label: "environment" },
+  { id: "admin", label: "admin" }
 ];
 const API_SETTINGS = [
   { key: "user_page_size", label: "User Page Size", defaultValue: "25" },
@@ -41,6 +44,7 @@ const SCRIPT_ICON_MAP = {
   update_users_new_projects: [faUsersRectangle],
   api_smoke_test: [faSmoking],
   download_all_documents: [faFileArrowDown],
+  clinical_concepts_status: [faFileCircleCheck],
   evaluate_checklist_to_pdf: [faFilePdf],
   generate_ccda_pdf: [faSquareRss, faCircleChevronRight, faFilePdf],
 };
@@ -127,6 +131,11 @@ function apiTypeClass(script) {
 function matchesScriptGroup(script, groupId) {
   if (groupId === "internal") return script.tags?.includes("internal-api");
   if (groupId === "public") return script.tags?.includes("public-api");
+  if (groupId === "local") {
+    const isInternal = script.tags?.includes("internal-api");
+    const isPublic = script.tags?.includes("public-api");
+    return !isInternal && !isPublic;
+  }
   return true;
 }
 
@@ -231,6 +240,13 @@ function splitPipeValues(value) {
     .filter(Boolean);
 }
 
+function parseCommaValues(value) {
+  return String(value ?? "")
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
 function normalizeClinicalPreview(parsed) {
   const rows = parsed?.rows ?? [];
   const normalizedRows = rows.map((row) => {
@@ -262,7 +278,11 @@ function ScriptNameWithIcon({ scriptId, name }) {
       {icons.length > 0 && (
         <span className="script-icons" aria-hidden="true">
           {icons.map((icon, index) => (
-            <FontAwesomeIcon key={`${scriptId}-${index}`} icon={icon} />
+            <FontAwesomeIcon
+              key={`${scriptId}-${index}`}
+              icon={icon}
+              style={scriptId === "clinical_concepts_status" ? { color: "#075b87" } : undefined}
+            />
           ))}
         </span>
       )}
@@ -272,15 +292,15 @@ function ScriptNameWithIcon({ scriptId, name }) {
 }
 
 function supportsTenantProjectPicker(scriptId) {
-  return (
-    scriptId === "update_users_new_projects" ||
-    scriptId === "update_user_permissions" ||
-    scriptId === "clinical_concepts_status"
-  );
+  return scriptId === "update_users_new_projects" || scriptId === "clinical_concepts_status";
 }
 
 function usesOptionalProjectLoaderBearer(scriptId) {
   return scriptId === "clinical_concepts_status";
+}
+
+function isChecklistPdfScript(scriptId) {
+  return scriptId === "evaluate_checklist_to_pdf" || scriptId === "recap";
 }
 
 export default function App() {
@@ -294,9 +314,29 @@ export default function App() {
   const [internalBearerToken, setInternalBearerToken] = useState("");
   const [bulkUploadBusy, setBulkUploadBusy] = useState(false);
   const [bulkUploadMessage, setBulkUploadMessage] = useState("");
+  const [evaluateOutputDirBusy, setEvaluateOutputDirBusy] = useState(false);
+  const [evaluateOutputDirMessage, setEvaluateOutputDirMessage] = useState("");
+  const [evaluateChecklists, setEvaluateChecklists] = useState([]);
+  const [evaluateChecklistsBusy, setEvaluateChecklistsBusy] = useState(false);
+  const [evaluateChecklistsMessage, setEvaluateChecklistsMessage] = useState("");
+  const [evaluateProjects, setEvaluateProjects] = useState([]);
+  const [evaluateProjectsBusy, setEvaluateProjectsBusy] = useState(false);
+  const [evaluateProjectsMessage, setEvaluateProjectsMessage] = useState("");
+  const [evaluateProjectsBearerToken, setEvaluateProjectsBearerToken] = useState("");
   const [tenantProjects, setTenantProjects] = useState([]);
   const [tenantProjectsBusy, setTenantProjectsBusy] = useState(false);
   const [tenantProjectsMessage, setTenantProjectsMessage] = useState("");
+  const [tenantUsers, setTenantUsers] = useState([]);
+  const [tenantUsersBusy, setTenantUsersBusy] = useState(false);
+  const [tenantUsersMessage, setTenantUsersMessage] = useState("");
+  const [permissionLookupUserId, setPermissionLookupUserId] = useState("");
+  const [singleUserPermissions, setSingleUserPermissions] = useState(null);
+  const [clonePermissionsBusy, setClonePermissionsBusy] = useState(false);
+  const [clonePermissionsMessage, setClonePermissionsMessage] = useState("");
+  const [targetUsersMessage, setTargetUsersMessage] = useState("");
+  const [allUsersPermissions, setAllUsersPermissions] = useState({ items: [], permission_keys: [] });
+  const [allUsersPermissionsBusy, setAllUsersPermissionsBusy] = useState(false);
+  const [allUsersPermissionsMessage, setAllUsersPermissionsMessage] = useState("");
   const [backupPreviewBusy, setBackupPreviewBusy] = useState(false);
   const [backupPreviewMessage, setBackupPreviewMessage] = useState("");
   const [clinicalPreviewBusy, setClinicalPreviewBusy] = useState(false);
@@ -333,6 +373,11 @@ export default function App() {
   const [profileMessage, setProfileMessage] = useState("");
   const [revealSecrets, setRevealSecrets] = useState(false);
   const [envMessage, setEnvMessage] = useState("");
+  const [functionalByScript, setFunctionalByScript] = useState({});
+  const [adminMessage, setAdminMessage] = useState("");
+  const [xmlXslFiles, setXmlXslFiles] = useState([]);
+  const [xmlXslFilesBusy, setXmlXslFilesBusy] = useState(false);
+  const [xmlXslFilesMessage, setXmlXslFilesMessage] = useState("");
 
   const selectedScript = useMemo(
     () => scripts.find((script) => script.id === selectedScriptId) ?? null,
@@ -342,6 +387,24 @@ export default function App() {
     if (!selectedScript) return null;
     return draftByScript[selectedScript.id] ?? defaultDraftForScript(selectedScript);
   }, [draftByScript, selectedScript]);
+  const evaluateChecklistSelectWidth = useMemo(() => {
+    const longestLoadedName = evaluateChecklists.reduce((maxLength, checklist) => {
+      const length = String(checklist?.name ?? "").length;
+      return Math.max(maxLength, length);
+    }, 0);
+    const selectedIdLength = String(selectedScriptDraft?.fieldValues?.checklist_id ?? "").length;
+    const chars = Math.max(24, longestLoadedName, selectedIdLength);
+    return `calc(${chars}ch + 48px)`;
+  }, [evaluateChecklists, selectedScriptDraft]);
+  const evaluateProjectSelectWidth = useMemo(() => {
+    const longestLoadedProject = evaluateProjects.reduce((maxLength, project) => {
+      const length = String(project?.id ?? "").length;
+      return Math.max(maxLength, length);
+    }, 0);
+    const selectedIdLength = String(selectedScriptDraft?.fieldValues?.project_id ?? "").length;
+    const chars = Math.max(24, longestLoadedProject, selectedIdLength);
+    return `calc(${chars}ch + 48px)`;
+  }, [evaluateProjects, selectedScriptDraft]);
   const selectedScriptIsInternalApi = useMemo(
     () => Boolean(selectedScript?.tags?.includes("internal-api")),
     [selectedScript]
@@ -468,11 +531,29 @@ export default function App() {
     () => envValues.filter((row) => !apiSettingKeys.has(row.key)),
     [envValues, apiSettingKeys]
   );
+  const permissionMatrixColumns = useMemo(
+    () => allUsersPermissions.permission_keys ?? [],
+    [allUsersPermissions.permission_keys]
+  );
+  const selectedBulkTargetUserIds = useMemo(() => {
+    if (!selectedScript || selectedScript.id !== "update_user_permissions") return [];
+    const draft = selectedScriptDraft ?? defaultDraftForScript(selectedScript);
+    return parseCommaValues(draft.fieldValues?.user_ids ?? "");
+  }, [selectedScript, selectedScriptDraft]);
 
   const filteredScripts = useMemo(() => {
     const query = scriptSearch.trim().toLowerCase();
-    const scriptGroup = activeTab === "internal-scripts" ? "internal" : "public";
-    const grouped = scripts.filter((script) => matchesScriptGroup(script, scriptGroup));
+    const scriptGroup =
+      activeTab === "internal-scripts"
+        ? "internal"
+        : activeTab === "public-scripts"
+          ? "public"
+          : activeTab === "local-scripts"
+            ? "local"
+            : null;
+    const grouped = scriptGroup
+      ? scripts.filter((script) => matchesScriptGroup(script, scriptGroup))
+      : scripts;
     if (!query) return grouped;
     return grouped.filter((script) => {
       const haystack = `${script.name} ${script.description} ${script.tags.join(" ")}`.toLowerCase();
@@ -485,6 +566,7 @@ export default function App() {
     loadJobs();
     loadEnv(false);
     loadProfiles();
+    loadFunctionalStatus();
   }, []);
 
   useEffect(() => {
@@ -495,6 +577,11 @@ export default function App() {
     const interval = window.setInterval(loadJobs, 3000);
     return () => window.clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    if (selectedScriptId !== "xml_to_pdf") return;
+    void loadXmlXslFiles({ applyDefault: true });
+  }, [selectedScriptId]);
 
   useEffect(() => {
     if (filteredScripts.length === 0) {
@@ -511,6 +598,14 @@ export default function App() {
     setBulkUploadMessage("");
     setTenantProjects([]);
     setTenantProjectsMessage("");
+    setTenantUsers([]);
+    setTenantUsersMessage("");
+    setPermissionLookupUserId("");
+    setSingleUserPermissions(null);
+    setClonePermissionsMessage("");
+    setTargetUsersMessage("");
+    setAllUsersPermissions({ items: [], permission_keys: [] });
+    setAllUsersPermissionsMessage("");
     setBackupPreview({ jobId: "", artifactPath: "", headers: [], rows: [] });
     setBackupPreviewMessage("");
     setClinicalPreview({ jobId: "", artifactPath: "", headers: [], rows: [] });
@@ -557,6 +652,24 @@ export default function App() {
     if (clinicalPreview.jobId === latest.job_id && clinicalPreview.artifactPath === csvPath) return;
     loadClinicalPreview(latest.job_id, csvPath);
   }, [selectedScriptId, jobs]);
+
+  useEffect(() => {
+    if (selectedScriptId !== "clinical_concepts_status") return;
+    if (!scriptPanelJob || scriptPanelJob.script_id !== "clinical_concepts_status") return;
+    if (scriptPanelJob.status !== "succeeded") return;
+
+    const artifacts = scriptPanelJob.artifacts ?? [];
+    const artifactCsv = artifacts.find(
+      (path) => path.endsWith(".csv") && path.includes("subject_clinical_concepts_and_doc_counts")
+    );
+    const csvPath = artifactCsv ?? artifacts.find((path) => path.endsWith(".csv")) ?? "";
+    if (!csvPath) {
+      setClinicalPreviewMessage("Run completed, but no CSV artifact was found.");
+      return;
+    }
+    if (clinicalPreview.jobId === scriptPanelJob.job_id && clinicalPreview.artifactPath === csvPath) return;
+    loadClinicalPreview(scriptPanelJob.job_id, csvPath);
+  }, [selectedScriptId, scriptPanelJob, clinicalPreview.jobId, clinicalPreview.artifactPath]);
 
   useEffect(() => {
     setExpandedPermissionRows({});
@@ -689,6 +802,42 @@ export default function App() {
       setActiveProfileId(data.active_profile_id ?? "");
     } catch (error) {
       setProfileMessage(String(error.message ?? error));
+    }
+  }
+
+  async function loadXmlXslFiles(options = {}) {
+    const { applyDefault = false } = options;
+    setXmlXslFilesBusy(true);
+    setXmlXslFilesMessage("");
+    try {
+      const data = await apiJson("/api/config/xsl-files");
+      const items = data.items ?? [];
+      setXmlXslFiles(items);
+      if (!items.length) {
+        setXmlXslFilesMessage("No .xsl files found in configs.");
+        return;
+      }
+      if (applyDefault) {
+        const current = String(draftByScript?.xml_to_pdf?.fieldValues?.xsl_path ?? "").trim();
+        if (!current) {
+          setField("xml_to_pdf", "xsl_path", items[0].path);
+        }
+      }
+    } catch (error) {
+      setXmlXslFiles([]);
+      setXmlXslFilesMessage(String(error.message ?? error));
+    } finally {
+      setXmlXslFilesBusy(false);
+    }
+  }
+
+  async function loadFunctionalStatus() {
+    try {
+      const data = await apiJson("/api/functional-status");
+      setFunctionalByScript(data.functional_by_script ?? {});
+      setAdminMessage("");
+    } catch (error) {
+      setAdminMessage(String(error.message ?? error));
     }
   }
 
@@ -862,6 +1011,35 @@ export default function App() {
     });
   }
 
+  async function setFunctional(scriptId, value) {
+    const nextValue = Boolean(value);
+    const previousValue = Boolean(functionalByScript[scriptId]);
+    setFunctionalByScript((previous) => ({
+      ...previous,
+      [scriptId]: nextValue,
+    }));
+    try {
+      const data = await apiJson(`/api/functional-status/${encodeURIComponent(scriptId)}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ functional: nextValue })
+      });
+      setFunctionalByScript(data.functional_by_script ?? {});
+      setAdminMessage("Functional status saved.");
+    } catch (error) {
+      setFunctionalByScript((previous) => ({
+        ...previous,
+        [scriptId]: previousValue,
+      }));
+      setAdminMessage(String(error.message ?? error));
+    }
+  }
+
+  function setChecklistIdForSelectedScript(checklistId) {
+    if (!selectedScript || !isChecklistPdfScript(selectedScript.id)) return;
+    setField(selectedScript.id, "checklist_id", checklistId);
+  }
+
   async function runSelectedScript() {
     if (!selectedScript) return;
     const draft = selectedScriptDraft ?? defaultDraftForScript(selectedScript);
@@ -878,11 +1056,22 @@ export default function App() {
 
     setRunError("");
     setRunMessage("");
+    if (selectedScript.id === "clinical_concepts_status") {
+      setClinicalPreview({ jobId: "", artifactPath: "", headers: [], rows: [] });
+      setClinicalPreviewMessage("Waiting for run to finish...");
+    }
     try {
+      const payloadFieldValues = {
+        ...(draft.fieldValues ?? {}),
+      };
+      if (selectedScript.id === "update_user_email_domains") {
+        const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+        payloadFieldValues.log_file = `logs/update_user_email_domains_${timestamp}.log`;
+      }
       const payload = {
         script_id: selectedScript.id,
         mode: selectedScript.supports_mode ? draft.mode : null,
-        field_values: draft.fieldValues ?? {},
+        field_values: payloadFieldValues,
         raw_args: draft.rawArgs ?? "",
         internal_bearer_token: selectedScriptIsInternalApi ? internalBearerToken : null
       };
@@ -980,11 +1169,95 @@ export default function App() {
     }
   }
 
-  function parseProjectIds(value) {
-    return String(value ?? "")
-      .split(",")
-      .map((item) => item.trim())
-      .filter(Boolean);
+  async function selectEvaluateChecklistOutputDirectory() {
+    if (!selectedScript || !isChecklistPdfScript(selectedScript.id)) {
+      return;
+    }
+    if (!window.showDirectoryPicker) {
+      setEvaluateOutputDirMessage("Folder picker not supported in this browser.");
+      return;
+    }
+    setEvaluateOutputDirBusy(true);
+    setEvaluateOutputDirMessage("");
+    try {
+      const handle = await window.showDirectoryPicker();
+      const payload = await apiJson("/api/uploads/folder", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ folder_name: handle.name })
+      });
+      setField(selectedScript.id, "output_dir", payload.path);
+      setEvaluateOutputDirMessage(`Output directory selected: ${payload.path}`);
+    } catch (error) {
+      if (error?.name === "AbortError") {
+        setEvaluateOutputDirMessage("");
+      } else {
+        setEvaluateOutputDirMessage(String(error.message ?? error));
+      }
+    } finally {
+      setEvaluateOutputDirBusy(false);
+    }
+  }
+
+  async function loadEvaluateChecklists() {
+    const selectedProjectId = String(selectedScriptDraft?.fieldValues?.project_id ?? "").trim();
+    if (!selectedProjectId) {
+      setEvaluateChecklistsMessage("Select a Project ID first.");
+      setEvaluateChecklists([]);
+      return;
+    }
+    setEvaluateChecklistsBusy(true);
+    setEvaluateChecklistsMessage("");
+    try {
+      const payload = await apiJson("/api/public/checklists", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          profile_id: activeProfileId || null,
+          project_id: selectedProjectId || null,
+        })
+      });
+      const items = payload.items ?? [];
+      setEvaluateChecklists(items);
+      const currentChecklistId = String(selectedScriptDraft?.fieldValues?.checklist_id ?? "").trim();
+      const currentExists = items.some((item) => String(item?.id ?? "") === currentChecklistId);
+      if (items.length > 0 && !currentExists) {
+        setChecklistIdForSelectedScript(items[0].id);
+      }
+      setEvaluateChecklistsMessage(`Loaded ${payload.count ?? items.length} checklists.`);
+    } catch (error) {
+      setEvaluateChecklistsMessage(String(error.message ?? error));
+      setEvaluateChecklists([]);
+    } finally {
+      setEvaluateChecklistsBusy(false);
+    }
+  }
+
+  async function loadEvaluateProjects() {
+    if (!evaluateProjectsBearerToken.trim()) {
+      setEvaluateProjectsMessage("Bearer token is required to load project IDs.");
+      return;
+    }
+    setEvaluateProjectsBusy(true);
+    setEvaluateProjectsMessage("");
+    try {
+      const payload = await apiJson("/api/internal/projects", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          bearer_token: evaluateProjectsBearerToken.trim() || null,
+          profile_id: activeProfileId || null,
+        })
+      });
+      const items = payload.items ?? [];
+      setEvaluateProjects(items);
+      setEvaluateProjectsMessage(`Loaded ${payload.count ?? items.length} project IDs.`);
+    } catch (error) {
+      setEvaluateProjectsMessage(String(error.message ?? error));
+      setEvaluateProjects([]);
+    } finally {
+      setEvaluateProjectsBusy(false);
+    }
   }
 
   async function loadTenantProjects() {
@@ -997,6 +1270,7 @@ export default function App() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           bearer_token: internalBearerToken.trim() || null,
+          profile_id: activeProfileId || null,
         })
       });
       setTenantProjects(payload.items ?? []);
@@ -1020,11 +1294,128 @@ export default function App() {
     setField(selectedScript.id, "project_id", "");
   }
 
+  async function loadTenantUsers() {
+    if (!internalBearerToken.trim()) {
+      setTenantUsersMessage("Bearer token is required to load users.");
+      return;
+    }
+    setTenantUsersBusy(true);
+    setTenantUsersMessage("");
+    try {
+      const payload = await apiJson("/api/internal/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          bearer_token: internalBearerToken.trim() || null,
+        })
+      });
+      const items = payload.items ?? [];
+      setTenantUsers(items);
+      setTenantUsersMessage(`Loaded ${payload.count ?? 0} users.`);
+      setPermissionLookupUserId((previous) => previous || items[0]?.id || "");
+    } catch (error) {
+      setTenantUsersMessage(String(error.message ?? error));
+      setTenantUsers([]);
+    } finally {
+      setTenantUsersBusy(false);
+    }
+  }
+
+  function selectAllTargetUsers() {
+    if (!selectedScript || selectedScript.id !== "update_user_permissions") return;
+    const allUserIds = tenantUsers.map((user) => user.id);
+    setField(selectedScript.id, "user_ids", allUserIds.join(","));
+  }
+
+  function clearTargetUsers() {
+    if (!selectedScript || selectedScript.id !== "update_user_permissions") return;
+    setField(selectedScript.id, "user_ids", "");
+    setTargetUsersMessage("Target user filter cleared. Script will apply to all users.");
+  }
+
+  async function fetchUserPermissionsById(userId) {
+    return apiJson("/api/internal/user-permissions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        bearer_token: internalBearerToken.trim() || null,
+        user_id: userId,
+      })
+    });
+  }
+
+  async function clonePermissionsFromUser() {
+    if (!internalBearerToken.trim()) {
+      setClonePermissionsMessage("Bearer token is required to clone permissions.");
+      return;
+    }
+    const userId = permissionLookupUserId.trim();
+    if (!userId) {
+      setClonePermissionsMessage("Select a user first.");
+      return;
+    }
+    setClonePermissionsBusy(true);
+    setClonePermissionsMessage("");
+    try {
+      const payload = await fetchUserPermissionsById(userId);
+      const sourceUser = payload.user ?? null;
+      const permissions = Array.isArray(sourceUser?.permissions)
+        ? sourceUser.permissions
+        : Array.isArray(payload.permissions)
+          ? payload.permissions
+          : [];
+      const normalized = [...new Set(permissions.map((value) => String(value ?? "").trim()).filter(Boolean))];
+      if (selectedScript?.id === "update_user_permissions") {
+        setField(selectedScript.id, "permissions", normalized.join(","));
+      }
+      setSingleUserPermissions(sourceUser);
+      setClonePermissionsMessage(
+        `Cloned ${normalized.length} permissions from ${sourceUser?.name ?? userId} into the Permissions field.`
+      );
+      setTargetUsersMessage("");
+    } catch (error) {
+      setClonePermissionsMessage(String(error.message ?? error));
+    } finally {
+      setClonePermissionsBusy(false);
+    }
+  }
+
+  async function queryAllUsersPermissions() {
+    if (!internalBearerToken.trim()) {
+      setAllUsersPermissionsMessage("Bearer token is required to query all users and permissions.");
+      return;
+    }
+    setAllUsersPermissionsBusy(true);
+    setAllUsersPermissionsMessage("");
+    try {
+      const payload = await apiJson("/api/internal/users-permissions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          bearer_token: internalBearerToken.trim() || null,
+        })
+      });
+      setAllUsersPermissions({
+        items: payload.items ?? [],
+        permission_keys: payload.permission_keys ?? [],
+      });
+      setAllUsersPermissionsMessage(`Loaded permissions for ${payload.count ?? 0} users.`);
+    } catch (error) {
+      setAllUsersPermissionsMessage(String(error.message ?? error));
+      setAllUsersPermissions({ items: [], permission_keys: [] });
+    } finally {
+      setAllUsersPermissionsBusy(false);
+    }
+  }
+
   async function loadBackupPreview(jobId, artifactPath) {
     setBackupPreviewBusy(true);
     setBackupPreviewMessage("");
     try {
-      const response = await fetch(`/api/artifact?path=${encodeURIComponent(artifactPath)}`);
+      const response = await fetch(
+        `/api/artifact?path=${encodeURIComponent(artifactPath)}&job_id=${encodeURIComponent(jobId)}`,
+        { cache: "no-store" }
+      );
       if (!response.ok) {
         throw new Error(`Failed to load preview CSV (${response.status})`);
       }
@@ -1070,7 +1461,10 @@ export default function App() {
     setClinicalPreviewBusy(true);
     setClinicalPreviewMessage("");
     try {
-      const response = await fetch(`/api/artifact?path=${encodeURIComponent(artifactPath)}`);
+      const response = await fetch(
+        `/api/artifact?path=${encodeURIComponent(artifactPath)}&job_id=${encodeURIComponent(jobId)}`,
+        { cache: "no-store" }
+      );
       if (!response.ok) {
         throw new Error(`Failed to load preview CSV (${response.status})`);
       }
@@ -1172,10 +1566,7 @@ export default function App() {
       <header className="hero">
         <div className="brand">
           <img src={logo} alt="xCures logo" className="logo" />
-          <div>
-            <h1>Customer Success User Operations Toolbox</h1>
-            <p></p>
-          </div>
+          <h1>Customer Success User Ops</h1>
         </div>
         <div className="meta">
           <label className="profile-switch">
@@ -1210,7 +1601,9 @@ export default function App() {
         ))}
       </nav>
 
-      {(activeTab === "internal-scripts" || activeTab === "public-scripts") && (
+      {(activeTab === "internal-scripts" ||
+        activeTab === "public-scripts" ||
+        activeTab === "local-scripts") && (
         <section className="panel scripts-grid">
           <aside className="script-list">
             <input
@@ -1226,7 +1619,14 @@ export default function App() {
                     onClick={() => setSelectedScriptId(script.id)}
                   >
                     <strong>
-                      <ScriptNameWithIcon scriptId={script.id} name={script.name} />
+                      <span className="script-list-title-row">
+                        {Boolean(functionalByScript[script.id]) && (
+                          <span className="script-list-functional-indicator" title="Functional">
+                            <FontAwesomeIcon icon={faCircleCheck} />
+                          </span>
+                        )}
+                        <ScriptNameWithIcon scriptId={script.id} name={script.name} />
+                      </span>
                     </strong>
                     <small className={`api-tag ${apiTypeClass(script)}`}>{apiTypeLabel(script)}</small>
                     <small className={`safety-tag ${script.safety}`}>{safetyLabel(script.safety)}</small>
@@ -1251,6 +1651,12 @@ export default function App() {
                     <span className={`pill ${selectedScript.safety}`}>{safetyLabel(selectedScript.safety)}</span>
                   </div>
                 </div>
+                {Boolean(functionalByScript[selectedScript.id]) && (
+                  <div className="script-functional-indicator">
+                    <FontAwesomeIcon icon={faCircleCheck} />
+                    <span>Functional</span>
+                  </div>
+                )}
                 <p>{selectedScript.description}</p>
 
                 {selectedScriptIsInternalApi && (
@@ -1276,6 +1682,17 @@ export default function App() {
                     />
                   </label>
                 )}
+                {isChecklistPdfScript(selectedScript.id) && (
+                  <label>
+                    <span>Bearer Token (required for Load Project IDs)</span>
+                    <textarea
+                      className="token-input"
+                      value={evaluateProjectsBearerToken}
+                      placeholder="Paste bearer token for project ID loader"
+                      onChange={(event) => setEvaluateProjectsBearerToken(event.target.value)}
+                    />
+                  </label>
+                )}
 
                 {selectedScript.supports_mode && (
                   <div className="mode-row">
@@ -1290,12 +1707,130 @@ export default function App() {
                   </div>
                 )}
 
-                <div
-                  className={`field-grid ${
-                    selectedScript.id === "update_users_new_projects" ? "field-grid-two-col" : ""
-                  }`}
-                >
-                  {selectedScript.fields.map((field) => {
+                {selectedScript.id === "update_user_permissions" && (
+                  <div className="backup-preview">
+                    <div className="script-header">
+                      <h3>Step 1: Load Users</h3>
+                    </div>
+                    <div className="script-actions">
+                      <button type="button" onClick={loadTenantUsers}>
+                        Load Users
+                      </button>
+                      {(tenantUsersBusy || allUsersPermissionsBusy) && <small>Loading...</small>}
+                    </div>
+                    {tenantUsersMessage && <p>{tenantUsersMessage}</p>}
+                    {allUsersPermissionsMessage && <p>{allUsersPermissionsMessage}</p>}
+                    <p className="ux-note">
+                      Source user sets the permissions to clone. Target User IDs controls who gets updated when you run.
+                    </p>
+                    <p className="ux-note">
+                      Current targets: {selectedBulkTargetUserIds.length
+                        ? `${selectedBulkTargetUserIds.length} selected`
+                        : "All users (no target IDs selected)"}
+                    </p>
+                    {targetUsersMessage && <p>{targetUsersMessage}</p>}
+
+                    <div className="permission-query-row">
+                      <label>
+                        <h3>Step 2: Select Source User</h3>
+                        <select
+                          value={permissionLookupUserId}
+                          onChange={(event) => setPermissionLookupUserId(event.target.value)}
+                        >
+                          <option value="">Select a user...</option>
+                          {tenantUsers.map((user) => (
+                            <option key={user.id} value={user.id}>
+                              {user.name} {user.email ? `(${user.email})` : ""}
+                            </option>
+                          ))}
+                        </select>
+                        <div className="script-actions">
+                          <button type="button" onClick={clonePermissionsFromUser}>
+                            Clone Permissions From User
+                          </button>
+                          {clonePermissionsBusy && <small>Loading...</small>}
+                        </div>
+                      </label>
+                    </div>
+
+                    {clonePermissionsMessage && <p>{clonePermissionsMessage}</p>}
+                    {singleUserPermissions && (
+                      <div className="single-user-permissions">
+                        <p>
+                          <strong>{singleUserPermissions.name}</strong>
+                          {singleUserPermissions.email ? ` (${singleUserPermissions.email})` : ""} - {" "}
+                          {singleUserPermissions.permission_count} permissions
+                        </p>
+                        <div className="permission-chips">
+                          {singleUserPermissions.permissions.map((permission) => (
+                            <span key={`${singleUserPermissions.id}-${permission}`} className="permission-chip">
+                              {permission}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {allUsersPermissions.items.length > 0 && (
+                      <div className="backup-preview-table-wrap permissions-compare-wrap">
+                        <table className="backup-preview-table permissions-compare-table">
+                          <thead>
+                            <tr>
+                              <th>Name</th>
+                              <th>Email</th>
+                              <th>Count</th>
+                              <th>Permissions</th>
+                              {permissionMatrixColumns.map((permission) => (
+                                <th key={`permission-col-${permission}`}>{permission}</th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {allUsersPermissions.items.map((user) => {
+                              const userPermissionSet = new Set(user.permissions ?? []);
+                              return (
+                                <tr key={`permission-row-${user.id}`}>
+                                  <td>{user.name || user.id}</td>
+                                  <td>{user.email || "—"}</td>
+                                  <td>{user.permission_count ?? 0}</td>
+                                  <td>
+                                    {user.error ? (
+                                      <span className="error">{user.error}</span>
+                                    ) : (
+                                      <div className="permission-chips">
+                                        {(user.permissions ?? []).map((permission) => (
+                                          <span key={`${user.id}-${permission}`} className="permission-chip">
+                                            {permission}
+                                          </span>
+                                        ))}
+                                      </div>
+                                    )}
+                                  </td>
+                                  {permissionMatrixColumns.map((permission) => (
+                                    <td key={`${user.id}-${permission}`} className="permission-cell">
+                                      {userPermissionSet.has(permission) ? "✓" : ""}
+                                    </td>
+                                  ))}
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                <div className={isChecklistPdfScript(selectedScript.id) ? "evaluate-options-layout" : ""}>
+                  <div className={isChecklistPdfScript(selectedScript.id) ? "evaluate-options-main" : ""}>
+                    <div
+                      className={`field-grid ${
+                        selectedScript.id === "update_users_new_projects" || selectedScript.id === "update_user_permissions"
+                          ? "field-grid-two-col"
+                          : ""
+                      }`}
+                    >
+                      {selectedScript.fields.map((field) => {
                     const draft = selectedScriptDraft ?? defaultDraftForScript(selectedScript);
                     const value = fieldValueOrDefault(field, draft.fieldValues?.[field.id]);
                     if (field.type === "boolean") {
@@ -1332,6 +1867,48 @@ export default function App() {
                               </option>
                             ))}
                           </select>
+                        </label>
+                      );
+                    }
+
+                    if (selectedScript.id === "xml_to_pdf" && field.id === "xsl_path") {
+                      const currentValue = String(value ?? "").trim();
+                      const hasCurrentValue = currentValue
+                        ? xmlXslFiles.some((item) => item.path === currentValue)
+                        : false;
+                      return (
+                        <label key={field.id}>
+                          <span>{field.label}</span>
+                          <div className="csv-upload-row">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                void loadXmlXslFiles();
+                              }}
+                            >
+                              Reload XSL Files
+                            </button>
+                            {xmlXslFilesBusy && <small>Loading...</small>}
+                          </div>
+                          <select
+                            value={value ?? ""}
+                            onChange={(event) =>
+                              setField(selectedScript.id, field.id, event.target.value)
+                            }
+                          >
+                            {!hasCurrentValue && currentValue && (
+                              <option value={currentValue}>{currentValue}</option>
+                            )}
+                            {xmlXslFiles.length === 0 && (
+                              <option value="">No .xsl files found</option>
+                            )}
+                            {xmlXslFiles.map((item) => (
+                              <option key={item.id} value={item.path}>
+                                {item.name}
+                              </option>
+                            ))}
+                          </select>
+                          {xmlXslFilesMessage && <small>{xmlXslFilesMessage}</small>}
                         </label>
                       );
                     }
@@ -1389,6 +1966,13 @@ export default function App() {
                           {bulkUploadMessage && <small>{bulkUploadMessage}</small>}
                         </label>
                       );
+                    }
+
+                    if (
+                      selectedScript.id === "update_user_email_domains" &&
+                      field.id === "log_file"
+                    ) {
+                      return null;
                     }
 
                     if (
@@ -1459,44 +2043,56 @@ export default function App() {
                       );
                     }
 
+                    if (selectedScript.id === "update_user_permissions" && field.id === "permissions") {
+                      return null;
+                    }
+
                     if (
                       selectedScript.id === "update_user_permissions" &&
-                      field.id === "project_id"
+                      field.id === "user_ids"
                     ) {
+                      const selectedUserIds = parseCommaValues(value);
                       return (
                         <label key={field.id}>
-                          <span>{field.label}</span>
+                          <h3>Step 3: Target Users</h3>
                           <div className="csv-upload-row">
-                            <button type="button" onClick={loadTenantProjects}>
-                              Load Projects from Tenant
+                            <button type="button" onClick={loadTenantUsers}>
+                              Load Users from Tenant
                             </button>
-                            <button type="button" onClick={clearSelectedTenantProjects}>
+                            <button type="button" onClick={selectAllTargetUsers} disabled={!tenantUsers.length}>
+                              Select All
+                            </button>
+                            <button type="button" onClick={clearTargetUsers}>
                               Clear
                             </button>
-                            {tenantProjectsBusy && <small>Loading...</small>}
+                            {tenantUsersBusy && <small>Loading...</small>}
                           </div>
                           <select
-                            value={value ?? ""}
-                            onChange={(event) =>
-                              setField(selectedScript.id, field.id, event.target.value)
-                            }
+                            multiple
+                            size={Math.min(Math.max(tenantUsers.length, 8), 14)}
+                            value={selectedUserIds}
+                            onChange={(event) => {
+                              const selected = Array.from(event.target.selectedOptions).map(
+                                (option) => option.value
+                              );
+                              setField(selectedScript.id, field.id, selected.join(","));
+                            }}
                           >
-                            <option value="">Select a project...</option>
-                            {tenantProjects.map((project) => (
-                              <option key={project.id} value={project.id}>
-                                {project.name}
+                            {tenantUsers.map((user) => (
+                              <option key={user.id} value={user.id}>
+                                {user.name} {user.email ? `(${user.email})` : ""}
                               </option>
                             ))}
                           </select>
                           <input
                             type="text"
                             value={value ?? ""}
-                            placeholder="Project ID (manual override)"
+                            placeholder="Selected user IDs (comma-separated). Leave blank to target all users."
                             onChange={(event) =>
                               setField(selectedScript.id, field.id, event.target.value)
                             }
                           />
-                          {tenantProjectsMessage && <small>{tenantProjectsMessage}</small>}
+                          {tenantUsersMessage && <small>{tenantUsersMessage}</small>}
                         </label>
                       );
                     }
@@ -1505,7 +2101,7 @@ export default function App() {
                       selectedScript.id === "update_users_new_projects" &&
                       field.id === "project_id"
                     ) {
-                      const selectedProjectIds = parseProjectIds(value);
+                      const selectedProjectIds = parseCommaValues(value);
                       return (
                         <label key={field.id}>
                           <span>{field.label}</span>
@@ -1551,36 +2147,111 @@ export default function App() {
                       );
                     }
 
-                    return (
-                      <label key={field.id}>
-                        <span>
-                          {field.label}
-                          {field.required ? " *" : ""}
-                        </span>
-                        <input
-                          type={field.type === "number" ? "number" : "text"}
-                          value={value ?? ""}
-                          placeholder={field.placeholder ?? ""}
+                    if (
+                      isChecklistPdfScript(selectedScript.id) &&
+                      field.id === "output_dir"
+                    ) {
+                      return (
+                        <label key={field.id}>
+                          <span>
+                            {field.label}
+                            {field.required ? " *" : ""}
+                          </span>
+                          <input
+                            type="text"
+                            value={value ?? ""}
+                            placeholder={field.placeholder ?? ""}
+                            onChange={(event) =>
+                              setField(selectedScript.id, field.id, event.target.value)
+                            }
+                          />
+                          <div className="csv-upload-row">
+                            <button type="button" onClick={selectEvaluateChecklistOutputDirectory}>
+                              Select Folder
+                            </button>
+                            {evaluateOutputDirBusy && <small>Working...</small>}
+                          </div>
+                          {evaluateOutputDirMessage && <small>{evaluateOutputDirMessage}</small>}
+                        </label>
+                      );
+                    }
+
+                        return (
+                          <label key={field.id}>
+                            <span>
+                              {field.label}
+                              {field.required ? " *" : ""}
+                            </span>
+                            <input
+                              type={field.type === "number" ? "number" : "text"}
+                              value={value ?? ""}
+                              placeholder={field.placeholder ?? ""}
+                              onChange={(event) =>
+                                setField(selectedScript.id, field.id, event.target.value)
+                              }
+                            />
+                          </label>
+                        );
+                      })}
+                    </div>
+                  </div>
+                  {isChecklistPdfScript(selectedScript.id) && (
+                    <aside className="evaluate-checklist-column">
+                      <div className="evaluate-picker-section evaluate-checklists-section">
+                        <h3>Project IDs</h3>
+                        <div className="script-actions">
+                          <button type="button" onClick={loadEvaluateProjects}>
+                            Load Project IDs
+                          </button>
+                          {evaluateProjectsBusy && <small>Loading...</small>}
+                        </div>
+                        <select
+                          size={Math.min(Math.max(evaluateProjects.length, 8), 14)}
+                          style={{ width: evaluateProjectSelectWidth, maxWidth: "100%" }}
+                          value={selectedScriptDraft?.fieldValues?.project_id ?? ""}
                           onChange={(event) =>
-                            setField(selectedScript.id, field.id, event.target.value)
+                            setField(selectedScript.id, "project_id", event.target.value)
                           }
-                        />
-                      </label>
-                    );
-                  })}
+                        >
+                          {evaluateProjects.map((project) => (
+                            <option key={project.id} value={project.id}>
+                              {project.name}
+                            </option>
+                          ))}
+                        </select>
+                        {evaluateProjectsMessage && <small>{evaluateProjectsMessage}</small>}
+                      </div>
+                      <div className="evaluate-picker-section evaluate-projects-section">
+                        <h3>Checklists</h3>
+                        <div className="script-actions">
+                          <button type="button" onClick={loadEvaluateChecklists}>
+                            Load Checklists
+                          </button>
+                          {evaluateChecklistsBusy && <small>Loading...</small>}
+                        </div>
+                        <select
+                          size={Math.min(Math.max(evaluateChecklists.length, 8), 14)}
+                          style={{ width: evaluateChecklistSelectWidth, maxWidth: "100%" }}
+                          value={selectedScriptDraft?.fieldValues?.checklist_id ?? ""}
+                          onChange={(event) => setChecklistIdForSelectedScript(event.target.value)}
+                          onInput={(event) => setChecklistIdForSelectedScript(event.target.value)}
+                        >
+                          {evaluateChecklists.map((checklist) => (
+                            <option key={checklist.id} value={checklist.id}>
+                              {checklist.name}
+                            </option>
+                          ))}
+                        </select>
+                        {evaluateChecklistsMessage && <small>{evaluateChecklistsMessage}</small>}
+                      </div>
+                    </aside>
+                  )}
                 </div>
 
-                <label className="raw-args">
-                  <span>Raw args (optional)</span>
-                  <textarea
-                    value={selectedScriptDraft?.rawArgs ?? ""}
-                    placeholder="e.g. --limit 10 --verbose"
-                    onChange={(event) => setRawArgs(selectedScript.id, event.target.value)}
-                  />
-                </label>
-
                 <div className="script-actions">
-                  <button onClick={runSelectedScript}>Run Script</button>
+                  <button onClick={runSelectedScript}>
+                    {selectedScript.id === "update_user_permissions" ? "Step 4: Run Script" : "Run Script"}
+                  </button>
                   {runMessage && <span className="ok">{runMessage}</span>}
                   {runError && <span className="error">{runError}</span>}
                 </div>
@@ -2097,6 +2768,38 @@ export default function App() {
               </label>
             ))}
           </div>
+        </section>
+      )}
+
+      {activeTab === "admin" && (
+        <section className="panel admin-panel">
+          <div className="script-header">
+            <h2>Admin</h2>
+          </div>
+          <p>Mark scripts as functional to show a green Functional indicator on the script page.</p>
+          {adminMessage && <p>{adminMessage}</p>}
+          <ul className="admin-script-list">
+            {scripts.map((script) => (
+              <li key={script.id} className="admin-script-row">
+                <div>
+                  <strong>
+                    <ScriptNameWithIcon scriptId={script.id} name={script.name} />
+                  </strong>
+                  <small>{script.id}</small>
+                </div>
+                <label className="admin-functional-toggle">
+                  <input
+                    type="checkbox"
+                    checked={Boolean(functionalByScript[script.id])}
+                    onChange={(event) => {
+                      void setFunctional(script.id, event.target.checked);
+                    }}
+                  />
+                  <span>Functional</span>
+                </label>
+              </li>
+            ))}
+          </ul>
         </section>
       )}
     </div>

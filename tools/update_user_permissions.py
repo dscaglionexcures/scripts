@@ -5,7 +5,7 @@ Flow:
 1) GET  /api/patient-registry/user               -> list users (paginated)
 2) GET  /api/patient-registry/user/{id}          -> fetch full user record
 3) PUT  /api/patient-registry/user/{id}          -> update user using UpdateUserDto
-   - permissions are copied from the GET {id} response, with "Summary_Checklist" added if missing
+   - permissions are copied from the GET {id} response, with requested permissions added if missing
 
 Auth:
 - Bearer token via --bearer OR auto-generated from XCURES_CLIENT_ID / XCURES_CLIENT_SECRET
@@ -37,7 +37,7 @@ from xcures_toolkit.xcures_client import XcuresApiClient
 
 
 DEFAULT_BASE_URL = "https://partner.xcures.com"
-PERMISSION_TO_ADD = "Summary_Checklist"
+DEFAULT_PERMISSIONS = ["Summary_Checklist"]
 
 load_env_file(Path(__file__).resolve().parent.parent / ".env")
 
@@ -105,8 +105,6 @@ def make_update_payload_from_user_detail(user_detail: Dict[str, Any]) -> Dict[st
     # Ensure arrays exist as arrays if present
     if "permissions" in payload and payload["permissions"] is None:
         payload["permissions"] = []
-    if "projectIds" in payload and payload["projectIds"] is None:
-        payload["projectIds"] = []
 
     return payload
 
@@ -122,9 +120,26 @@ def put_user_update(
     return data
 
 
+def normalize_non_empty(values: List[str]) -> List[str]:
+    seen = set()
+    normalized: List[str] = []
+    for raw in values:
+        value = str(raw or "").strip()
+        if not value or value in seen:
+            continue
+        seen.add(value)
+        normalized.append(value)
+    return normalized
+
+
+def is_internal_xcures_email(email: Any) -> bool:
+    text = str(email or "").strip().lower()
+    return text.endswith("@xcures.com")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description='Add "Summary_Checklist" permission to all users in a tenant.'
+        description="Bulk add one or more permissions to users in a tenant."
     )
     parser.add_argument(
         "--base-url",
@@ -135,11 +150,6 @@ def main() -> int:
         "--bearer",
         default=None,
         help="Optional bearer token override; otherwise uses XCURES_CLIENT_ID/XCURES_CLIENT_SECRET",
-    )
-    parser.add_argument(
-        "--project-id",
-        default=os.environ.get("XCURES_PROJECT_ID"),
-        help="Optional ProjectId header value (or set env var XCURES_PROJECT_ID)",
     )
     parser.add_argument(
         "--page-size",
@@ -168,10 +178,40 @@ def main() -> int:
         "--only-missing",
         action="store_true",
         default=True,
-        help='Only update users missing "Summary_Checklist" (default: enabled).',
+        help="Only update users that are missing at least one requested permission (default: enabled).",
+    )
+    parser.add_argument(
+        "--permission",
+        dest="permissions",
+        action="append",
+        default=[],
+        help=(
+            "Permission to ensure on each target user. Repeat for multiple values. "
+            f"Defaults to {DEFAULT_PERMISSIONS[0]} when omitted."
+        ),
+    )
+    parser.add_argument(
+        "--user-id",
+        dest="user_ids",
+        action="append",
+        default=[],
+        help="Optional user ID filter. Repeat to target specific users only.",
+    )
+    parser.add_argument(
+        "--exclude-internal-xcures-users",
+        action="store_true",
+        default=False,
+        help="Exclude users with @xcures.com email addresses from processing.",
     )
 
     args = parser.parse_args()
+    target_permissions = normalize_non_empty(args.permissions or []) or list(DEFAULT_PERMISSIONS)
+    target_user_ids = set(normalize_non_empty(args.user_ids or []))
+
+    if not args.bearer:
+        env_bearer = os.environ.get("XCURES_BEARER_TOKEN", "").strip()
+        if env_bearer:
+            args.bearer = env_bearer
 
     if not args.bearer:
         try:
@@ -190,7 +230,7 @@ def main() -> int:
             session=session,
             base_url=args.base_url.rstrip("/"),
             bearer_token=args.bearer,
-            project_id=args.project_id,
+            project_id=(os.environ.get("XCURES_PROJECT_ID", "").strip() or None),
             timeout_seconds=args.timeout,
             backoff_seconds=DEFAULT_BACKOFF_SECONDS,
             max_sleep_seconds=DEFAULT_MAX_SLEEP_SECONDS,
@@ -206,10 +246,30 @@ def main() -> int:
                 raise ValueError("--limit must be >= 0")
             users = users[: args.limit]
 
+        if target_user_ids:
+            users = [user for user in users if str(user.get("id") or "").strip() in target_user_ids]
+
+        excluded_internal = 0
+        if args.exclude_internal_xcures_users:
+            before = len(users)
+            users = [user for user in users if not is_internal_xcures_email(user.get("email"))]
+            excluded_internal = before - len(users)
+
         total = len(users)
         if total == 0:
-            print("No users returned by the API.")
+            if target_user_ids:
+                print("No matching users found for supplied --user-id filters.")
+            elif args.exclude_internal_xcures_users and excluded_internal > 0:
+                print("All users were excluded by --exclude-internal-xcures-users.")
+            else:
+                print("No users returned by the API.")
             return 0
+
+        print(f"Target permissions: {', '.join(target_permissions)}")
+        if target_user_ids:
+            print(f"Targeted users: {len(target_user_ids)} IDs supplied")
+        if args.exclude_internal_xcures_users:
+            print(f"Excluded internal @xcures.com users: {excluded_internal}")
 
         for user in progress_iter(users, desc="Updating users", total=total, unit="user"):
             user_id = user.get("id")
@@ -228,13 +288,14 @@ def main() -> int:
                 if not isinstance(permissions, list):
                     permissions = []
 
-                already_has = PERMISSION_TO_ADD in permissions
-                if already_has and args.only_missing:
+                existing_set = {str(permission) for permission in permissions}
+                missing_permissions = [permission for permission in target_permissions if permission not in existing_set]
+                if not missing_permissions and args.only_missing:
                     skipped += 1
                     continue
 
-                if not already_has:
-                    permissions.append(PERMISSION_TO_ADD)
+                for permission in missing_permissions:
+                    permissions.append(permission)
 
                 # 3) update
                 payload = make_update_payload_from_user_detail(detail)

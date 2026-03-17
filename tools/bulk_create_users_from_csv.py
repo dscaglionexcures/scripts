@@ -29,8 +29,8 @@ IMPORTANT:
 
 Examples:
   export XCURES_BEARER_TOKEN="...jwt..."
-  python3 bulk_create_users_from_csv.py --csv users.csv --dry-run
-  python3 bulk_create_users_from_csv.py --csv users.csv --apply --limit 10 --verbose --log-file run.log
+  python3 tools/bulk_create_users_from_csv.py --csv users.csv --dry-run
+  python3 tools/bulk_create_users_from_csv.py --csv users.csv --apply --limit 10 --verbose --log-file run.log
 """
 
 from __future__ import annotations

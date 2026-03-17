@@ -1,0 +1,11 @@
+{
+  "functional_by_script": {
+    "api_smoke_test": true,
+    "backup_user_permissions": true,
+    "clinical_concepts_status": true,
+    "evaluate_checklist_to_pdf": true,
+    "recap": true,
+    "update_user_permissions": true,
+    "update_users_new_projects": true
+  }
+}

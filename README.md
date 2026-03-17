@@ -178,7 +178,7 @@ Customized checklist-to-report generator for MedSync's RECAP checklist.
 Bulk updates user email domains (excluding `@xcures.com`) with safe default dry-run behavior, optional apply mode, filtering, limits, and logs.
 
 ---
-#### Update User Permissions 
+#### Bulk Update User Permissions 
 `tools/update_user_permissions.py`<br>
 **API:** Internal API  
 Bulk adds the `Summary_Checklist` permission across tenant users by reading each user, patching permissions when missing, and writing updates with progress/summary output.
@@ -193,7 +193,7 @@ Built for MedSync - bulk project assignment workflow with config-driven target p
 #### Download PDF Version of Documents 
 `tools/xml_to_pdf.py`<br>
 **API:** Public API  
-Downloads an XML document from the API, applies `cda2.xsl` transformation, and produces a PDF (auto-fetching `cda_l10n.xml` when needed).
+Downloads an XML document from the API, applies `configs/cda2.xsl` transformation, and produces a PDF (auto-fetching `cda_l10n.xml` when needed).
 
 ---
 #### Common API Utilities Module
@@ -223,9 +223,8 @@ Reusable xCures API client with retries, automatic auth header handling, optiona
 ---
 ## Non-Script Assets
 
-- `cda2.xsl`: XSL stylesheet used by `tools/xml_to_pdf.py`.
-- `cda_l10n.xml`: Localization vocabulary used during C-CDA transform.
-- `checklist_example.json`: Example checklist payload/sample data.
+- `configs/cda2.xsl`: XSL stylesheet used by `tools/xml_to_pdf.py`.
+- `configs/cda_l10n.xml`: Localization vocabulary used during C-CDA transform.
 - `configs/`: Script configuration files (for example project-assignment runs).
 - `backups/`, `logs/`, `downloads/`: Generated artifacts from previous executions.
 

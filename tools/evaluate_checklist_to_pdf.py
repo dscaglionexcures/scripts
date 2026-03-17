@@ -46,6 +46,7 @@ DEFAULT_BASE_URL = "https://partner.xcures.com"
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_OUTPUT_DIR = REPO_ROOT / "reports" / "checklist"
 EVALUATE_ENDPOINT_TEMPLATE = "/api/v1/patient-registry/checklist/{checklist_id}/evaluate"
+DEFAULT_TIMEOUT_SECONDS = 60
 
 
 @dataclass(frozen=True)
@@ -121,6 +122,19 @@ def build_render_config() -> RenderConfig:
     )
 
 
+def default_timeout_seconds() -> int:
+    raw_value = (os.getenv("request_timeout_seconds", "") or "").strip()
+    if not raw_value:
+        return DEFAULT_TIMEOUT_SECONDS
+    try:
+        parsed = int(raw_value)
+    except ValueError:
+        return DEFAULT_TIMEOUT_SECONDS
+    if parsed <= 0:
+        return DEFAULT_TIMEOUT_SECONDS
+    return parsed
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
@@ -183,8 +197,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--timeout",
         type=int,
-        default=60,
-        help="Request timeout in seconds (default: 60).",
+        default=default_timeout_seconds(),
+        help="Request timeout in seconds (defaults to request_timeout_seconds env, else 60).",
     )
     args = parser.parse_args()
     if not args.project_id:

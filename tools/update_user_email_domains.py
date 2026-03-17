@@ -14,8 +14,8 @@ Safety:
 - Auth: bearer token is generated from XCURES_CLIENT_ID / XCURES_CLIENT_SECRET.
 
 Examples:
-  python3 update_user_email_domains.py --from-domain old.com --to-domain new.com --dry-run
-  python3 update_user_email_domains.py --from-domain old.com --to-domain new.com --apply --only-missing
+  python3 tools/update_user_email_domains.py --from-domain old.com --to-domain new.com --dry-run
+  python3 tools/update_user_email_domains.py --from-domain old.com --to-domain new.com --apply --only-missing
 """
 
 from __future__ import annotations

@@ -234,8 +234,10 @@ def main() -> int:
         return 1
 
     timestamp = utc_timestamp()
-    json_file = Path(f"permissions_backup_{timestamp}.json")
-    csv_file = Path(f"permissions_backup_{timestamp}.csv")
+    backup_dir = Path.cwd() / "backups"
+    backup_dir.mkdir(parents=True, exist_ok=True)
+    json_file = backup_dir / f"permissions_backup_{timestamp}.json"
+    csv_file = backup_dir / f"permissions_backup_{timestamp}.csv"
 
     with requests.Session() as session:
         client = XcuresApiClient(

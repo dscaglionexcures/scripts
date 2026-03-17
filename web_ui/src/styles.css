@@ -14,6 +14,8 @@
   --shadow: 0 2px 8px #00000026;
   --border: #065b87;
   --highlight: #42d89f;
+  --token-input-width: 600px;
+  --token-input-height: 100px;
 }
 
 * {
@@ -124,19 +126,20 @@ h3 {
 
 .brand {
   display: flex;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
 }
 
 .logo {
-  width: 250px;
+  width: 213px;
   height: auto;
   object-fit: contain;
   flex: 0 0 auto;
 }
 
 .hero h1 {
-  margin: 0 0 8px;
+  margin: 0 0 4px;
   font-size: clamp(1.6rem, 2.7vw, 2.2rem);
 }
 
@@ -302,6 +305,18 @@ h3 {
   color: #000000;
 }
 
+.script-list-title-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.script-list-functional-indicator {
+  display: inline-flex;
+  align-items: center;
+  color: #1f7a31;
+}
+
 .job-list li button strong {
   color: #000000;
 }
@@ -338,6 +353,14 @@ h3 {
   display: flex;
   gap: 8px;
   align-items: center;
+}
+
+.script-functional-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #1f7a31;
+  font-weight: 700;
 }
 
 .pill {
@@ -383,6 +406,12 @@ h3 {
   gap: 12px;
 }
 
+.mode-row select {
+  width: 100px;
+  max-width: 100px;
+  flex: 0 0 100px;
+}
+
 .field-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -401,6 +430,115 @@ h3 {
 
 .field-grid.field-grid-two-col > label {
   align-content: start;
+}
+
+.script-evaluate-checklist-to-pdf .field-grid,
+.script-recap .field-grid {
+  grid-template-columns: 1fr;
+}
+
+.script-update-user-email-domains .field-grid {
+  grid-template-columns: 1fr;
+}
+
+.script-bulk-create-users-from-csv .field-grid {
+  grid-template-columns: 1fr;
+}
+
+.script-xml-to-pdf .field-grid {
+  grid-template-columns: 1fr;
+}
+
+.script-evaluate-checklist-to-pdf .field-grid > label,
+.script-recap .field-grid > label,
+.script-xml-to-pdf .field-grid > label {
+  width: 400px;
+  max-width: 400px;
+}
+
+.script-update-user-email-domains .field-grid > label {
+  width: 400px;
+  max-width: 400px;
+}
+
+.script-bulk-create-users-from-csv .field-grid > label {
+  width: 400px;
+  max-width: 400px;
+}
+
+.evaluate-options-layout {
+  display: grid;
+  grid-template-columns: auto 340px;
+  align-items: start;
+  justify-content: start;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.evaluate-options-main {
+  border-right: 1px solid var(--border);
+  padding-right: 50px;
+}
+
+.evaluate-checklist-column {
+  border-left: none;
+  padding-left: 50px;
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: start;
+}
+
+.evaluate-picker-section {
+  display: grid;
+  gap: 10px;
+  margin-left: 15px;
+}
+
+.evaluate-checklists-section {
+  padding-right: 36px;
+}
+
+.evaluate-projects-section {
+  border-left: 1px solid var(--border);
+  padding-left: 36px;
+}
+
+.evaluate-checklist-column h3 {
+  margin: 0;
+}
+
+.evaluate-checklist-column select {
+  width: auto;
+}
+
+@media (max-width: 980px) {
+  .evaluate-options-layout {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+
+  .evaluate-options-main {
+    border-right: none;
+    padding-right: 0;
+  }
+
+  .evaluate-checklist-column {
+    border-top: 1px solid var(--border);
+    grid-template-columns: 1fr;
+    padding-left: 0;
+    padding-top: 14px;
+  }
+
+  .evaluate-checklists-section {
+    padding-right: 0;
+  }
+
+  .evaluate-projects-section {
+    border-left: none;
+    border-top: 1px solid var(--border);
+    padding-left: 0;
+    padding-top: 20px;
+  }
 }
 
 .csv-upload-row {
@@ -441,7 +579,11 @@ textarea {
 }
 
 .token-input {
-  min-height: 96px;
+  width: var(--token-input-width);
+  max-width: var(--token-input-width);
+  height: var(--token-input-height);
+  min-height: var(--token-input-height);
+  max-height: var(--token-input-height);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   word-break: break-word;
@@ -449,10 +591,14 @@ textarea {
 
 .script-backup-user-permissions > label,
 .script-backup-user-permissions .raw-args {
-  max-width: 560px;
+  max-width: var(--token-input-width);
 }
 
-.script-backup-user-permissions .token-input,
+.script-backup-user-permissions .token-input {
+  min-height: var(--token-input-height);
+  max-height: var(--token-input-height);
+}
+
 .script-backup-user-permissions .raw-args textarea {
   min-height: 44px;
   max-height: 100px;
@@ -544,6 +690,48 @@ button:hover {
 .env-panel {
   display: grid;
   gap: 16px;
+}
+
+.admin-panel {
+  display: grid;
+  gap: 12px;
+}
+
+.admin-script-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.admin-script-row {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  width: min(750px, 100%);
+}
+
+.admin-script-row small {
+  display: block;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.admin-functional-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.admin-functional-toggle input {
+  width: 18px;
+  height: 18px;
 }
 
 .profile-info {
@@ -819,6 +1007,50 @@ button:hover {
   text-decoration: underline;
 }
 
+.permission-query-row {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) auto;
+  gap: 10px;
+  align-items: end;
+  margin: 12px 0;
+}
+
+.single-user-permissions {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fafcff;
+  padding: 10px;
+  margin: 10px 0 12px;
+}
+
+.single-user-permissions p {
+  margin: 0 0 8px;
+}
+
+.permissions-compare-wrap {
+  overflow-x: auto;
+}
+
+.permissions-compare-table {
+  table-layout: auto;
+  min-width: max-content;
+}
+
+.permissions-compare-table th {
+  white-space: nowrap;
+}
+
+.permission-cell {
+  text-align: center;
+  font-weight: 700;
+}
+
+.ux-note {
+  margin: 6px 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
 .clinical-summary {
   display: flex;
   flex-direction: column;
@@ -869,5 +1101,10 @@ button:hover {
 
   .profile-manager {
     grid-template-columns: 1fr;
+  }
+
+  .permission-query-row {
+    grid-template-columns: 1fr;
+    align-items: stretch;
   }
 }

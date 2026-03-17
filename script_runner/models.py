@@ -124,10 +124,33 @@ class SendStdinRequest(BaseModel):
 
 class ListProjectsRequest(BaseModel):
     bearer_token: Optional[str] = None
+    profile_id: Optional[str] = None
+
+
+class InternalApiRequest(BaseModel):
+    bearer_token: Optional[str] = None
+
+
+class InternalUserPermissionsRequest(InternalApiRequest):
+    user_id: str
+
+
+class PublicChecklistRequest(BaseModel):
+    profile_id: Optional[str] = None
+    project_id: Optional[str] = None
+    bearer_token: Optional[str] = None
 
 
 class SetActiveProfileRequest(BaseModel):
     profile_id: str = ""
+
+
+class FunctionalStatusRequest(BaseModel):
+    functional: bool
+
+
+class FunctionalStatusBulkRequest(BaseModel):
+    functional_by_script: Dict[str, bool] = Field(default_factory=dict)
 
 
 class ScriptValidationError(BaseModel):

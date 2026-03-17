@@ -64,7 +64,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--xsl-path",
-        default=str(Path(__file__).resolve().parent.parent / "cda2.xsl"),
+        default=str(Path(__file__).resolve().parent.parent / "configs" / "cda2.xsl"),
         help="Path to CDA XSL file. Default: %(default)s",
     )
     parser.add_argument(
