@@ -45,6 +45,22 @@ def _as_bool(value: Any) -> bool:
     return False
 
 
+def _strip_arg_with_value(args: List[str], flag: str) -> List[str]:
+    cleaned: List[str] = []
+    skip_next = False
+    for token in args:
+        if skip_next:
+            skip_next = False
+            continue
+        if token == flag:
+            skip_next = True
+            continue
+        if token.startswith(f"{flag}="):
+            continue
+        cleaned.append(token)
+    return cleaned
+
+
 class JobManager:
     def __init__(
         self,
@@ -175,6 +191,56 @@ class JobManager:
         )
         return script, args, mode, env_overrides, validation
 
+    def _bulk_create_log_path(self, *, created_at: datetime, job_id: str) -> str:
+        logs_dir = self.root_dir / "logs"
+        logs_dir.mkdir(parents=True, exist_ok=True)
+        timestamp = created_at.strftime("%Y%m%dT%H%M%SZ")
+        filename = f"bulk_create_users_{timestamp}_{job_id[:8]}.log"
+        return str(Path("logs") / filename)
+
+    def _enforce_bulk_create_log_file(self, *, script_id: str, args: List[str], created_at: datetime, job_id: str) -> List[str]:
+        if script_id != "bulk_create_users_from_csv":
+            return args
+        cleaned = _strip_arg_with_value(args, "--log-file")
+        cleaned.extend(["--log-file", self._bulk_create_log_path(created_at=created_at, job_id=job_id)])
+        return cleaned
+
+    def _update_users_new_projects_audit_path(self, *, created_at: datetime, job_id: str) -> str:
+        logs_dir = self.root_dir / "logs"
+        logs_dir.mkdir(parents=True, exist_ok=True)
+        timestamp = created_at.strftime("%Y%m%dT%H%M%SZ")
+        filename = f"update_users_new_projects_{timestamp}_{job_id[:8]}.jsonl"
+        return str(Path("logs") / filename)
+
+    def _update_users_new_projects_backup_path(self, *, created_at: datetime, job_id: str) -> str:
+        backup_dir = self.root_dir / "backups" / "update_users_new_projects"
+        backup_dir.mkdir(parents=True, exist_ok=True)
+        timestamp = created_at.strftime("%Y%m%dT%H%M%SZ")
+        filename = f"prewrite_snapshot_{timestamp}_{job_id[:8]}.json"
+        return str(Path("backups") / "update_users_new_projects" / filename)
+
+    def _enforce_update_users_new_projects_paths(
+        self,
+        *,
+        script_id: str,
+        args: List[str],
+        created_at: datetime,
+        job_id: str,
+    ) -> List[str]:
+        if script_id != "update_users_new_projects":
+            return args
+        cleaned = _strip_arg_with_value(args, "--audit-log")
+        cleaned = _strip_arg_with_value(cleaned, "--backup-path")
+        cleaned.extend(
+            [
+                "--audit-log",
+                self._update_users_new_projects_audit_path(created_at=created_at, job_id=job_id),
+                "--backup-path",
+                self._update_users_new_projects_backup_path(created_at=created_at, job_id=job_id),
+            ]
+        )
+        return cleaned
+
     async def create_job(self, request: CreateJobRequest) -> JobRecord:
         script, args, mode, env_overrides, validation = self.validate_request(request)
         if validation.missing_env or validation.missing_any_env_sets or validation.missing_fields:
@@ -182,6 +248,18 @@ class JobManager:
 
         job_id = str(uuid.uuid4())
         created_at = utc_now()
+        args = self._enforce_bulk_create_log_file(
+            script_id=script.id,
+            args=args,
+            created_at=created_at,
+            job_id=job_id,
+        )
+        args = self._enforce_update_users_new_projects_paths(
+            script_id=script.id,
+            args=args,
+            created_at=created_at,
+            job_id=job_id,
+        )
         record = JobRecord(
             job_id=job_id,
             script_id=script.id,

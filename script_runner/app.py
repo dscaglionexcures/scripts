@@ -840,12 +840,17 @@ async def list_job_artifacts(job_id: str) -> dict:
 
 
 @app.get("/api/artifact")
-async def get_artifact(path: str = Query(...)) -> FileResponse:
+async def get_artifact(
+    path: str = Query(...),
+    download: bool = Query(default=True),
+) -> FileResponse:
     try:
         target = job_manager.resolve_artifact_path(path)
     except FileNotFoundError:
         raise HTTPException(status_code=404, detail="Artifact not found")
-    return FileResponse(path=target, filename=target.name)
+    if download:
+        return FileResponse(path=target, filename=target.name)
+    return FileResponse(path=target)
 
 
 @app.post("/api/uploads/csv")
@@ -928,6 +933,14 @@ async def serve_index():
             "api_only": True,
         },
     )
+
+
+@app.get("/favicon.ico")
+async def serve_favicon():
+    favicon_path = CONFIGS_DIR / "favicon.ico"
+    if not favicon_path.exists():
+        raise HTTPException(status_code=404, detail="favicon.ico not found")
+    return FileResponse(path=favicon_path)
 
 
 if FRONTEND_DIST.exists():

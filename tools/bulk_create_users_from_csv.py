@@ -15,6 +15,7 @@ CSV columns:
 Behavior:
   - Generates a UUID per row (used for "id" and "identityProviderId" as "auth0|<uuid>").
   - Uses bearer token from env var XCURES_BEARER_TOKEN (required).
+  - Optional --clone-user-id copies permissions from an existing user.
   - Permissions, projectIds, and organizationMembership are configured inside this script.
   - identityProvider is always "auth0"
   - type is always "patient_registry_user"
@@ -291,7 +292,33 @@ def require_nonempty(value: str, field: str, row_index: int) -> None:
 # ----------------------------
 
 
-def build_user_payload(row: Dict[str, str], *, user_id: str) -> Dict[str, Any]:
+def _list_or_default(value: Any, default: List[str]) -> List[str]:
+    if not isinstance(value, list):
+        return list(default)
+    out: List[str] = []
+    seen = set()
+    for raw in value:
+        text = str(raw or "").strip()
+        if not text or text in seen:
+            continue
+        seen.add(text)
+        out.append(text)
+    return out if out else list(default)
+
+
+def build_clone_template(source_user: Dict[str, Any]) -> Dict[str, Any]:
+    return {
+        "permissions": _list_or_default(source_user.get("permissions"), DEFAULT_PERMISSIONS),
+        "projectIds": _list_or_default(source_user.get("projectIds"), DEFAULT_PROJECT_IDS),
+    }
+
+
+def build_user_payload(
+    row: Dict[str, str],
+    *,
+    user_id: str,
+    clone_template: Optional[Dict[str, Any]] = None,
+) -> Dict[str, Any]:
     email = (row.get("email") or "").strip()
     first_name = (row.get("firstName") or "").strip()
     last_name = (row.get("lastName") or "").strip()
@@ -300,11 +327,17 @@ def build_user_payload(row: Dict[str, str], *, user_id: str) -> Dict[str, Any]:
     npi = (row.get("npi") or "").strip()
     tin = (row.get("tin") or "").strip()
 
+    permissions = list(DEFAULT_PERMISSIONS)
+    project_ids = list(DEFAULT_PROJECT_IDS)
+    if clone_template:
+        permissions = _list_or_default(clone_template.get("permissions"), DEFAULT_PERMISSIONS)
+        project_ids = _list_or_default(clone_template.get("projectIds"), DEFAULT_PROJECT_IDS)
+
     payload: Dict[str, Any] = {
         "id": user_id,
         "identityProviderId": f"{DEFAULT_IDENTITY_PROVIDER}|{user_id}",
-        "permissions": list(DEFAULT_PERMISSIONS),
-        "projectIds": list(DEFAULT_PROJECT_IDS),
+        "permissions": permissions,
+        "projectIds": project_ids,
         "email": email,
         "firstName": first_name,
         "lastName": last_name,
@@ -341,6 +374,32 @@ def create_user(session: requests.Session, base_url: str, payload: Dict[str, Any
     data = parse_json(resp)
     if not isinstance(data, dict):
         raise RuntimeError(f"Unexpected create-user response type: {type(data)} body={_body_preview(resp.text, 1200)}")
+    return data
+
+
+def get_user_detail(
+    session: requests.Session,
+    base_url: str,
+    user_id: str,
+    *,
+    timeout: int,
+    max_retries: int,
+    backoff: float,
+) -> Dict[str, Any]:
+    url = f"{base_url}/api/patient-registry/user/{user_id}"
+    resp = request_with_retry(
+        session,
+        "GET",
+        url,
+        timeout=timeout,
+        max_retries=max_retries,
+        backoff_seconds=backoff,
+    )
+    data = parse_json(resp)
+    if not isinstance(data, dict):
+        raise RuntimeError(
+            f"Unexpected user-detail response type: {type(data)} body={_body_preview(resp.text, 1200)}"
+        )
     return data
 
 
@@ -391,6 +450,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--out-dir", default=".", help="Directory to write results CSV (default: current dir)")
     parser.add_argument("--verbose", action="store_true", help="Log each API call (does not log secrets)")
     parser.add_argument("--log-file", default=None, help="Append logs to this file path")
+    parser.add_argument(
+        "--clone-user-id",
+        default="",
+        help="Optional source user ID to clone permissions from.",
+    )
     return parser.parse_args()
 
 
@@ -446,6 +510,28 @@ def main() -> int:
     failed = 0
 
     with requests.Session() as session:
+        clone_template: Optional[Dict[str, Any]] = None
+        clone_user_id = str(args.clone_user_id or "").strip()
+        if clone_user_id:
+            try:
+                source_user = get_user_detail(
+                    session,
+                    base_url,
+                    clone_user_id,
+                    timeout=args.timeout,
+                    max_retries=args.max_retries,
+                    backoff=args.backoff,
+                )
+                clone_template = build_clone_template(source_user)
+                source_email = str(source_user.get("email") or "").strip()
+                if source_email:
+                    print(f"Clone source: {clone_user_id} ({source_email})")
+                else:
+                    print(f"Clone source: {clone_user_id}")
+            except Exception as e:
+                print(f"Error loading clone user {clone_user_id}: {e}", file=sys.stderr)
+                return 2
+
         for idx, row in enumerate(progress_iter(rows, desc=f"Creating users ({mode_label})", total=len(rows)), start=1):
             email = (row.get("email") or "").strip()
             try:
@@ -454,7 +540,7 @@ def main() -> int:
                 require_nonempty(row.get("lastName", ""), "lastName", idx)
 
                 user_id = str(uuid.uuid4())
-                payload = build_user_payload(row, user_id=user_id)
+                payload = build_user_payload(row, user_id=user_id, clone_template=clone_template)
 
                 if is_dry_run:
                     print(f"[DRY-RUN] would create id={user_id} email={email}")

@@ -81,7 +81,11 @@ SCRIPT_DEFINITIONS: List[ScriptDefinition] = [
     ScriptDefinition(
         id="api_smoke_test",
         name="API Smoke Test",
-        description="End-to-end public API smoke tests for auth and CRUD operations.",
+        description=(
+            "Runs end-to-end smoke tests against the Public API\n"
+            "(create subject/document, fetch/update subject, verify behavior)\n"
+            "to validate API connectivity and credentials."
+        ),
         file_path="tools/api_smoke_test.py",
         safety=SafetyMode.MUTATING,
         required_env=["XCURES_CLIENT_ID", "XCURES_CLIENT_SECRET"],
@@ -115,9 +119,13 @@ SCRIPT_DEFINITIONS: List[ScriptDefinition] = [
                 default="users.csv",
                 description="Input CSV path for users to create.",
             ),
-            ScriptField(id="out_dir", label="Output Directory", arg="--out-dir", type=FieldType.PATH, default="."),
+            ScriptField(
+                id="clone_user_id",
+                label="Clone From Existing User ID",
+                arg="--clone-user-id",
+                required=False,
+            ),
             ScriptField(id="verbose", label="Verbose", arg="--verbose", type=FieldType.BOOLEAN, default=False),
-            ScriptField(id="log_file", label="Log File", arg="--log-file", type=FieldType.PATH),
         ],
     ),
     ScriptDefinition(
@@ -146,6 +154,32 @@ SCRIPT_DEFINITIONS: List[ScriptDefinition] = [
         safety=SafetyMode.READ_ONLY,
         required_env=["XCURES_PROJECT_ID", "XCURES_BEARER_TOKEN"],
         tags=["public-api", "downloads"],
+        fields=[
+            ScriptField(
+                id="workers",
+                label="Parallel Workers",
+                arg="--workers",
+                type=FieldType.NUMBER,
+                default=4,
+                description="Number of concurrent document workers per subject.",
+            ),
+            ScriptField(
+                id="document_delay_seconds",
+                label="Document Delay (sec)",
+                arg="--document-delay-seconds",
+                type=FieldType.NUMBER,
+                default=2,
+                description="Delay between per-document operations.",
+            ),
+            ScriptField(
+                id="document_limit",
+                label="Document Limit",
+                arg="--document-limit",
+                type=FieldType.NUMBER,
+                required=False,
+                description="Optional max number of documents to process for testing.",
+            ),
+        ],
     ),
     ScriptDefinition(
         id="duplicate_project",
@@ -154,7 +188,24 @@ SCRIPT_DEFINITIONS: List[ScriptDefinition] = [
         file_path="tools/duplicate_project.py",
         safety=SafetyMode.MUTATING,
         required_env=["XCURES_CLIENT_ID", "XCURES_CLIENT_SECRET"],
+        mode_behavior=ModeBehavior.DRY_RUN_APPLY_FLAGS,
+        default_mode="dry-run",
         tags=["internal-api", "projects", "interactive"],
+        fields=[
+            ScriptField(
+                id="source_project_id",
+                label="Source Project ID",
+                arg="--source-project-id",
+                required=True,
+            ),
+            ScriptField(
+                id="new_project_name",
+                label="New Project Name",
+                arg="--new-project-name",
+                required=True,
+            ),
+            ScriptField(id="verbose", label="Verbose", arg="--verbose", type=FieldType.BOOLEAN, default=False),
+        ],
     ),
     ScriptDefinition(
         id="evaluate_checklist_to_pdf",
@@ -233,8 +284,8 @@ SCRIPT_DEFINITIONS: List[ScriptDefinition] = [
         default_mode="dry-run",
         tags=["internal-api", "users"],
         fields=[
-            ScriptField(id="from_domain", label="From Domain", arg="--from-domain", required=True),
-            ScriptField(id="to_domain", label="To Domain", arg="--to-domain", required=True),
+            ScriptField(id="from_domain", label="From Domain (Ex. google.com)", arg="--from-domain", required=True),
+            ScriptField(id="to_domain", label="To Domain (Ex. microsoft.com)", arg="--to-domain", required=True),
             ScriptField(id="verbose", label="Verbose", arg="--verbose", type=FieldType.BOOLEAN, default=False),
             ScriptField(id="log_file", label="Log File", arg="--log-file", type=FieldType.PATH),
             ScriptField(id="only_missing", label="Only Missing", arg="--only-missing", type=FieldType.BOOLEAN, default=False),
@@ -296,8 +347,6 @@ SCRIPT_DEFINITIONS: List[ScriptDefinition] = [
                 repeatable=True,
                 delimiter=",",
             ),
-            ScriptField(id="audit_log", label="Audit Log", arg="--audit-log", type=FieldType.PATH),
-            ScriptField(id="backup_path", label="Backup Path", arg="--backup-path", type=FieldType.PATH),
             ScriptField(id="verbose", label="Verbose", arg="--verbose", type=FieldType.BOOLEAN, default=False),
         ],
     ),

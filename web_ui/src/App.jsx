@@ -271,6 +271,34 @@ function normalizeClinicalPreview(parsed) {
   };
 }
 
+function normalizeBackupPreview(parsed) {
+  const rows = parsed?.rows ?? [];
+  const getFirst = (row, keys) => {
+    for (const key of keys) {
+      if (row[key] !== undefined && row[key] !== null && row[key] !== "") {
+        return row[key];
+      }
+    }
+    return "";
+  };
+
+  const normalizedRows = rows.map((row) => ({
+    Email: getFirst(row, ["Email", "email"]),
+    "First Name": getFirst(row, ["First Name", "firstName", "first_name"]),
+    "Last Name": getFirst(row, ["Last Name", "lastName", "last_name"]),
+    "Role Code": getFirst(row, ["Role Code", "roleCode", "role", "Role"]),
+    Created: getFirst(row, ["Created", "created"]),
+    "Last Login": getFirst(row, ["Last Login", "lastLogin", "last_login"]),
+    Permissions: getFirst(row, ["Permissions", "permissions"]),
+    Projects: getFirst(row, ["Projects", "projects"]),
+  }));
+
+  return {
+    headers: ["Email", "First Name", "Last Name", "Role Code", "Created", "Last Login", "Permissions", "Projects"],
+    rows: normalizedRows,
+  };
+}
+
 function ScriptNameWithIcon({ scriptId, name }) {
   const icons = SCRIPT_ICON_MAP[scriptId] ?? [];
   return (
@@ -292,11 +320,15 @@ function ScriptNameWithIcon({ scriptId, name }) {
 }
 
 function supportsTenantProjectPicker(scriptId) {
-  return scriptId === "update_users_new_projects" || scriptId === "clinical_concepts_status";
+  return scriptId === "update_users_new_projects" || scriptId === "clinical_concepts_status" || scriptId === "duplicate_project";
 }
 
 function usesOptionalProjectLoaderBearer(scriptId) {
   return scriptId === "clinical_concepts_status";
+}
+
+function requiresRunBearerToken(scriptId) {
+  return scriptId === "download_all_documents";
 }
 
 function isChecklistPdfScript(scriptId) {
@@ -450,7 +482,11 @@ export default function App() {
     return display;
   }, [scriptPanelJob, scriptPanelJobEvents]);
   const scriptPanelProgressPercent = useMemo(() => {
-    if (!scriptPanelJob || scriptPanelJob.script_id !== "backup_user_permissions") return null;
+    if (!scriptPanelJob) return null;
+    const supportsProgressBar =
+      scriptPanelJob.script_id === "backup_user_permissions" ||
+      scriptPanelJob.script_id === "download_all_documents";
+    if (!supportsProgressBar) return null;
 
     for (let index = scriptPanelJobEvents.length - 1; index >= 0; index -= 1) {
       const event = scriptPanelJobEvents[index];
@@ -462,6 +498,11 @@ export default function App() {
     if (scriptPanelJob.status === "succeeded") return 100;
     return null;
   }, [scriptPanelJob, scriptPanelJobEvents]);
+  const recapPdfArtifact = useMemo(() => {
+    if (!scriptPanelJob || scriptPanelJob.script_id !== "recap") return "";
+    const artifacts = scriptPanelJob.artifacts ?? [];
+    return artifacts.find((artifact) => /\.pdf$/i.test(String(artifact))) ?? "";
+  }, [scriptPanelJob]);
   const clinicalSummary = useMemo(() => {
     if (!clinicalPreview.rows.length) {
       return {
@@ -1043,8 +1084,12 @@ export default function App() {
   async function runSelectedScript() {
     if (!selectedScript) return;
     const draft = selectedScriptDraft ?? defaultDraftForScript(selectedScript);
-    if (selectedScriptIsInternalApi && !internalBearerToken.trim()) {
-      setRunError("Bearer token is required for Internal API scripts.");
+    if ((selectedScriptIsInternalApi || requiresRunBearerToken(selectedScript.id)) && !internalBearerToken.trim()) {
+      setRunError(
+        selectedScriptIsInternalApi
+          ? "Bearer token is required for Internal API scripts."
+          : "Bearer token is required for Download All Documents."
+      );
       return;
     }
     if (selectedScript.safety === "mutating" && draft.mode === "apply") {
@@ -1073,7 +1118,10 @@ export default function App() {
         mode: selectedScript.supports_mode ? draft.mode : null,
         field_values: payloadFieldValues,
         raw_args: draft.rawArgs ?? "",
-        internal_bearer_token: selectedScriptIsInternalApi ? internalBearerToken : null
+        internal_bearer_token:
+          (selectedScriptIsInternalApi || requiresRunBearerToken(selectedScript.id))
+            ? internalBearerToken
+            : null
       };
       const result = await apiJson("/api/jobs", {
         method: "POST",
@@ -1083,7 +1131,7 @@ export default function App() {
       setRunMessage(`Queued job ${result.job_id}`);
       setScriptPanelJobId(result.job_id);
       setSelectedJobId((previous) => previous || result.job_id);
-      if (selectedScriptIsInternalApi) {
+      if (selectedScriptIsInternalApi || requiresRunBearerToken(selectedScript.id)) {
         setInternalBearerToken("");
       }
       await loadJobs();
@@ -1112,58 +1160,6 @@ export default function App() {
       setBulkUploadMessage(`CSV uploaded: ${payload.path}`);
     } catch (error) {
       setBulkUploadMessage(String(error.message ?? error));
-    } finally {
-      setBulkUploadBusy(false);
-    }
-  }
-
-  async function uploadBulkCreateLogFile(file) {
-    if (!file) return;
-    setBulkUploadBusy(true);
-    setBulkUploadMessage("");
-    try {
-      const form = new FormData();
-      form.append("file", file);
-      const response = await fetch("/api/uploads/file", {
-        method: "POST",
-        body: form
-      });
-      const payload = await response.json().catch(() => ({}));
-      if (!response.ok) {
-        const detail = payload?.detail ?? `Upload failed (${response.status})`;
-        throw new Error(typeof detail === "string" ? detail : JSON.stringify(detail));
-      }
-      setField("bulk_create_users_from_csv", "log_file", payload.path);
-      setBulkUploadMessage(`Log file selected: ${payload.path}`);
-    } catch (error) {
-      setBulkUploadMessage(String(error.message ?? error));
-    } finally {
-      setBulkUploadBusy(false);
-    }
-  }
-
-  async function selectBulkCreateOutputDirectory() {
-    if (!window.showDirectoryPicker) {
-      setBulkUploadMessage("Folder picker not supported in this browser.");
-      return;
-    }
-    setBulkUploadBusy(true);
-    setBulkUploadMessage("");
-    try {
-      const handle = await window.showDirectoryPicker();
-      const payload = await apiJson("/api/uploads/folder", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ folder_name: handle.name })
-      });
-      setField("bulk_create_users_from_csv", "out_dir", payload.path);
-      setBulkUploadMessage(`Output directory selected: ${payload.path}`);
-    } catch (error) {
-      if (error?.name === "AbortError") {
-        setBulkUploadMessage("");
-      } else {
-        setBulkUploadMessage(String(error.message ?? error));
-      }
     } finally {
       setBulkUploadBusy(false);
     }
@@ -1312,7 +1308,12 @@ export default function App() {
       const items = payload.items ?? [];
       setTenantUsers(items);
       setTenantUsersMessage(`Loaded ${payload.count ?? 0} users.`);
-      setPermissionLookupUserId((previous) => previous || items[0]?.id || "");
+      if (
+        selectedScript?.id === "update_user_permissions" ||
+        selectedScript?.id === "bulk_create_users_from_csv"
+      ) {
+        setPermissionLookupUserId((previous) => previous || items[0]?.id || "");
+      }
     } catch (error) {
       setTenantUsersMessage(String(error.message ?? error));
       setTenantUsers([]);
@@ -1367,11 +1368,20 @@ export default function App() {
       const normalized = [...new Set(permissions.map((value) => String(value ?? "").trim()).filter(Boolean))];
       if (selectedScript?.id === "update_user_permissions") {
         setField(selectedScript.id, "permissions", normalized.join(","));
+        setClonePermissionsMessage(
+          `Cloned ${normalized.length} permissions from ${sourceUser?.name ?? userId} into the Permissions field.`
+        );
+      } else if (selectedScript?.id === "bulk_create_users_from_csv") {
+        setField(selectedScript.id, "clone_user_id", userId);
+        setClonePermissionsMessage(
+          `Cloned ${normalized.length} permissions from ${sourceUser?.name ?? userId}. New users will use those permissions.`
+        );
+      } else {
+        setClonePermissionsMessage(
+          `Cloned ${normalized.length} permissions from ${sourceUser?.name ?? userId}.`
+        );
       }
       setSingleUserPermissions(sourceUser);
-      setClonePermissionsMessage(
-        `Cloned ${normalized.length} permissions from ${sourceUser?.name ?? userId} into the Permissions field.`
-      );
       setTargetUsersMessage("");
     } catch (error) {
       setClonePermissionsMessage(String(error.message ?? error));
@@ -1421,13 +1431,14 @@ export default function App() {
       }
       const text = await response.text();
       const parsed = csvParse(text);
+      const normalized = normalizeBackupPreview(parsed);
       setBackupPreview({
         jobId,
         artifactPath,
-        headers: parsed.headers,
-        rows: parsed.rows
+        headers: normalized.headers,
+        rows: normalized.rows
       });
-      setBackupPreviewMessage(`Loaded ${parsed.rows.length} rows from ${artifactPath}`);
+      setBackupPreviewMessage(`Loaded ${normalized.rows.length} rows from ${artifactPath}`);
     } catch (error) {
       setBackupPreview({ jobId: "", artifactPath: "", headers: [], rows: [] });
       setBackupPreviewMessage(String(error.message ?? error));
@@ -1659,9 +1670,13 @@ export default function App() {
                 )}
                 <p>{selectedScript.description}</p>
 
-                {selectedScriptIsInternalApi && (
+                {(selectedScriptIsInternalApi || requiresRunBearerToken(selectedScript.id)) && (
                   <label>
-                    <span>Bearer Token (required each run)</span>
+                    <span>
+                      {selectedScriptIsInternalApi
+                        ? "Bearer Token (required each run)"
+                        : "Bearer Token (required for document PDF endpoint)"}
+                    </span>
                     <textarea
                       className="token-input"
                       value={internalBearerToken}
@@ -1671,7 +1686,9 @@ export default function App() {
                   </label>
                 )}
 
-                {!selectedScriptIsInternalApi && usesOptionalProjectLoaderBearer(selectedScript.id) && (
+                {!selectedScriptIsInternalApi &&
+                  !requiresRunBearerToken(selectedScript.id) &&
+                  usesOptionalProjectLoaderBearer(selectedScript.id) && (
                   <label>
                     <span>Bearer Token (optional, only for Load Projects from Tenant)</span>
                     <textarea
@@ -1915,6 +1932,52 @@ export default function App() {
 
                     if (
                       selectedScript.id === "bulk_create_users_from_csv" &&
+                      field.id === "clone_user_id"
+                    ) {
+                      return (
+                        <label key={field.id}>
+                          <span>{field.label}</span>
+                          <div className="csv-upload-row">
+                            <button type="button" onClick={loadTenantUsers}>
+                              Load Users from Tenant
+                            </button>
+                            <button type="button" onClick={clonePermissionsFromUser}>
+                              Clone Permissions From User
+                            </button>
+                            {tenantUsersBusy && <small>Loading...</small>}
+                            {clonePermissionsBusy && <small>Loading...</small>}
+                          </div>
+                          <select
+                            value={permissionLookupUserId}
+                            onChange={(event) => {
+                              setPermissionLookupUserId(event.target.value);
+                              setField(selectedScript.id, field.id, event.target.value);
+                            }}
+                          >
+                            <option value="">Use script defaults (no clone)</option>
+                            {tenantUsers.map((user) => (
+                              <option key={user.id} value={user.id}>
+                                {user.name} {user.email ? `(${user.email})` : ""}
+                              </option>
+                            ))}
+                          </select>
+                          <input
+                            type="text"
+                            value={permissionLookupUserId}
+                            placeholder="Optional: source user ID to clone from"
+                            onChange={(event) => {
+                              setPermissionLookupUserId(event.target.value);
+                              setField(selectedScript.id, field.id, event.target.value);
+                            }}
+                          />
+                          {tenantUsersMessage && <small>{tenantUsersMessage}</small>}
+                          {clonePermissionsMessage && <small>{clonePermissionsMessage}</small>}
+                        </label>
+                      );
+                    }
+
+                    if (
+                      selectedScript.id === "bulk_create_users_from_csv" &&
                       field.id === "csv"
                     ) {
                       return (
@@ -1942,63 +2005,10 @@ export default function App() {
                     }
 
                     if (
-                      selectedScript.id === "bulk_create_users_from_csv" &&
-                      field.id === "log_file"
-                    ) {
-                      return (
-                        <label key={field.id}>
-                          <span>{field.label}</span>
-                          <input
-                            type="text"
-                            value={value ?? ""}
-                            placeholder={field.placeholder ?? ""}
-                            onChange={(event) =>
-                              setField(selectedScript.id, field.id, event.target.value)
-                            }
-                          />
-                          <div className="csv-upload-row">
-                            <input
-                              type="file"
-                              onChange={(event) => uploadBulkCreateLogFile(event.target.files?.[0])}
-                            />
-                            {bulkUploadBusy && <small>Uploading...</small>}
-                          </div>
-                          {bulkUploadMessage && <small>{bulkUploadMessage}</small>}
-                        </label>
-                      );
-                    }
-
-                    if (
                       selectedScript.id === "update_user_email_domains" &&
                       field.id === "log_file"
                     ) {
                       return null;
-                    }
-
-                    if (
-                      selectedScript.id === "bulk_create_users_from_csv" &&
-                      field.id === "out_dir"
-                    ) {
-                      return (
-                        <label key={field.id}>
-                          <span>{field.label}</span>
-                          <input
-                            type="text"
-                            value={value ?? ""}
-                            placeholder={field.placeholder ?? ""}
-                            onChange={(event) =>
-                              setField(selectedScript.id, field.id, event.target.value)
-                            }
-                          />
-                          <div className="csv-upload-row">
-                            <button type="button" onClick={selectBulkCreateOutputDirectory}>
-                              Select Folder
-                            </button>
-                            {bulkUploadBusy && <small>Working...</small>}
-                          </div>
-                          {bulkUploadMessage && <small>{bulkUploadMessage}</small>}
-                        </label>
-                      );
                     }
 
                     if (
@@ -2148,6 +2158,52 @@ export default function App() {
                     }
 
                     if (
+                      selectedScript.id === "duplicate_project" &&
+                      field.id === "source_project_id"
+                    ) {
+                      return (
+                        <label key={field.id}>
+                          <span>{field.label}</span>
+                          <div className="csv-upload-row">
+                            <button type="button" onClick={loadTenantProjects}>
+                              Load Projects from Tenant
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setField(selectedScript.id, field.id, "")}
+                            >
+                              Clear
+                            </button>
+                            {tenantProjectsBusy && <small>Loading...</small>}
+                          </div>
+                          <select
+                            size={Math.min(Math.max(tenantProjects.length, 6), 12)}
+                            value={value ?? ""}
+                            onChange={(event) =>
+                              setField(selectedScript.id, field.id, event.target.value)
+                            }
+                          >
+                            <option value="">Select source project...</option>
+                            {tenantProjects.map((project) => (
+                              <option key={project.id} value={project.id}>
+                                {project.name}
+                              </option>
+                            ))}
+                          </select>
+                          <input
+                            type="text"
+                            value={value ?? ""}
+                            placeholder="Selected source project ID"
+                            onChange={(event) =>
+                              setField(selectedScript.id, field.id, event.target.value)
+                            }
+                          />
+                          {tenantProjectsMessage && <small>{tenantProjectsMessage}</small>}
+                        </label>
+                      );
+                    }
+
+                    if (
                       isChecklistPdfScript(selectedScript.id) &&
                       field.id === "output_dir"
                     ) {
@@ -2285,7 +2341,7 @@ export default function App() {
                       )}
                     </div>
                     {scriptPanelProgressPercent !== null && (
-                      <div className="run-progress" aria-label="Backup progress">
+                      <div className="run-progress" aria-label="Run progress">
                         <div className="run-progress-label">
                           <span>Progress</span>
                           <strong>{scriptPanelProgressPercent.toFixed(1)}%</strong>
@@ -2310,6 +2366,25 @@ export default function App() {
                             </li>
                           ))}
                         </ul>
+                      </div>
+                    )}
+                    {selectedScript.id === "recap" && recapPdfArtifact && (
+                      <div className="pdf-preview">
+                        <div className="script-header">
+                          <h3>PDF Preview</h3>
+                          <a
+                            href={`/api/artifact?path=${encodeURIComponent(recapPdfArtifact)}&download=false`}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            Open Full PDF
+                          </a>
+                        </div>
+                        <iframe
+                          className="pdf-frame"
+                          src={`/api/artifact?path=${encodeURIComponent(recapPdfArtifact)}&download=false`}
+                          title="RECAP PDF Preview"
+                        />
                       </div>
                     )}
                     <pre className="log-viewer">
@@ -2360,9 +2435,9 @@ export default function App() {
                           </thead>
                           <tbody>
                             {backupPreview.rows.map((row, index) => (
-                              <tr key={`${row.email ?? "row"}-${index}`}>
+                              <tr key={`${row.Email ?? "row"}-${index}`}>
                                 {backupPreview.headers.map((header) => {
-                                  const rowKey = `${backupPreview.jobId}-${row.email ?? "row"}-${index}`;
+                                  const rowKey = `${backupPreview.jobId}-${row.Email ?? "row"}-${index}`;
                                   if (header.toLowerCase() === "permissions") {
                                     const permissions = splitPipeValues(row[header]);
                                     const expanded = Boolean(expandedPermissionRows[rowKey]);

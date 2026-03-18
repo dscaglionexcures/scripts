@@ -256,3 +256,87 @@ async def test_env_alias_override_is_applied_to_process_env(tmp_path: Path) -> N
         assert any("token-from-field" in message for message in messages)
     finally:
         await manager.shutdown()
+
+
+@pytest.mark.asyncio
+async def test_bulk_create_always_writes_logs_under_logs_folder(tmp_path: Path) -> None:
+    script_path = tmp_path / "noop.py"
+    script_path.write_text("print('ok')\n", encoding="utf-8")
+
+    env_store = EnvStore(tmp_path / ".env")
+    history_path = tmp_path / "logs" / "history.json"
+    definition = ScriptDefinition(
+        id="bulk_create_users_from_csv",
+        name="Bulk Create New Users",
+        description="bulk create test",
+        file_path=script_path.name,
+        safety=SafetyMode.MUTATING,
+        fields=[ScriptField(id="csv", label="CSV Path", arg="--csv", required=True)],
+    )
+    manager = JobManager(
+        root_dir=tmp_path,
+        env_store=env_store,
+        scripts_by_id={definition.id: definition},
+        history_path=history_path,
+    )
+
+    record = await manager.create_job(
+        CreateJobRequest(
+            script_id=definition.id,
+            field_values={"csv": "users.csv"},
+            raw_args="--log-file custom.log",
+        )
+    )
+
+    assert "--log-file" in record.args
+    log_index = record.args.index("--log-file")
+    assert log_index + 1 < len(record.args)
+    assert record.args[log_index + 1].startswith("logs/bulk_create_users_")
+    assert "custom.log" not in record.args
+    assert not any(arg.startswith("--log-file=") for arg in record.args)
+
+
+@pytest.mark.asyncio
+async def test_update_users_new_projects_forces_audit_and_backup_paths(tmp_path: Path) -> None:
+    script_path = tmp_path / "noop.py"
+    script_path.write_text("print('ok')\n", encoding="utf-8")
+
+    env_store = EnvStore(tmp_path / ".env")
+    history_path = tmp_path / "logs" / "history.json"
+    definition = ScriptDefinition(
+        id="update_users_new_projects",
+        name="Update Users with New Projects",
+        description="update users test",
+        file_path=script_path.name,
+        safety=SafetyMode.MUTATING,
+    )
+    manager = JobManager(
+        root_dir=tmp_path,
+        env_store=env_store,
+        scripts_by_id={definition.id: definition},
+        history_path=history_path,
+    )
+
+    record = await manager.create_job(
+        CreateJobRequest(
+            script_id=definition.id,
+            raw_args="--audit-log custom.jsonl --backup-path custom.json --audit-log=raw.jsonl --backup-path=raw.json",
+        )
+    )
+
+    assert "--audit-log" in record.args
+    audit_idx = record.args.index("--audit-log")
+    assert audit_idx + 1 < len(record.args)
+    assert record.args[audit_idx + 1].startswith("logs/update_users_new_projects_")
+    assert record.args[audit_idx + 1].endswith(".jsonl")
+
+    assert "--backup-path" in record.args
+    backup_idx = record.args.index("--backup-path")
+    assert backup_idx + 1 < len(record.args)
+    assert record.args[backup_idx + 1].startswith("backups/update_users_new_projects/prewrite_snapshot_")
+    assert record.args[backup_idx + 1].endswith(".json")
+
+    assert "custom.jsonl" not in record.args
+    assert "custom.json" not in record.args
+    assert not any(arg.startswith("--audit-log=") for arg in record.args)
+    assert not any(arg.startswith("--backup-path=") for arg in record.args)
