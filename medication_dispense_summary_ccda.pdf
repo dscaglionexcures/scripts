@@ -1,0 +1,203 @@
+%PDF-1.3
+%‚„œ”
+1 0 obj
+<<
+/Producer (pypdf)
+>>
+endobj
+2 0 obj
+<<
+/Type /Pages
+/Count 1
+/Kids [ 4 0 R ]
+>>
+endobj
+3 0 obj
+<<
+/Type /Catalog
+/Pages 2 0 R
+/Names 11 0 R
+>>
+endobj
+4 0 obj
+<<
+/Contents 5 0 R
+/MediaBox [ 0 0 612 792 ]
+/Resources <<
+/Font 6 0 R
+/ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
+>>
+/Rotate 0
+/Trans <<
+>>
+/Type /Page
+/Parent 2 0 R
+>>
+endobj
+5 0 obj
+<<
+/Filter [ /ASCII85Decode /FlateDecode ]
+/Length 1511
+>>
+stream
+Gatm;8T3lb&AI=/e1hj"Nk='5KfK_fo-,K2!0--&94Kp=M&0]lj>"Dub$/fjG/D^,UaWLK^=p;)9L6]@>5WP2J@d,_hG^'UQ><,t0jse_j5h!fn9.gEA3eE!V*eAX&tdV[7i5Vg.t85Loonro=(Zn$_8oDr.S:F,p0fA5"$Bp$LEg[*HufD5Ipr.CKi8i?$iCc^]u1u2mQOTI#/f(lI<_8G9SU=lb.6Yb<giLX/$6j-:cgm18VlA"I5KUW2f4c>dH/)8GO%ak99f)0.SqhKL8+eIoCN<;$7]:0cVkm>0uu*ac!<o5DocWLluOXP9F=Ordc:h-7@4Gr@WG<J9Oucf)e6f=;^Yq#%q]i(^quA+!&N,uV@+TJPY^aO`Iu-b.(u:6ASF3WR*dO'$,T;Ir_elVP'0E\&RM_6#46:86P/'%jlVbM1!YSmf4)=$$]EJgF9De<nd7j-rra"R"Nh`og5mG$^KFLQ0l&:,M0_f@__]6pWiBJNGR6*cgZ#)r8Nqsm"Fs^DbT>%[E10;K:m`RK):`#5$]f;\Y332%k<s[*7HU8s^&7[HdXFc!6^[>hM+ZUB?hr*H[?q0Lr8!Q(lFXch/npn,I7L'-"D7Nr^;(#d,?$m@erRg*h.VL^DHRIW0Cb^8a3fN2r$l]`rD58j[]h`eR0rP"(@UeN]AV6*XR"91l$Da//Zbq)q0O!IU$E.$UkdFJcP66#3tW=5&VaMX"EBa,*oI`E2ETIU:.%IO@i?oSco<m?Y#DBbMoUVm.c2_lf4<BFhY%++b2q0m7IKBIoF-oq9%QilRcG3aN^ag?O]tq*j%uU9R*W3HCi#Ilf]Y#Y>D=U!?XVpAL%4'\q-l#q^ga4G\Us/J<H*^G@PjUKQ>KbYr%VM/a7K1`n`'lZ&+eIr^4c:fn6m])jjZ8B:-$e+jdMK]n2/,OW9ZdFN7)&Uj=q="i]a[\aL7Wl68h0N^bs$h84neghCtH9/#(`OApuI?Y[FudCGTU@/FS`u&Il9KYB]4!]T7$m1iU/"\4m)7i0-BR(`ZlDMkB*$d];.LIca0"lM1XOJ8bTnITC$P;o<PafQCp?r.;R8B%MrbiGUtN*mE0g%taG_N!-"^`*kNN+-uId6,!DmY:53+"pCt/KZ,X),?KFDrSW3UU,.$Om]_Dn$sVHAp-<4$.%+ZQ^5_jnXOK;N@,hAlnK;\n2g%OULg4RB!=9pP$j)>G)$KJ6]-<QP;QRNZgZ!MK-[9W[)2"FF;tS;iWjc=&8@f3,N3pJ/K:(cN<TP)&(jV'qG6_?Nn_R?3[7fJllBiZtk:2]eTkK&bho0<,e]^/SMJ0lf(!S>$3V+5g\FmuhYNX"7\7Y!$N-lVUnNP*rE;k7]P#amslo.4MX1kVrAiFo-QZF#K4o"_)D8nmjWt%,RApAsD_E\"WqD&E&,.@$THO.be#G6-D0c3OGJPskrDhjk-'d7Z\YKDt='V*$O4o^E9ZnRk=*%H!lX,e0ai!&B<EFpm\ru.Ui;Q2=>4r4[OE:lH<Kt8T~>
+endstream
+endobj
+6 0 obj
+<<
+/F1 7 0 R
+/F2 8 0 R
+>>
+endobj
+7 0 obj
+<<
+/BaseFont /Helvetica
+/Encoding /WinAnsiEncoding
+/Name /F1
+/Subtype /Type1
+/Type /Font
+>>
+endobj
+8 0 obj
+<<
+/BaseFont /Helvetica-Bold
+/Encoding /WinAnsiEncoding
+/Name /F2
+/Subtype /Type1
+/Type /Font
+>>
+endobj
+9 0 obj
+<<
+/Type /EmbeddedFile
+/Length 2992
+>>
+stream
+<?xml version="1.0" encoding="UTF-8"?>
+<ClinicalDocument xmlns="urn:hl7-org:v3"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="urn:hl7-org:v3 CDA.xsd">
+  <typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040"/>
+  <templateId root="2.16.840.1.113883.10.20.22.1.2"/>
+
+  <id root="2.16.840.1.113883.19.5" extension="MedicationDispenseSummary"/>
+  <code code="34133-9"
+        codeSystem="2.16.840.1.113883.6.1"
+        displayName="Summarization of episode note"/>
+
+  <title>Medication Dispense Summary (CCD-A)</title>
+  <effectiveTime value="20260318185935"/>
+  <confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25"/>
+  <languageCode code="en-US"/>
+
+  <recordTarget>
+    <patientRole>
+      <id root="2.16.840.1.113883.19.5" extension="MRN0985731"/>
+      <patient>
+        <name>
+          <given>David</given>
+          <family>Paul Scaglione</family>
+        </name>
+        <administrativeGenderCode code="M"/>
+        <birthTime value="19770324"/>
+      </patient>
+    </patientRole>
+  </recordTarget>
+
+  <author>
+    <time value="20260318185935"/>
+    <assignedAuthor>
+      <id root="2.16.840.1.113883.4.6" extension="1023377918"/>
+      <assignedPerson>
+        <name>
+          <prefix>Dr</prefix>
+          <given>Pulak</given>
+          <family>Patel</family>
+        </name>
+      </assignedPerson>
+      <representedOrganization>
+        <name>Novant Health System - South Blvd Office</name>
+      </representedOrganization>
+    </assignedAuthor>
+  </author>
+
+  <custodian>
+    <assignedCustodian>
+      <representedCustodianOrganization>
+        <id root="2.16.840.1.113883.19.5" extension="EVERSANA Specialty Pharmacy"/>
+        <name>EVERSANA Specialty Pharmacy</name>
+      </representedCustodianOrganization>
+    </assignedCustodian>
+  </custodian>
+
+  <component>
+    <structuredBody>
+      <component>
+        <section>
+          <templateId root="2.16.840.1.113883.10.20.22.2.37"/>
+          <code code="29304-3"
+                codeSystem="2.16.840.1.113883.6.1"
+                displayName="Medication dispensed"/>
+          <title>Medication Dispensed</title>
+          <text>
+            <paragraph>Medication: Ayvakit (Avapritinib) 25 mg tablet</paragraph>
+            <paragraph>RxCUI: 2559725</paragraph>
+            <paragraph>NDC: 72064-0125-30</paragraph>
+            <paragraph>Quantity Dispensed: 30 tablets</paragraph>
+            <paragraph>Date Dispensed: 2025-10-31</paragraph>
+            <paragraph>Prescription Number: 80578291029</paragraph>
+            <paragraph>Sig: Take one (1) tablet by mouth once daily on an empty stomach, at least 1 hour before or 2 hours after a meal. Swallow tablet whole; do not crush, chew, or split.</paragraph>
+            <paragraph>Refills Authorized: 12</paragraph>
+            <paragraph>Refills Remaining: 11</paragraph>
+          </text>
+        </section>
+      </component>
+    </structuredBody>
+  </component>
+</ClinicalDocument>
+
+endstream
+endobj
+10 0 obj
+<<
+/Type /Filespec
+/F (medication\137dispense\137ccda\056xml)
+/EF <<
+/F 9 0 R
+>>
+>>
+endobj
+11 0 obj
+<<
+/EmbeddedFiles 12 0 R
+>>
+endobj
+12 0 obj
+<<
+/Names [ (medication\137dispense\137ccda\056xml) 10 0 R ]
+>>
+endobj
+xref
+0 13
+0000000000 65535 f 
+0000000015 00000 n 
+0000000054 00000 n 
+0000000113 00000 n 
+0000000176 00000 n 
+0000000365 00000 n 
+0000001968 00000 n 
+0000002009 00000 n 
+0000002116 00000 n 
+0000002228 00000 n 
+0000005292 00000 n 
+0000005392 00000 n 
+0000005436 00000 n 
+trailer
+<<
+/Size 13
+/Root 3 0 R
+/Info 1 0 R
+>>
+startxref
+5516
+%%EOF

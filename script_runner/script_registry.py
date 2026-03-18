@@ -144,6 +144,12 @@ SCRIPT_DEFINITIONS: List[ScriptDefinition] = [
                 env_alias="XCURES_PROJECT_ID",
                 required=False,
             ),
+            ScriptField(
+                id="subject_id",
+                label="Single Subject ID (Optional)",
+                arg="--subject-id",
+                required=False,
+            ),
         ],
     ),
     ScriptDefinition(
@@ -247,7 +253,7 @@ SCRIPT_DEFINITIONS: List[ScriptDefinition] = [
     ScriptDefinition(
         id="recap",
         name="MedSync RECAP to PDF",
-        description="RECAP checklist evaluation and PDF report generator for MedSync.",
+        description="RECAP checklist evaluation and PDF/Word report generator for MedSync.",
         file_path="tools/recap.py",
         safety=SafetyMode.READ_ONLY,
         env_sets_any=[["XCURES_BEARER_TOKEN"], ["XCURES_CLIENT_ID", "XCURES_CLIENT_SECRET"]],

@@ -128,12 +128,20 @@ def build_headers(token: str, project_id: str) -> Dict[str, str]:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Collect clinical concepts status and document counts for all subjects."
+        description=(
+            "Collect clinical concepts status and document counts for all subjects "
+            "or a single subject."
+        )
     )
     parser.add_argument(
         "--project-id",
         default="",
         help="Optional project ID override. Defaults to XCURES_PROJECT_ID from environment/profile.",
+    )
+    parser.add_argument(
+        "--subject-id",
+        default="",
+        help="Optional single subjectId override. If set, skips full subject pagination.",
     )
     return parser.parse_args()
 
@@ -348,6 +356,7 @@ def process_subject(
 def main() -> int:
     args = parse_args()
     project_id = (args.project_id or PROJECT_ID).strip()
+    single_subject_id = (args.subject_id or "").strip()
     if not project_id:
         raise RuntimeError("Missing project ID. Set XCURES_PROJECT_ID or provide --project-id.")
 
@@ -357,10 +366,21 @@ def main() -> int:
     headers = build_headers(token, project_id)
     print(f"Using projectId={project_id}")
 
-    print("Phase 1/2: Fetching subject IDs (paginated)...")
-    subject_ids = fetch_all_subject_ids_with_progress(session, headers, SUBJECTS_CSV_PATH)
-    print(f"Fetched {len(subject_ids)} subject IDs.")
-    print(f"Subject IDs CSV written to: {SUBJECTS_CSV_PATH}")
+    if single_subject_id:
+        subject_ids = [single_subject_id]
+        with open(SUBJECTS_CSV_PATH, "w", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=["subjectId"])
+            writer.writeheader()
+            writer.writerow({"subjectId": single_subject_id})
+            f.flush()
+        print("Phase 1/2: Single-subject mode enabled.")
+        print(f"Using subjectId={single_subject_id}")
+        print(f"Subject IDs CSV written to: {SUBJECTS_CSV_PATH}")
+    else:
+        print("Phase 1/2: Fetching subject IDs (paginated)...")
+        subject_ids = fetch_all_subject_ids_with_progress(session, headers, SUBJECTS_CSV_PATH)
+        print(f"Fetched {len(subject_ids)} subject IDs.")
+        print(f"Subject IDs CSV written to: {SUBJECTS_CSV_PATH}")
 
     print("Phase 2/2: Querying clinical concepts status and document counts...")
     write_lock = threading.Lock()

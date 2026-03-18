@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ClinicalDocument xmlns="urn:hl7-org:v3"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="urn:hl7-org:v3 CDA.xsd">
+  <typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040"/>
+  <templateId root="2.16.840.1.113883.10.20.22.1.2"/>
+
+  <id root="2.16.840.1.113883.19.5" extension="MedicationDispenseSummary"/>
+  <code code="34133-9"
+        codeSystem="2.16.840.1.113883.6.1"
+        displayName="Summarization of episode note"/>
+
+  <title>Medication Dispense Summary (CCD-A)</title>
+  <effectiveTime value="20260318185935"/>
+  <confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25"/>
+  <languageCode code="en-US"/>
+
+  <recordTarget>
+    <patientRole>
+      <id root="2.16.840.1.113883.19.5" extension="MRN0985731"/>
+      <patient>
+        <name>
+          <given>David</given>
+          <family>Paul Scaglione</family>
+        </name>
+        <administrativeGenderCode code="M"/>
+        <birthTime value="19770324"/>
+      </patient>
+    </patientRole>
+  </recordTarget>
+
+  <author>
+    <time value="20260318185935"/>
+    <assignedAuthor>
+      <id root="2.16.840.1.113883.4.6" extension="1023377918"/>
+      <assignedPerson>
+        <name>
+          <prefix>Dr</prefix>
+          <given>Pulak</given>
+          <family>Patel</family>
+        </name>
+      </assignedPerson>
+      <representedOrganization>
+        <name>Novant Health System - South Blvd Office</name>
+      </representedOrganization>
+    </assignedAuthor>
+  </author>
+
+  <custodian>
+    <assignedCustodian>
+      <representedCustodianOrganization>
+        <id root="2.16.840.1.113883.19.5" extension="EVERSANA Specialty Pharmacy"/>
+        <name>EVERSANA Specialty Pharmacy</name>
+      </representedCustodianOrganization>
+    </assignedCustodian>
+  </custodian>
+
+  <component>
+    <structuredBody>
+      <component>
+        <section>
+          <templateId root="2.16.840.1.113883.10.20.22.2.37"/>
+          <code code="29304-3"
+                codeSystem="2.16.840.1.113883.6.1"
+                displayName="Medication dispensed"/>
+          <title>Medication Dispensed</title>
+          <text>
+            <paragraph>Medication: Ayvakit (Avapritinib) 25 mg tablet</paragraph>
+            <paragraph>RxCUI: 2559725</paragraph>
+            <paragraph>NDC: 72064-0125-30</paragraph>
+            <paragraph>Quantity Dispensed: 30 tablets</paragraph>
+            <paragraph>Date Dispensed: 2025-10-31</paragraph>
+            <paragraph>Prescription Number: 80578291029</paragraph>
+            <paragraph>Sig: Take one (1) tablet by mouth once daily on an empty stomach, at least 1 hour before or 2 hours after a meal. Swallow tablet whole; do not crush, chew, or split.</paragraph>
+            <paragraph>Refills Authorized: 12</paragraph>
+            <paragraph>Refills Remaining: 11</paragraph>
+          </text>
+        </section>
+      </component>
+    </structuredBody>
+  </component>
+</ClinicalDocument>

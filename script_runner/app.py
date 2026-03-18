@@ -39,6 +39,7 @@ PARTNER_BASE_URL = "https://partner.xcures.com"
 FRONTEND_DIST = ROOT_DIR / "web_ui" / "dist"
 HISTORY_PATH = ROOT_DIR / "logs" / "script_runner_job_history.json"
 UPLOADS_DIR = ROOT_DIR / "uploads" / "ui"
+DOWNLOADS_DIR = ROOT_DIR / "downloads"
 PERMISSIONS_CATALOG_PATH = ROOT_DIR / "configs" / "user_permissions_list.json"
 FUNCTIONAL_STATUS_PATH = ROOT_DIR / "configs" / "functional_scripts.json"
 CONFIGS_DIR = ROOT_DIR / "configs"
@@ -911,7 +912,7 @@ async def create_upload_folder(folder_name: str = Body(..., embed=True)) -> dict
     clean = folder_name.strip().replace("/", "_").replace("\\", "_")
     if not clean:
         raise HTTPException(status_code=400, detail="Folder name is required.")
-    target = UPLOADS_DIR / clean
+    target = DOWNLOADS_DIR / clean
     target.mkdir(parents=True, exist_ok=True)
     return {"path": str(target.relative_to(ROOT_DIR))}
 

@@ -283,7 +283,10 @@ def compact_id(identifier: str, max_len: int = 8) -> str:
 
 
 def html_paragraph_text(raw: str) -> str:
-    safe = escape(raw or "")
+    normalized = (raw or "")
+    for glyph in ("•", "◦", "▪", "‣", "●", "∙", "·", "\uf0b7", "\ufffd"):
+        normalized = normalized.replace(glyph, "-")
+    safe = escape(normalized)
     return safe.replace("\n", "<br/>")
 
 
@@ -312,7 +315,10 @@ def _bold_colon_label_in_line(line: str) -> str:
 
 
 def html_paragraph_text_with_colon_word_bold(raw: str) -> str:
-    lines = (raw or "").splitlines()
+    normalized = (raw or "")
+    for glyph in ("•", "◦", "▪", "‣", "●", "∙", "·", "\uf0b7", "\ufffd"):
+        normalized = normalized.replace(glyph, "-")
+    lines = normalized.splitlines()
     if not lines:
         return ""
     return "<br/>".join(_bold_colon_label_in_line(line) for line in lines)

@@ -17,7 +17,7 @@ import os
 import re
 import sys
 from dataclasses import dataclass
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 from xml.sax.saxutils import escape
@@ -47,6 +47,8 @@ DEFAULT_BASE_URL = "https://partner.xcures.com"
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_OUTPUT_DIR = REPO_ROOT / "downloads"
 EVALUATE_ENDPOINT_TEMPLATE = "/api/v1/patient-registry/checklist/{checklist_id}/evaluate"
+VITALS_ENDPOINT = "/api/v1/patient-registry/clinical-concepts/vital"
+LABS_ENDPOINT = "/api/v1/patient-registry/clinical-concepts/lab"
 TEMPLATE_ORG_NAME = "Vitality Consultants, LLC"
 TEMPLATE_ORG_ADDRESS = "3540 Toringdon Way Ste 200, Charlotte, NC 28277-4650"
 TEMPLATE_TITLE_LINE_1 = "Comprehensive Clinical Consultation"
@@ -179,6 +181,19 @@ def parse_args() -> argparse.Namespace:
         dest="save_json",
         action="store_false",
         help="Disable saving raw evaluation JSON sidecar for this run.",
+    )
+    parser.add_argument(
+        "--save-docx",
+        dest="save_docx",
+        action="store_true",
+        default=True,
+        help="Save Word (.docx) output next to the PDF output (default: enabled).",
+    )
+    parser.add_argument(
+        "--no-save-docx",
+        dest="save_docx",
+        action="store_false",
+        help="Disable Word (.docx) export for this run.",
     )
     parser.add_argument(
         "--output-dir",
@@ -336,7 +351,10 @@ def compact_id(identifier: str, max_len: int = 8) -> str:
 
 
 def html_paragraph_text(raw: str) -> str:
-    safe = escape(raw or "")
+    normalized = (raw or "")
+    for glyph in ("•", "◦", "▪", "‣", "●", "∙", "·", "\uf0b7", "\ufffd"):
+        normalized = normalized.replace(glyph, "-")
+    safe = escape(normalized)
     return safe.replace("\n", "<br/>")
 
 
@@ -365,7 +383,10 @@ def _bold_colon_label_in_line(line: str) -> str:
 
 
 def html_paragraph_text_with_colon_word_bold(raw: str) -> str:
-    lines = (raw or "").splitlines()
+    normalized = (raw or "")
+    for glyph in ("•", "◦", "▪", "‣", "●", "∙", "·", "\uf0b7", "\ufffd"):
+        normalized = normalized.replace(glyph, "-")
+    lines = normalized.splitlines()
     if not lines:
         return ""
     return "<br/>".join(_bold_colon_label_in_line(line) for line in lines)
@@ -526,6 +547,16 @@ def clean_section_title(title: str, checklist_name: str) -> str:
 def build_styles(config: RenderConfig) -> Dict[str, ParagraphStyle]:
     sample = getSampleStyleSheet()
     return {
+        "section_label": ParagraphStyle(
+            "SectionLabel",
+            parent=sample["Heading2"],
+            fontName="Helvetica",
+            fontSize=10.9,
+            leading=12.8,
+            textColor=colors.black,
+            spaceBefore=0,
+            spaceAfter=0,
+        ),
         "h1": ParagraphStyle(
             "H1Custom",
             parent=sample["Heading1"],
@@ -782,11 +813,11 @@ def build_item_block(
     usable_width: float,
 ) -> List[Any]:
     del index
-    del config
-    del usable_width
+    left_col_width = min(max(1.45 * inch, usable_width * 0.24), 1.9 * inch)
+    right_col_width = usable_width - left_col_width
 
-    title = Paragraph(f"{html_paragraph_text(item.title)}", styles["h1"])
-    block: List[Any] = [title, Spacer(1, 0.015 * inch)]
+    title = Paragraph(f"{html_paragraph_text(item.title)}", styles["section_label"])
+    right_column: List[Any] = []
 
     emitted_text = False
     if item.result_is_structured and item.details:
@@ -795,27 +826,52 @@ def build_item_block(
             label_with_colon = f"{row.label}:"
             if row.label.strip().lower() == "items":
                 if value != "N/A":
-                    append_text_with_colon_headings(block, value, body_style=styles["body"])
+                    append_text_with_colon_headings(right_column, value, body_style=styles["body"])
                 emitted_text = True
                 continue
             if "\n" in value:
-                block.append(styled_paragraph(label_with_colon, styles["body"]))
-                block.append(Spacer(1, 0.01 * inch))
-                append_text_with_colon_headings(block, value, body_style=styles["body"])
+                right_column.append(styled_paragraph_with_colon_word_bold(label_with_colon, styles["body"]))
+                right_column.append(Spacer(1, 0.01 * inch))
+                append_text_with_colon_headings(right_column, value, body_style=styles["body"])
             else:
-                block.append(styled_paragraph(f"{label_with_colon} {value}", styles["body"]))
+                right_column.append(
+                    styled_paragraph_with_colon_word_bold(f"{label_with_colon} {value}", styles["body"])
+                )
             emitted_text = True
     else:
         evidence = (item.evidence or "").strip()
         if evidence:
-            append_text_with_colon_headings(block, evidence, body_style=styles["body"])
+            append_text_with_colon_headings(right_column, evidence, body_style=styles["body"])
             emitted_text = True
 
     if not emitted_text:
-        block.append(styled_paragraph("No structured result provided.", styles["body"]))
+        right_column.append(styled_paragraph("No structured result provided.", styles["body"]))
 
-    block.append(Spacer(1, 0.05 * inch))
-    return block
+    # Build one table row per flowable so long sections can naturally split across pages.
+    # A single-row table with the whole section body in one cell cannot split and triggers
+    # LayoutError for larger sections.
+    table_rows: List[List[Any]] = []
+    for idx, flowable in enumerate(right_column):
+        left_cell: Any = title if idx == 0 else Spacer(0, 0)
+        table_rows.append([left_cell, flowable])
+
+    section_table = Table(table_rows, colWidths=[left_col_width, right_col_width])
+    section_table.setStyle(
+        TableStyle(
+            [
+                ("VALIGN", (0, 0), (-1, -1), "TOP"),
+                ("LINEBELOW", (0, -1), (-1, -1), 0.6, config.border_color),
+                ("LEFTPADDING", (0, 0), (0, -1), 0),
+                ("RIGHTPADDING", (0, 0), (0, -1), 12),
+                ("TOPPADDING", (0, 0), (-1, -1), 0),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
+                ("LEFTPADDING", (1, 0), (1, -1), 0),
+                ("RIGHTPADDING", (1, 0), (1, -1), 0),
+            ]
+        )
+    )
+
+    return [section_table, Spacer(1, 0.11 * inch)]
 
 
 def write_pdf_report(
@@ -865,6 +921,329 @@ def write_pdf_report(
         onLaterPages=_on_page,
         canvasmaker=_canvas_maker,
     )
+
+
+def _normalize_word_text(raw: str) -> str:
+    normalized = (raw or "")
+    for glyph in ("•", "◦", "▪", "‣", "●", "∙", "·", "\uf0b7", "\ufffd"):
+        normalized = normalized.replace(glyph, "-")
+    return normalized
+
+
+def _item_word_lines(item: ItemViewModel) -> List[str]:
+    lines: List[str] = []
+    emitted_text = False
+
+    if item.result_is_structured and item.details:
+        for row in item.details:
+            value = _normalize_word_text((row.value or "").strip() or "N/A")
+            label = (row.label or "Field").strip() or "Field"
+            label_with_colon = f"{label}:"
+
+            if label.lower() == "items":
+                if value != "N/A":
+                    lines.extend(value.splitlines() or [value])
+                emitted_text = True
+                continue
+
+            if "\n" in value:
+                lines.append(label_with_colon)
+                lines.extend(value.splitlines())
+            else:
+                lines.append(f"{label_with_colon} {value}")
+            emitted_text = True
+    else:
+        evidence = _normalize_word_text((item.evidence or "").strip())
+        if evidence:
+            lines.extend(evidence.splitlines())
+            emitted_text = True
+
+    if not emitted_text:
+        lines.append("No structured result provided.")
+    return lines
+
+
+def _append_word_line(paragraph: Any, line: str) -> None:
+    text = _normalize_word_text(line or "")
+    match = re.match(
+        r"^(\s*(?:-\s+)?)"
+        r"((?:[A-Za-z][A-Za-z0-9'()/.\-]*"
+        r"(?:\s+[A-Za-z][A-Za-z0-9'()/.\-]*){0,5}):)"
+        r"(\s*.*)$",
+        text,
+    )
+    if not match:
+        lowered = text.strip().lower()
+        if lowered in {"never smoker", "do not drink"}:
+            run = paragraph.add_run(text)
+            run.bold = True
+            return
+
+        # Mirror the PDF style where list-like entries frequently bold the lead term.
+        if "," in text and ":" not in text:
+            lead, tail = text.split(",", 1)
+            if 1 <= len(lead.strip()) <= 90:
+                lead_run = paragraph.add_run(lead)
+                lead_run.bold = True
+                paragraph.add_run("," + tail)
+                return
+
+        paragraph.add_run(text)
+        return
+
+    prefix, label, suffix = match.groups()
+    if prefix:
+        paragraph.add_run(prefix)
+    label_run = paragraph.add_run(label)
+    label_run.bold = True
+    if suffix:
+        paragraph.add_run(suffix)
+
+
+def _set_docx_cell_border(cell: Any, **kwargs: Dict[str, str]) -> None:
+    from docx.oxml import OxmlElement
+    from docx.oxml.ns import qn
+
+    tc = cell._tc
+    tc_pr = tc.get_or_add_tcPr()
+    tc_borders = tc_pr.first_child_found_in("w:tcBorders")
+    if tc_borders is None:
+        tc_borders = OxmlElement("w:tcBorders")
+        tc_pr.append(tc_borders)
+
+    for edge in ("left", "top", "right", "bottom", "insideH", "insideV"):
+        edge_data = kwargs.get(edge)
+        tag = f"w:{edge}"
+        element = tc_borders.find(qn(tag))
+        if edge_data:
+            if element is None:
+                element = OxmlElement(tag)
+                tc_borders.append(element)
+            for key, value in edge_data.items():
+                element.set(qn(f"w:{key}"), str(value))
+        elif element is not None:
+            tc_borders.remove(element)
+
+
+def _remove_table_borders(table: Any) -> None:
+    for row in table.rows:
+        for cell in row.cells:
+            _set_docx_cell_border(
+                cell,
+                left={"val": "nil"},
+                right={"val": "nil"},
+                top={"val": "nil"},
+                bottom={"val": "nil"},
+            )
+
+
+def _set_docx_cell_margins(
+    cell: Any,
+    *,
+    top: int | None = None,
+    bottom: int | None = None,
+    left: int | None = None,
+    right: int | None = None,
+) -> None:
+    from docx.oxml import OxmlElement
+    from docx.oxml.ns import qn
+
+    tc = cell._tc
+    tc_pr = tc.get_or_add_tcPr()
+    tc_mar = tc_pr.first_child_found_in("w:tcMar")
+    if tc_mar is None:
+        tc_mar = OxmlElement("w:tcMar")
+        tc_pr.append(tc_mar)
+
+    for tag, value in (("top", top), ("bottom", bottom), ("left", left), ("right", right)):
+        if value is None:
+            continue
+        element = tc_mar.find(qn(f"w:{tag}"))
+        if element is None:
+            element = OxmlElement(f"w:{tag}")
+            tc_mar.append(element)
+        element.set(qn("w:w"), str(value))
+        element.set(qn("w:type"), "dxa")
+
+
+def _add_horizontal_rule(doc: Any) -> None:
+    from docx.oxml import OxmlElement
+    from docx.oxml.ns import qn
+    from docx.shared import Pt
+
+    paragraph = doc.add_paragraph()
+    paragraph.paragraph_format.space_before = Pt(2)
+    paragraph.paragraph_format.space_after = Pt(2)
+    p = paragraph._p
+    p_pr = p.get_or_add_pPr()
+    p_bdr = p_pr.find(qn("w:pBdr"))
+    if p_bdr is None:
+        p_bdr = OxmlElement("w:pBdr")
+        p_pr.append(p_bdr)
+    bottom = OxmlElement("w:bottom")
+    bottom.set(qn("w:val"), "single")
+    bottom.set(qn("w:sz"), "6")
+    bottom.set(qn("w:space"), "1")
+    bottom.set(qn("w:color"), "A6A6A6")
+    p_bdr.append(bottom)
+
+
+def write_docx_report(
+    *,
+    meta: ReportMeta,
+    items: Sequence[ItemViewModel],
+    output_docx: Path,
+) -> None:
+    try:
+        from docx import Document
+        from docx.enum.table import WD_CELL_VERTICAL_ALIGNMENT, WD_TABLE_ALIGNMENT
+        from docx.enum.text import WD_ALIGN_PARAGRAPH
+        from docx.shared import Inches, Pt
+    except ImportError as exc:
+        raise RuntimeError(
+            "python-docx is required for Word export. Install it with: "
+            ".venv_sdk/bin/pip install python-docx"
+        ) from exc
+
+    doc = Document()
+    section = doc.sections[0]
+    section.left_margin = Inches(0.6)
+    section.right_margin = Inches(0.6)
+    section.top_margin = Inches(0.45)
+    section.bottom_margin = Inches(0.7)
+
+    normal_style = doc.styles["Normal"]
+    normal_style.font.name = "Helvetica"
+    normal_style.font.size = Pt(10)
+
+    header_table = doc.add_table(rows=2, cols=2)
+    header_table.alignment = WD_TABLE_ALIGNMENT.LEFT
+    header_table.autofit = False
+    header_table.columns[0].width = Inches(3.65)
+    header_table.columns[1].width = Inches(3.65)
+    _remove_table_borders(header_table)
+
+    left_top = header_table.cell(0, 0)
+    left_top.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.TOP
+    p = left_top.paragraphs[0]
+    p.paragraph_format.space_before = Pt(0)
+    p.paragraph_format.space_after = Pt(0)
+    org_run = p.add_run(TEMPLATE_ORG_NAME)
+    org_run.bold = True
+    org_run.font.size = Pt(12)
+
+    left_bottom = header_table.cell(1, 0)
+    p = left_bottom.paragraphs[0]
+    p.paragraph_format.space_before = Pt(0)
+    p.paragraph_format.space_after = Pt(0)
+    addr_run = p.add_run(TEMPLATE_ORG_ADDRESS)
+    addr_run.font.size = Pt(8)
+
+    right_top = header_table.cell(0, 1)
+    p = right_top.paragraphs[0]
+    p.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+    p.paragraph_format.space_before = Pt(0)
+    p.paragraph_format.space_after = Pt(0)
+    title_run = p.add_run(f"{TEMPLATE_TITLE_LINE_1}\n{TEMPLATE_TITLE_LINE_2}")
+    title_run.bold = True
+    title_run.font.size = Pt(12)
+
+    right_bottom = header_table.cell(1, 1)
+    right_bottom.text = ""
+
+    _add_horizontal_rule(doc)
+
+    birthday = "N/A"
+    dob_match = re.match(r"^(\d{4}-\d{2}-\d{2})", meta.subject_dob or "")
+    if dob_match:
+        birthday = dob_match.group(1)
+    age_text = "N/A"
+    age_match = re.search(r"\((\d+)\s+Year[s]?\s+Old\)", meta.subject_dob or "")
+    if age_match:
+        age_text = age_match.group(1)
+    generated_display = meta.generated_at.strftime("%Y %b %d %H:%M")
+
+    patient = doc.add_paragraph()
+    patient.paragraph_format.space_before = Pt(4)
+    patient.paragraph_format.space_after = Pt(0)
+    patient_name = patient.add_run(meta.subject_full_name or meta.subject_id)
+    patient_name.bold = True
+    patient_name.font.size = Pt(12)
+
+    line = doc.add_paragraph()
+    line.paragraph_format.space_before = Pt(0)
+    line.paragraph_format.space_after = Pt(0)
+    line.add_run(f"MRN : {meta.subject_external_id}   Phone : N/A")
+
+    line = doc.add_paragraph()
+    line.paragraph_format.space_before = Pt(0)
+    line.paragraph_format.space_after = Pt(0)
+    line.add_run(f"Birthday : {birthday}")
+
+    line = doc.add_paragraph()
+    line.paragraph_format.space_before = Pt(0)
+    line.paragraph_format.space_after = Pt(0)
+    line.add_run(
+        f"Visited on: N/A (Age at visit: {age_text} years) "
+        f"Electronically signed by: N/A on {generated_display}"
+    )
+
+    _add_horizontal_rule(doc)
+
+    for item in items:
+        section_table = doc.add_table(rows=1, cols=2)
+        section_table.alignment = WD_TABLE_ALIGNMENT.LEFT
+        section_table.autofit = False
+        section_table.columns[0].width = Inches(1.95)
+        section_table.columns[1].width = Inches(5.05)
+        _remove_table_borders(section_table)
+
+        title_cell = section_table.cell(0, 0)
+        title_cell.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.TOP
+        _set_docx_cell_margins(title_cell, top=0, bottom=0, left=0, right=90)
+        title_para = title_cell.paragraphs[0]
+        title_para.paragraph_format.space_after = Pt(0)
+        title_para.paragraph_format.space_before = Pt(0)
+        title_text = _normalize_word_text(item.title)
+        title_text = title_text.replace("Patient Medical History", "Patient Medical\nHistory")
+        title_run = title_para.add_run(title_text)
+        title_run.font.size = Pt(13)
+        title_run.bold = False
+
+        content_cell = section_table.cell(0, 1)
+        content_cell.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.TOP
+        _set_docx_cell_margins(content_cell, top=0, bottom=0, left=120, right=0)
+        lines = _item_word_lines(item)
+        for idx, line in enumerate(lines):
+            paragraph = content_cell.paragraphs[0] if idx == 0 else content_cell.add_paragraph()
+            paragraph.paragraph_format.space_after = Pt(0)
+            paragraph.paragraph_format.space_before = Pt(0)
+            paragraph.paragraph_format.line_spacing = 1.0
+            paragraph.paragraph_format.left_indent = Pt(4)
+            _append_word_line(paragraph, line)
+
+        _set_docx_cell_border(
+            title_cell,
+            bottom={"val": "single", "sz": "6", "space": "0", "color": "A6A6A6"},
+        )
+        _set_docx_cell_border(
+            content_cell,
+            bottom={"val": "single", "sz": "6", "space": "0", "color": "A6A6A6"},
+        )
+        spacer = doc.add_paragraph()
+        spacer.paragraph_format.space_before = Pt(0)
+        spacer.paragraph_format.space_after = Pt(0)
+
+    footer = section.footer.paragraphs[0]
+    footer.text = f"Printed on: {generated_display}"
+    footer.paragraph_format.space_after = Pt(0)
+    footer2 = section.footer.add_paragraph()
+    footer2.text = "Note created using Tebra"
+    footer2.paragraph_format.space_before = Pt(0)
+    footer2.paragraph_format.space_after = Pt(0)
+
+    output_docx.parent.mkdir(parents=True, exist_ok=True)
+    doc.save(str(output_docx))
 
 
 def attach_file_to_pdf(pdf_path: Path, attachment_path: Path) -> None:
@@ -1066,18 +1445,265 @@ def evaluate_checklist(
     return payload_obj
 
 
+def _extract_paginated_results(payload: Any) -> List[Dict[str, Any]]:
+    if isinstance(payload, list):
+        candidates: List[Any] = payload
+    elif isinstance(payload, dict):
+        candidates = []
+        for key in ("results", "items", "data"):
+            value = payload.get(key)
+            if isinstance(value, list):
+                candidates = value
+                break
+    else:
+        candidates = []
+    return [item for item in candidates if isinstance(item, dict)]
+
+
+def _extract_iso_day(value: Any) -> str:
+    text = str(value or "").strip()
+    match = re.match(r"^(\d{4}-\d{2}-\d{2})", text)
+    return match.group(1) if match else ""
+
+
+def _to_sort_timestamp(value: Any) -> float:
+    text = str(value or "").strip()
+    if not text:
+        return float("-inf")
+    normalized = text.replace("Z", "+00:00")
+    try:
+        parsed = datetime.fromisoformat(normalized)
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=ZoneInfo("America/New_York"))
+        return parsed.timestamp()
+    except Exception:
+        day = _extract_iso_day(text)
+        if day:
+            try:
+                return datetime.fromisoformat(f"{day}T00:00:00").timestamp()
+            except Exception:
+                pass
+    return float("-inf")
+
+
+def fetch_latest_vitals(
+    *,
+    client: XcuresApiClient,
+    subject_id: str,
+) -> tuple[List[Dict[str, Any]], str]:
+    payload = client.request_json(
+        "GET",
+        VITALS_ENDPOINT,
+        params={
+            "subjectId": subject_id,
+            "pageNumber": 1,
+            "pageSize": 200,
+            "sortField": "date",
+            "sortIsDescending": True,
+        },
+    )
+    records = _extract_paginated_results(payload)
+    if not records:
+        return [], ""
+
+    records.sort(key=lambda row: _to_sort_timestamp(row.get("vitalsDate")), reverse=True)
+    latest_day = ""
+    for row in records:
+        latest_day = _extract_iso_day(row.get("vitalsDate"))
+        if latest_day:
+            break
+
+    if latest_day:
+        latest_records = [
+            row for row in records if _extract_iso_day(row.get("vitalsDate")) == latest_day
+        ]
+    else:
+        latest_records = [records[0]]
+
+    return latest_records, latest_day
+
+
+def fetch_high_labs_last_12_months(
+    *,
+    client: XcuresApiClient,
+    subject_id: str,
+    now: datetime,
+) -> tuple[List[Dict[str, Any]], str, str]:
+    window_end = now.date().isoformat()
+    window_start = (now.date() - timedelta(days=365)).isoformat()
+
+    records = client.list_paginated(
+        LABS_ENDPOINT,
+        params={
+            "subjectId": subject_id,
+            "dateStart": window_start,
+            "dateEnd": window_end,
+            "sortField": "date",
+            "sortIsDescending": True,
+        },
+        page_size=200,
+        max_pages=50,
+    )
+    high_records = [
+        row
+        for row in records
+        if str(row.get("labResultInterpretation") or "").strip().lower() == "high"
+    ]
+    high_records.sort(key=lambda row: _to_sort_timestamp(row.get("labDate")), reverse=True)
+    return high_records, window_start, window_end
+
+
+def _build_supplemental_item(
+    *,
+    title: str,
+    sort_order: float,
+    lines: List[str],
+    source_records: List[Dict[str, Any]],
+) -> ItemViewModel:
+    doc_ids: set[str] = set()
+    for row in source_records:
+        raw_doc_ids = row.get("documentIds")
+        if isinstance(raw_doc_ids, list):
+            for raw_doc_id in raw_doc_ids:
+                value = str(raw_doc_id or "").strip()
+                if value:
+                    doc_ids.add(value)
+
+    value = "\n".join(lines).strip() or "No data available."
+    return ItemViewModel(
+        title=title,
+        sort_order=sort_order,
+        meets_criteria=True,
+        details=[DetailRow(label="Items", value=value)],
+        result_raw=None,
+        evidence=value,
+        source_lines=[],
+        document_count=len(doc_ids),
+        result_is_structured=True,
+    )
+
+
+def _format_vital_line(row: Dict[str, Any]) -> str:
+    vital_name = str(row.get("vitals") or "Vital").strip()
+    result_text = str(row.get("vitalsResult") or "").strip()
+    value_text = str(row.get("vitalsResultValue") or "").strip()
+    unit_text = str(row.get("vitalsResultUnit") or "").strip()
+    measurement = result_text or " ".join(part for part in [value_text, unit_text] if part).strip()
+    if not measurement:
+        measurement = "N/A"
+    return f"{vital_name}: {measurement}"
+
+
+def _format_lab_line(row: Dict[str, Any]) -> str:
+    lab_name = _lab_display_name(row)
+    if not lab_name:
+        lab_name = "Unknown Lab"
+
+    result_value = str(row.get("labResultValue") or row.get("labResult") or "").strip()
+    if not result_value:
+        result_value = "N/A"
+
+    interpretation = str(row.get("labResultInterpretation") or "").strip().upper()
+    if interpretation == "HIGH":
+        marker = " (H)"
+    elif interpretation == "LOW":
+        marker = " (L)"
+    else:
+        marker = ""
+
+    return f"{lab_name}: {result_value}{marker}"
+
+
+def _lab_display_name(row: Dict[str, Any]) -> str:
+    raw_codes = row.get("codes")
+    if isinstance(raw_codes, list):
+        standard_display = ""
+        fallback_display = ""
+        for code_obj in raw_codes:
+            if not isinstance(code_obj, dict):
+                continue
+            display = str(code_obj.get("display") or "").strip()
+            if not display:
+                continue
+            if not fallback_display:
+                fallback_display = display
+            if str(code_obj.get("type") or "").strip().lower() == "standard":
+                standard_display = display
+                break
+        if standard_display:
+            return standard_display
+        if fallback_display:
+            return fallback_display
+    return ""
+
+
+def _lab_dedupe_key(row: Dict[str, Any]) -> str:
+    primary = _lab_display_name(row).strip().lower()
+    if primary:
+        return primary
+
+    raw_codes = row.get("codes")
+    if isinstance(raw_codes, list):
+        codes = [str(code).strip().lower() for code in raw_codes if str(code).strip()]
+        if codes:
+            return "|".join(sorted(codes))
+
+    fallback = str(row.get("id") or "").strip().lower()
+    return fallback or "unknown-lab"
+
+
+def _supplemental_sort_orders(items: Sequence[ItemViewModel]) -> tuple[float, float]:
+    social_sort_order = next(
+        (item.sort_order for item in items if item.title.strip().lower() == "social history"),
+        None,
+    )
+    if social_sort_order is not None:
+        return social_sort_order - 0.20, social_sort_order - 0.10
+
+    max_sort_order = max((item.sort_order for item in items), default=0.0)
+    return max_sort_order + 0.10, max_sort_order + 0.20
+
+
+def _upsert_section_item(items: List[ItemViewModel], section_item: ItemViewModel) -> None:
+    section_title = section_item.title.strip().lower()
+    for idx, item in enumerate(items):
+        if item.title.strip().lower() == section_title:
+            items[idx] = section_item
+            return
+    items.append(section_item)
+
+
+def _latest_high_labs_per_lab(records: Sequence[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    latest_by_key: Dict[str, Dict[str, Any]] = {}
+    for row in records:
+        key = _lab_dedupe_key(row)
+        existing = latest_by_key.get(key)
+        if existing is None:
+            latest_by_key[key] = row
+            continue
+        if _to_sort_timestamp(row.get("labDate")) > _to_sort_timestamp(existing.get("labDate")):
+            latest_by_key[key] = row
+    deduped = list(latest_by_key.values())
+    deduped.sort(key=lambda row: _to_sort_timestamp(row.get("labDate")), reverse=True)
+    return deduped
+
+
 def build_output_paths(
     *,
     output_dir: Path,
     subject_id: str,
     checklist_id: str,
     generated_at: datetime,
-) -> tuple[Path, Path]:
+) -> tuple[Path, Path, Path]:
     timestamp = generated_at.strftime("%Y%m%d_%H%M%S")
     base_name = (
         f"checklist_eval_{compact_id(subject_id)}_{compact_id(checklist_id)}_{timestamp}"
     )
-    return output_dir / f"{base_name}.pdf", output_dir / f"{base_name}.json"
+    return (
+        output_dir / f"{base_name}.pdf",
+        output_dir / f"{base_name}.json",
+        output_dir / f"{base_name}.docx",
+    )
 
 
 def main() -> int:
@@ -1093,6 +1719,14 @@ def main() -> int:
 
     config = build_render_config()
     now = datetime.now(ZoneInfo("America/New_York"))
+    latest_vital_records: List[Dict[str, Any]] = []
+    latest_vital_day = ""
+    vitals_error = ""
+
+    high_lab_records: List[Dict[str, Any]] = []
+    labs_window_start = (now.date() - timedelta(days=365)).isoformat()
+    labs_window_end = now.date().isoformat()
+    labs_error = ""
 
     with requests.Session() as session:
         client = XcuresApiClient(
@@ -1144,6 +1778,31 @@ def main() -> int:
             subject_id=subject_id,
             regenerate=bool(args.regenerate),
         )
+        try:
+            latest_vital_records, latest_vital_day = fetch_latest_vitals(
+                client=client,
+                subject_id=subject_id,
+            )
+        except Exception as exc:
+            vitals_error = str(exc)
+            print(
+                "Warning: failed to fetch latest vitals; section will include error "
+                f"details ({exc})",
+                file=sys.stderr,
+            )
+        try:
+            high_lab_records, labs_window_start, labs_window_end = fetch_high_labs_last_12_months(
+                client=client,
+                subject_id=subject_id,
+                now=now,
+            )
+        except Exception as exc:
+            labs_error = str(exc)
+            print(
+                "Warning: failed to fetch high labs; section will include error "
+                f"details ({exc})",
+                file=sys.stderr,
+            )
 
     raw_items = require_json_list(evaluation.get("items"), context="ChecklistEvaluationResult.items")
     typed_items: List[Dict[str, Any]] = []
@@ -1168,6 +1827,44 @@ def main() -> int:
         )
         for item in normalized_items
     ]
+
+    vitals_sort_order, labs_sort_order = _supplemental_sort_orders(normalized_items)
+    if vitals_error:
+        vitals_lines = [f"Unable to retrieve vitals: {vitals_error}"]
+    elif not latest_vital_records:
+        vitals_lines = ["No vitals found."]
+    else:
+        vitals_lines = [f"Recorded: {latest_vital_day}"] if latest_vital_day else []
+        seen_vitals: set[str] = set()
+        for record in latest_vital_records:
+            line = _format_vital_line(record)
+            if line in seen_vitals:
+                continue
+            seen_vitals.add(line)
+            vitals_lines.append(line)
+    vitals_item = _build_supplemental_item(
+        title="Vitals",
+        sort_order=vitals_sort_order,
+        lines=vitals_lines,
+        source_records=latest_vital_records,
+    )
+
+    deduped_high_lab_records = _latest_high_labs_per_lab(high_lab_records)
+    if labs_error:
+        labs_lines = [f"Unable to retrieve labs: {labs_error}"]
+    elif not deduped_high_lab_records:
+        labs_lines = [f"No high lab results from {labs_window_start} to {labs_window_end}."]
+    else:
+        labs_lines = [_format_lab_line(record) for record in deduped_high_lab_records]
+    labs_item = _build_supplemental_item(
+        title="Labs",
+        sort_order=labs_sort_order,
+        lines=labs_lines,
+        source_records=deduped_high_lab_records,
+    )
+
+    _upsert_section_item(normalized_items, vitals_item)
+    _upsert_section_item(normalized_items, labs_item)
     normalized_items.sort(key=lambda item: (item.sort_order, item.title.lower()))
 
     total_items = len(normalized_items)
@@ -1192,7 +1889,7 @@ def main() -> int:
         endpoint_path="POST /api/v1/patient-registry/checklist/{checklistId}/evaluate",
     )
 
-    pdf_path, json_path = build_output_paths(
+    pdf_path, json_path, docx_path = build_output_paths(
         output_dir=output_dir,
         subject_id=subject_id,
         checklist_id=checklist_id,
@@ -1200,6 +1897,8 @@ def main() -> int:
     )
 
     write_pdf_report(meta=meta, items=normalized_items, output_pdf=pdf_path, config=config)
+    if args.save_docx:
+        write_docx_report(meta=meta, items=normalized_items, output_docx=docx_path)
 
     if args.save_json:
         with json_path.open("w", encoding="utf-8") as out_file:
@@ -1207,6 +1906,8 @@ def main() -> int:
         attach_file_to_pdf(pdf_path, json_path)
 
     print(f"Wrote PDF: {pdf_path}")
+    if args.save_docx:
+        print(f"Wrote DOCX: {docx_path}")
     if args.save_json:
         print(f"Wrote JSON: {json_path}")
         print("Attached JSON to PDF as embedded file.")
